@@ -1,0 +1,147 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Data;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CommonClassLibrary
+{
+    /// <summary>
+    /// This Class is used to communicate with the Database
+    /// </summary>
+    public class ExecuteClass
+    {
+        #region "Global Declaration"
+        private SqlConnection con = new SqlConnection();
+        private SqlCommand cmd = new SqlCommand();
+        private SqlDataAdapter ad = new SqlDataAdapter();
+        public DataSet ds = new DataSet();
+        public DataTable dt = new DataTable();
+        #endregion
+
+        public ExecuteClass()
+        {
+            //
+            // TODO: Add constructor logic here
+            //
+        }
+
+
+
+        /// <summary>
+        /// Get DataTable
+        /// </summary>
+        /// <param name="SQL Query"></param>
+        /// <param name="Dictionary Parameters"></param>
+        /// <returns>DataTable</returns>
+        public DataTable Get_Datatable(string SQL_Query, Dictionary<string, object> parameters = null)
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection connection = new SqlConnection(ConnectionClass.connection_String_Local))
+            {
+                connection.Open();
+
+                try
+                {
+                    using (SqlCommand cmd = new SqlCommand(SQL_Query, con))
+                    {
+                        if (parameters != null)
+                        {
+                            foreach (var parameter in parameters)
+                            {
+                                cmd.Parameters.AddWithValue(parameter.Key, parameter.Value);
+                            }
+                        }
+
+                        using (SqlDataAdapter ad = new SqlDataAdapter(cmd))
+                        {
+                            ad.Fill(dt);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+
+            return dt.Rows.Count > 0 ? dt : null;
+        }
+
+
+
+        /// <summary>
+        /// Get Flipped DataTable
+        /// </summary>
+        /// <param name="DataTable"></param>
+        /// <returns>DataTable</returns>
+        public DataTable Flip_DataTable(DataTable dt)
+        {
+            DataTable table = new DataTable();
+
+            // Add columns to the new DataTable
+            for (int i = 0; i <= dt.Rows.Count; i++)
+            {
+                table.Columns.Add(Convert.ToString(i));
+            }
+
+            // Add rows to the new DataTable
+            foreach (DataColumn column in dt.Columns)
+            {
+                DataRow newRow = table.NewRow();
+                newRow[0] = column.ColumnName;
+
+                int rowIndex = 1;
+                foreach (DataRow row in dt.Rows)
+                {
+                    newRow[rowIndex++] = row[column];
+                }
+
+                table.Rows.Add(newRow);
+            }
+
+            return table;
+        }
+
+
+        
+        /// <summary>
+        /// Get Next Primary Key From The Given Table 
+        /// </summary>
+        /// <param name="Table Name"></param>
+        /// <param name="Primary Key Name"></param>
+        /// <param name="SqlCommand Object"></param>
+        /// <returns>Primary Key</returns>
+        public string Get_Next_RefID(string TableName, string ColumnName, SqlCommand command)
+        {
+            try
+            {
+                string sql_Query = $@"SELECT ISNULL(MAX(CAST(@ColumnName AS INT)), 0) + 1 AS Next_ID FROM @TableName";
+
+                var parameters = new Dictionary<string, object>
+                {
+                    { "@ColumnName", ColumnName },
+                    { "@TableName", TableName },
+                };
+
+                dt = Get_Datatable(sql_Query, parameters);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return dt.Rows.Count > 0 ? dt.Rows[0]["Next_ID"].ToString() : "1";
+        }
+
+
+
+    }
+}

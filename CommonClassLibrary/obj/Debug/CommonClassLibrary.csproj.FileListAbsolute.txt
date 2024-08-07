@@ -1,0 +1,6 @@
+C:\Users\DELL\source\repos\MILLSTACK\CommonClassLibrary\bin\Debug\CommonClassLibrary.dll
+C:\Users\DELL\source\repos\MILLSTACK\CommonClassLibrary\bin\Debug\CommonClassLibrary.pdb
+C:\Users\DELL\source\repos\MILLSTACK\CommonClassLibrary\obj\Debug\CommonClassLibrary.csproj.AssemblyReference.cache
+C:\Users\DELL\source\repos\MILLSTACK\CommonClassLibrary\obj\Debug\CommonClassLibrary.csproj.CoreCompileInputs.cache
+C:\Users\DELL\source\repos\MILLSTACK\CommonClassLibrary\obj\Debug\CommonClassLibrary.dll
+C:\Users\DELL\source\repos\MILLSTACK\CommonClassLibrary\obj\Debug\CommonClassLibrary.pdb
