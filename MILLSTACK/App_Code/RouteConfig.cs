@@ -14,14 +14,20 @@ namespace MILLSTACK
             settings.AutoRedirectMode = RedirectMode.Permanent;
             routes.EnableFriendlyUrls(settings);
 
-            // Define custom routes
             routes.MapPageRoute(
-                "HomePageRoute",            // Route name
-                "HomePage",                 // URL pattern
-                "~/View/HomePage/HomePage.aspx"  // Physical file
+                "HomePageRoute", // Route name
+                "HomePage", // URL pattern
+                "~/View/HomePage/HomePage.aspx" // Physical file
             );
 
-            // Add more custom routes as needed
+            routes.MapPageRoute(
+                "ProductRoute",
+                "Product/{productId}",
+                "~/View/Product/Details.aspx"
+            );
+
+            //string homePageUrl = GetRouteUrl("HomePageRoute", null);
+            //string productUrl = GetRouteUrl("ProductRoute", new { productId = 42 });
         }
     }
 }

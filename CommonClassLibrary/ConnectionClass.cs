@@ -21,7 +21,7 @@ namespace CommonClassLibrary
 
 
         public static String connection_String_Local = $@"Data Source = MILIND\SQLEXPRESS;
-                                                          Initial Catalog = pvms_live;
+                                                          Initial Catalog = MillStack;
                                                           Integrated Security = True;
                                                           Connection Timeout = 30;
                                                           Max Pool Size = 500;
