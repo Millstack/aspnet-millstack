@@ -1,5 +1,91 @@
 ﻿
 
-### Mandatory Master Tables
+### Database: *MillStack*
+
+
+### Master Schemas
+----------------------
+
+# Country
+```
+CREATE TABLE M_Country (
+    Country_ID BIGINT PRIMARY KEY,
+	CountryName NVARCHAR(1000) NOT NULL,
+	CountryNameMr NVARCHAR(1000) NOT NULL,
+    SavedBy VARCHAR(1000) NOT NULL,
+    SavedOn DATETIME DEFAULT GETDATE() NOT NULL,
+	IsDeleted BIT NULL
+);
+```
+
+
+# State
+```
+CREATE TABLE M_State (
+    State_ID BIGINT PRIMARY KEY,
+	Country_ID BIGINT NOT NULL,
+	StateName NVARCHAR(1000) NOT NULL,
+	StateNameMr NVARCHAR(1000) NOT NULL,
+	StateCode INT NOT NULL,
+    SavedBy VARCHAR(1000) NOT NULL,
+    SavedOn DATETIME DEFAULT GETDATE() NOT NULL,
+	IsDeleted BIT NULL
+);
+```
+
+
+# Division
+```
+CREATE TABLE M_Division (
+    Division_ID BIGINT PRIMARY KEY,
+	State_ID BIGINT NOT NULL,
+	DivisionName NVARCHAR(1000) NOT NULL,
+	DivisionNameMr NVARCHAR(1000) NOT NULL,
+	DivisionCode NVARCHAR(100) NOT NULL,
+    SavedBy VARCHAR(1000) NOT NULL,
+    SavedOn DATETIME DEFAULT GETDATE() NOT NULL,
+	IsDeleted BIT NULL
+);
+```
+
+## User Mater
+```
+CREATE TABLE M_UserMaster (
+    User_ID BIGINT PRIMARY KEY,
+	GUID UNIQUEIDENTIFIER DEFAULT NEWID() NOT NULL,
+	Designation_ID BIGINT NOT NULL,
+	UserRole_ID NVARCHAR(1000) NOT NULL,
+	LoginAttempt INT ,
+	UserImage NVARCHAR(1000) ,
+	FirstName NVARCHAR(1000) NOT NULL,
+	FirstNameMr NVARCHAR(1000) ,
+	MiddleName NVARCHAR(1000) ,
+	MiddleNameMr NVARCHAR(1000) ,
+	LastName NVARCHAR(1000) NOT NULL,
+	LastNameMr NVARCHAR(1000) ,
+	Gender NVARCHAR(1000) ,
+	UserPhoneNo VARCHAR(10) UNIQUE NOT NULL CHECK (LEN(UserPhoneNo) = 10 AND UserPhoneNo NOT LIKE '%[^0-9]%'),
+	UserEmail VARCHAR(1000) UNIQUE NOT NULL,
+	UserAddress NVARCHAR(1000) NOT NULL,
+    UserName VARCHAR(100) UNIQUE NOT NULL,
+    UserPassword NVARCHAR(1000) NOT NULL,
+	Salt NVARCHAR(1000) NOT NULL, 
+	Country_ID VARCHAR(1000) ,
+	State_ID VARCHAR(1000) ,
+	Division_ID VARCHAR(1000) ,
+	Sub_Division_ID VARCHAR(1000) ,
+	District_ID VARCHAR(1000) ,
+	Taluka_ID VARCHAR(1000) ,
+	City_ID VARCHAR(1000) ,
+	Village_ID VARCHAR(1000) ,
+	ReportingTo VARCHAR(1000) ,
+    IsOtpRequired BIT DEFAULT 1 NOT NULL,
+    IsActive BIT DEFAULT 1 NOT NULL,
+    SavedBy VARCHAR(1000) NOT NULL,
+    SavedOn DATETIME DEFAULT GETDATE() NOT NULL,
+	IsDeleted BIT NULL
+);
+```
+
 
 

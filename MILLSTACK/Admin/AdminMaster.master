@@ -1,0 +1,66 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="AdminMaster.master.cs" Inherits="Admin_AdminMaster" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <title>MillStack</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="<%= ResolveUrl("../assets/css/bootstrap.min.css") %>" rel="stylesheet" />
+
+    <!-- Bootstrap JS -->
+    <script src="<%= ResolveUrl("../assets/js/bootstrap.bundle.min.js") %>"></script>
+    <script src="<%= ResolveUrl("../assets/js/bootstrap1.min.js") %>"></script>
+
+    <!-- jQuery -->
+    <script src="<%= ResolveUrl("../assets/js/jquery-3.7.1.min.js") %>"></script>
+    <script src="<%= ResolveUrl("../assets/js/jquery-3.7.1.js") %>"></script>
+    <script src="<%= ResolveUrl("../assets/jquery/js/jquery-ui.min.js") %>"></script>
+
+    <!-- Select2 library CSS and JS -->
+    <link href="<%= ResolveUrl("../assets/select2/select2.min.css") %>" rel="stylesheet" />
+    <script src="<%= ResolveUrl("../assets/select2/select2.min.js") %>"></script>
+
+    <!-- Sweet Alert CSS and JS -->
+    <link href="<%= ResolveUrl("../assets/sweetalert/sweetalert2.min.css") %>" rel="stylesheet" />
+    <script src="<%= ResolveUrl("../assets/sweetalert/sweetalert2@11.js") %>"></script>
+
+    <!-- Chosen Select CSS and JS -->
+    <link href="<%= ResolveUrl("../assets/chosen_v1.8.7/chosen.min.css") %>" rel="stylesheet" />
+    <script src="<%= ResolveUrl("../assets/chosen_v1.8.7/chosen.jquery.min.js") %>"></script>
+
+    <!-- Sumo Select CSS and JS -->
+    <link href="<%= ResolveUrl("../assets/sumoselect/sumoselect.min.css") %>" rel="stylesheet" />
+    <script src="<%= ResolveUrl("../assets/sumoselect/jquery.sumoselect.min.js") %>"></script>
+
+    <!-- DataTables CSS -->
+    <link href="<%= ResolveUrl("../assets/DataTables/datatables.min.css") %>" rel="stylesheet" />
+    <!-- DataTables - Button Extension CSS -->
+    <link href="<%= ResolveUrl("../assets/DataTables/Buttons-2.4.2/css/buttons.dataTables.min.css") %>" rel="stylesheet" />
+
+    <!-- DataTables JS -->
+    <script src="<%= ResolveUrl("../assets/DataTables/datatables.min.js") %>"></script>
+    <!-- DataTables - Button Extension JS -->
+    <script src="<%= ResolveUrl("../assets/DataTables/Buttons-2.4.2/js/dataTables.buttons.min.js") %>"></script>
+    <script src="<%= ResolveUrl("../assets/DataTables/buttons.flash.min.js") %>"></script>
+    <script src="<%= ResolveUrl("../assets/DataTables/JSZip-3.10.1/jszip.min.js") %>"></script>
+    <script src="<%= ResolveUrl("../assets/DataTables/Buttons-2.4.2/js/buttons.html5.min.js") %>"></script>
+    <script src="<%= ResolveUrl("../assets/DataTables/Buttons-2.4.2/js/buttons.print.min.js") %>"></script>
+
+
+    <script src="masterpage.js"></script>
+    <link rel="stylesheet" href="masterpage.css" />
+
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div>
+            <asp:ContentPlaceHolder ID="main" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+    </form>
+</body>
+</html>
