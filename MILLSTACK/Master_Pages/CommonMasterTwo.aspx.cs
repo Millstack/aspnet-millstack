@@ -30,6 +30,7 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
                 if (Request.QueryString.Count != 0)
                 {
                     Decide_Page();
+                    Bind_Dropdown();
                 }
             }
         }
@@ -41,7 +42,6 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
 
 
     //================================ Page Type ========================================
-
     private void Decide_Page()
     {
         if (Request.QueryString["P"].ToString().Trim() == "Division")
@@ -62,9 +62,8 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
             // foriegn table details
             Foreign_Table_Name = "Tbl_M_State";
             Foreign_Column_Name = "StateName";
-
-            Foreign_Key_Text.Text = "State";
             Foreign_Key_Column = "State_ID";
+            Foreign_Key_Text.Text = "State";
 
             // gridview column names
             Grid_Common.Columns[0].HeaderText = "Division ID";
@@ -73,9 +72,40 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
             Grid_Common.Columns[3].HeaderText = "Division Code";
             Grid_Common.Columns[4].HeaderText = "State";
 
-            // to hode 2nd input column
+            // to hide 2nd input column
             Grid_Common.Columns[2].Visible = true;
         }
     }
 
+
+
+    //================================ Dropdown Bind ========================================
+
+    private void Bind_Dropdown()
+    {
+        string sqlQuery = $@"Select {Foreign_Key_Column} as ID, {Foreign_Column_Name} as Value 
+                             From {Foreign_Table_Name} 
+                             Where IsDeleted IS NULL 
+                             Order By {Foreign_Column_Name}";
+
+
+        ddl.DataSource = cla.GetDataTable(str);
+        ddl.DataTextField = "Value";
+        ddl.DataValueField = "ID";
+        ddl.DataBind();
+        ddl.Items.Insert(0, new ListItem("--Select--", "0"));
+    }
+
+
+
+    //================================ Save / Update Button Event ========================================
+    protected void Btn_Back_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    protected void Btn_Submit_Click(object sender, EventArgs e)
+    {
+
+    }
 }
