@@ -5,6 +5,8 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+using System.Web.UI.WebControls;
 
 namespace CommonClassLibrary
 {
@@ -141,6 +143,74 @@ namespace CommonClassLibrary
             return dt.Rows.Count > 0 ? dt.Rows[0]["Next_ID"].ToString() : "1";
         }
 
+
+
+        /// <summary>
+        /// Bind dropdown generic method 
+        /// </summary>
+        /// <param name="ListControl object"></param>
+        /// <param name="String sql query"></param>
+        /// <param name="String textField"></param>
+        /// <param name="String ValueField"></param>
+        /// <param name="Dictionary object"></param>
+        /// <param name="Boolean optional"></param>
+        /// <returns>Void</returns>
+        public void Bind_Dropdown_Generic(ListControl dropdownID, string sql, string textField, string valueFiled, Dictionary<string, object> parameters = null, bool multiple = false)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionClass.connection_String_Local))
+            {
+                try
+                {
+                    connection.Open();
+
+                    using (SqlCommand cmd = new SqlCommand(sql, connection))
+                    {
+                        if (parameters != null)
+                        {
+                            foreach (var parameter in parameters)
+                            {
+                                cmd.Parameters.AddWithValue(parameter.Key, parameter.Value);
+                            }
+                        }
+
+                        SqlDataAdapter ad = new SqlDataAdapter(cmd);
+                        DataTable dt = new DataTable();
+                        ad.Fill(dt);
+
+                        if (dt != null && dt.Rows.Count > 0)
+                        {
+                            if (multiple)
+                            {
+                                dropdownID.DataSource = dt;
+                                dropdownID.DataTextField = textField;
+                                dropdownID.DataValueField = valueFiled;
+                                dropdownID.DataBind();
+                            }
+                            else
+                            {
+                                dropdownID.DataSource = dt;
+                                dropdownID.DataTextField = textField;
+                                dropdownID.DataValueField = valueFiled;
+                                dropdownID.DataBind();
+                                dropdownID.Items.Insert(0, new ListItem(" ", ""));
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // error
+                }
+                finally
+                {
+
+                }
+            }
+        }
+
+
+
+        
 
 
     }

@@ -1,7 +1,9 @@
 ﻿using CommonClassLibrary;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Activities.Expressions;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -11,13 +13,17 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
 {
     #region [GLobal Declaration]
     ExecuteClass executeClass = new ExecuteClass();
-    MasterClass masterClas = new MasterClass();
+    MasterClass masterClass = new MasterClass();
 
-    String sqlQuery = string.Empty;
+    string sqlQuery = string.Empty;
+    Boolean main_column_1_needed, main_column_2_needed, main_column_3_needed;
+    Dictionary<string, object> parameters = new Dictionary<string, object>();
 
     static string
         Main_Table_Name = "", Primary_Key_Column = "", Main_Column_1_Name = "", Main_Column_2_Name = "", Main_Column_3_Name = "",
-        Foreign_Table_Name = "", Foreign_Key_Column = "", Foreign_Column_Name = "";
+        Foreign_Table_1_Name = "", Foreign_Table_1_Key_Column = "", Foreign_Table_1_Column_Name = "",
+        Foreign_Table_2_Name = "", Foreign_Table_2_Key_Column = "", Foreign_Table_2_Column_Name = "",
+        Foreign_Table_3_Name = "", Foreign_Table_3_Key_Column = "", Foreign_Table_3_Column_Name = "";
 
     #endregion
 
@@ -31,12 +37,13 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
                 {
                     Decide_Page();
                     Bind_Dropdown();
+                    Bind_Grid();
                 }
             }
         }
         catch (Exception ex)
         {
-
+            SweetAlert.GetSweet(this.Page, "error", "", $"An error occured");
         }
     }
 
@@ -46,34 +53,52 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
     {
         if (Request.QueryString["P"].ToString().Trim() == "Division")
         {
-            // current table details
-            Main_Table_Name = "Tbl_M_Division";
-            Primary_Key_Column = "DivisionID";
+            // Main Table
+            Grid_Search.Columns[1].HeaderText = "Division ID";
+            Grid_Search.Columns[1].Visible = true;
+            Main_Table_Name = "M_Division";
+            Primary_Key_Column = "Division_ID";
 
+            Grid_Search.Columns[2].HeaderText = "Division";
+            Grid_Search.Columns[2].Visible = true;
+            main_column_1_needed = true;
             Main_Column_1_Text.Text = "Division";
-            Main_Column_1_Name = "Divisions";
+            Main_Column_1_Name = "DivisionName";
 
-            Main_Column_2_Text.Text = "Division (Marathi)";
-            Main_Column_2_Name = "Divisions";
+            Grid_Search.Columns[3].HeaderText = "Division (Marathi)";
+            Grid_Search.Columns[3].Visible = true;
+            main_column_2_needed = true;
+            Main_Column_2_Text.Text = "Division Marathi";
+            Main_Column_2_Name = "DivisionNameMr";
 
+            Grid_Search.Columns[4].HeaderText = "Division Code";
+            Grid_Search.Columns[4].Visible = true;
+            main_column_3_needed = true;
             Main_Column_3_Text.Text = "Division Code";
             Main_Column_3_Name = "DivisionCode";
 
-            // foriegn table details
-            Foreign_Table_Name = "Tbl_M_State";
-            Foreign_Column_Name = "StateName";
-            Foreign_Key_Column = "State_ID";
-            Foreign_Key_Text.Text = "State";
+            // Foreign Table 1
+            Grid_Search.Columns[5].HeaderText = "State";
+            Grid_Search.Columns[5].Visible = true;
+            Div_Foriegn_DD_1.Visible = true;
+            RFV_DD_Foreign_Column_1.Enabled = true;
+            Foreign_Table_1_Name = "Tbl_M_State";
+            Foreign_Table_1_Column_Name = "StateName";
+            Foreign_Table_1_Key_Column = "State_ID";
+            Foreign_Table_1_Key_Text.Text = "State";
 
-            // gridview column names
-            Grid_Common.Columns[0].HeaderText = "Division ID";
-            Grid_Common.Columns[1].HeaderText = "Division";
-            Grid_Common.Columns[2].HeaderText = "Division (Marathi)";
-            Grid_Common.Columns[3].HeaderText = "Division Code";
-            Grid_Common.Columns[4].HeaderText = "State";
+            // GridView Column Names
+            Grid_Search.Columns[0].HeaderText = "Division ID";
+            
+            
+            
+            
 
-            // to hide 2nd input column
-            Grid_Common.Columns[2].Visible = true;
+            // Hide GridView Columns
+           
+           
+           
+            
         }
     }
 
@@ -83,18 +108,157 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
 
     private void Bind_Dropdown()
     {
-        string sqlQuery = $@"Select {Foreign_Key_Column} as ID, {Foreign_Column_Name} as Value 
-                             From {Foreign_Table_Name} 
-                             Where IsDeleted IS NULL 
-                             Order By {Foreign_Column_Name}";
+        sqlQuery = $@"Select {Foreign_Table_1_Key_Column} as ID, {Foreign_Table_1_Column_Name} as Value 
+                      From {Foreign_Table_1_Name} 
+                      Where IsDeleted IS NULL 
+                      Order By {Foreign_Table_1_Column_Name}";
 
+        parameters = new Dictionary<string, object>
+        {
+            //{ "@Bank_ID", DD_Bank_Master.SelectedValue },
+        };
 
-        ddl.DataSource = cla.GetDataTable(str);
-        ddl.DataTextField = "Value";
-        ddl.DataValueField = "ID";
-        ddl.DataBind();
-        ddl.Items.Insert(0, new ListItem("--Select--", "0"));
+        executeClass.Bind_Dropdown_Generic(DD_Foriegn_Column_1, sqlQuery, "Value", "ID", parameters);
     }
+
+
+
+
+    //================================ Dropdown Event ========================================
+    protected void DD_Foriegn_Column_1_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        Bind_Grid();
+    }
+
+    protected void DD_Foriegn_Column_2_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        Bind_Grid();
+    }
+
+    protected void DD_Foriegn_Column_3_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        Bind_Grid();
+    }
+
+
+
+
+
+    //================================ Grid Bind ========================================
+
+    private void Bind_Grid()
+    {
+        string foriegn_Dropdown_1 = DD_Foriegn_Column_1.SelectedValue ?? "";
+        string foriegn_Dropdown_2 = DD_Foriegn_Column_2.SelectedValue ?? "";
+        string foriegn_Dropdown_3 = DD_Foriegn_Column_3.SelectedValue ?? "";
+
+        sqlQuery = $@"
+                    SELECT 
+                        {Main_Table_Name}.{Primary_Key_Column} AS ID, 
+                        {Main_Table_Name}.{Main_Column_1_Name} AS Main_Column_1, 
+                        {Main_Table_Name}.{Main_Column_2_Name} AS Main_Column_2, 
+                        {Main_Table_Name}.{Main_Column_3_Name} AS Main_Column_3, 
+                        {(string.IsNullOrEmpty(foriegn_Dropdown_1) ? "NULL AS Foreign_Column_1, " : $@" {Foreign_Table_1_Name}.{Foreign_Table_1_Column_Name} as Foreign_Column_1, ")} 
+                        {(string.IsNullOrEmpty(foriegn_Dropdown_2) ? "NULL AS Foreign_Column_2, " : $@" {Foreign_Table_2_Name}.{Foreign_Table_2_Column_Name} as Foreign_Column_2, ")} 
+                        {(string.IsNullOrEmpty(foriegn_Dropdown_3) ? "NULL AS Foreign_Column_3, " : $@" {Foreign_Table_3_Name}.{Foreign_Table_3_Column_Name} as Foreign_Column_3, ")} 
+                        NULL AS DummyColumn 
+                    FROM {Main_Table_Name} 
+                    {(string.IsNullOrEmpty(foriegn_Dropdown_1) ? "" :
+                        $@" INNER JOIN {Foreign_Table_1_Name} ON {Foreign_Table_1_Name}.{Foreign_Table_1_Key_Column} = {Main_Table_Name}.{Foreign_Table_1_Key_Column} ")} 
+                    {(string.IsNullOrEmpty(foriegn_Dropdown_2) ? "" :
+                        $@" INNER JOIN {Foreign_Table_2_Name} ON {Foreign_Table_2_Name}.{Foreign_Table_2_Key_Column} = {Main_Table_Name}.{Foreign_Table_2_Key_Column} ")} 
+                    {(string.IsNullOrEmpty(foriegn_Dropdown_3) ? "" :
+                        $@" INNER JOIN {Foreign_Table_3_Name} ON {Foreign_Table_3_Name}.{Foreign_Table_3_Key_Column} = {Main_Table_Name}.{Foreign_Table_3_Key_Column} ")} 
+                    WHERE {Main_Table_Name}.IsDeleted IS NULL";
+
+        if (DD_Foriegn_Column_1.SelectedIndex > 0) sqlQuery += $@" AND {Foreign_Table_1_Name}.{Foreign_Table_1_Key_Column} = {DD_Foriegn_Column_1.SelectedValue}";
+        if (DD_Foriegn_Column_2.SelectedIndex > 0) sqlQuery += $@" AND {Foreign_Table_2_Name}.{Foreign_Table_2_Key_Column} = {DD_Foriegn_Column_2.SelectedValue}";
+        if (DD_Foriegn_Column_3.SelectedIndex > 0) sqlQuery += $@" AND {Foreign_Table_3_Name}.{Foreign_Table_3_Key_Column} = {DD_Foriegn_Column_3.SelectedValue}";
+
+        sqlQuery += $@" Order By {Main_Table_Name}.{Main_Column_1_Name}";
+
+        Dictionary<string, object> parameters = new Dictionary<string, object>()
+        {
+            //{ "@Bank_ID", DD_Bank_Master.SelectedValue },
+        };
+
+        DataTable dt = executeClass.Get_Datatable(sqlQuery);
+        if (dt != null && dt.Rows.Count > 0)
+        {
+            Grid_Search.DataSource = dt;
+            Grid_Search.DataBind();
+            ViewState["Grid_Common_DT"] = dt;
+        }
+        else
+        {
+            Grid_Search.DataSource = null;
+            Grid_Search.DataBind();
+            ViewState["Grid_Common_DT"] = null;
+        }
+    }
+
+
+    protected void Grid_Search_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        DataTable dt;
+
+        string Primary_Key = Grid_Search.SelectedDataKey["ID"].ToString();
+        ViewState["ID"] = Primary_Key;
+
+        string SerNo = Grid_Search.SelectedRow.Cells[0].Text;
+        string ID = Grid_Search.SelectedRow.Cells[1].Text;
+        Input_Main_Column_1.Text = Grid_Search.SelectedRow.Cells[2].Text;
+        Input_Main_Column_2.Text = Grid_Search.SelectedRow.Cells[3].Text;
+        Input_Main_Column_3.Text = Grid_Search.SelectedRow.Cells[4].Text;
+
+        // Foreign Dropdown 1
+        string sqlQuery_Foriegn_Table_1 = $@"
+                    SELECT {Foreign_Table_1_Key_Column} AS ID
+                    FROM {Main_Table_Name} 
+                    WHERE {Main_Table_Name}.{Primary_Key_Column} = {Primary_Key}";
+        dt = executeClass.Get_Datatable(sqlQuery_Foriegn_Table_1);
+        if(dt != null && dt.Rows.Count > 0)
+        {
+            DD_Foriegn_Column_1.ClearSelection();
+            masterClass.Select_Item_In_DropDown(DD_Foriegn_Column_1, dt.Rows[0]["ID"].ToString());
+        }
+       
+        // Foreign Dropdown 2
+        string sqlQuery_Foriegn_Table_2 = $@"
+                    SELECT {Foreign_Table_2_Key_Column} AS ID
+                    FROM {Main_Table_Name} 
+                    WHERE {Main_Table_Name}.{Primary_Key_Column} = {Primary_Key}";
+        dt = executeClass.Get_Datatable(sqlQuery_Foriegn_Table_2);
+        if (dt != null && dt.Rows.Count > 0)
+        {
+            DD_Foriegn_Column_2.ClearSelection();
+            masterClass.Select_Item_In_DropDown(DD_Foriegn_Column_2, dt.Rows[0]["ID"].ToString());
+        }
+        
+        // Foreign Dropdown 3
+        string sqlQuery_Foriegn_Table_3 = $@"
+                    SELECT {Foreign_Table_3_Key_Column} AS ID
+                    FROM {Main_Table_Name} 
+                    WHERE {Main_Table_Name}.{Primary_Key_Column} = {Primary_Key}";
+        dt = executeClass.Get_Datatable(sqlQuery_Foriegn_Table_3);
+        if (dt != null && dt.Rows.Count > 0)
+        {
+            DD_Foriegn_Column_3.ClearSelection();
+            masterClass.Select_Item_In_DropDown(DD_Foriegn_Column_3, dt.Rows[0]["ID"].ToString());
+        }
+    }
+
+    protected void Grid_Search_RowDeleting(object sender, GridViewDeleteEventArgs e)
+    {
+
+    }
+
+    protected void Grid_Search_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+
+    }
+
+
 
 
 
@@ -108,4 +272,10 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
     {
 
     }
+
+
+
+
+
+    
 }

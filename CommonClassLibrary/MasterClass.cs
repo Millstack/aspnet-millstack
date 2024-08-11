@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.UI.WebControls;
 
 namespace CommonClassLibrary
 {
@@ -49,6 +50,78 @@ namespace CommonClassLibrary
             foreach (byte b in data)
             { result.Append(chars[b % (chars.Length - 1)]); }
             return result.ToString().ToUpper();
+        }
+
+
+        /// <summary>
+        /// Select item in a dropdown 
+        /// </summary>
+        /// <param name="ListControl object"></param>
+        /// <param name="dropdown Value"></param>
+        /// <param name="Boolean check optional"></param>
+        /// <returns>Void</returns>
+        public void Select_Item_In_DropDown(ListControl dropdownID, string value, bool isMultiple = false)
+        {
+            try
+            {
+                dropdownID.ClearSelection();
+
+                if (isMultiple)
+                {
+                    // multi check dropdown (asp:ListBox)
+                    string[] values = value.Split(',');
+                    foreach (string val in values)
+                    {
+                        ListItem item = dropdownID.Items.FindByValue(val.Trim());
+                        if (item != null) item.Selected = true;
+                    }
+                }
+                else
+                {
+                    // dropdown list (asp:DropDownList)
+                    foreach (ListItem item in dropdownID.Items)
+                    {
+                        if (item.Value == value)
+                        {
+                            item.Selected = true;
+                            break; // Exit the loop once the item is found and selected
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+
+        /// <summary>
+        /// Get item from a dropdown OR Items from multi-check dropdown
+        /// </summary>
+        /// <param name="ListControl object"></param>
+        /// <param name="dropdown Value"></param>
+        /// <param name="Boolean check optional"></param>
+        /// <returns>String Value</returns>
+        public string Get_Selected_Items_From_DropDown(ListControl dropdownID, bool ForSQL = false)
+        {
+            try
+            {
+                List<string> selectedValues = new List<string>();
+                foreach (ListItem item in dropdownID.Items)
+                {
+                    if (item.Selected)
+                    {
+                        if (ForSQL) selectedValues.Add($"'{item.Value}'");
+                        else selectedValues.Add(item.Value);
+                    }
+                }
+                return string.Join(",", selectedValues);
+            }
+            catch (Exception ex)
+            {
+                return string.Empty;
+            }
         }
 
 
