@@ -27,17 +27,17 @@ public class RoleAutorization
                 if (!allowedRoles.Contains(userRole))
                 {
                     placeholder.Visible = false;
-                    SweetAlert.getSweetHTML(page, "info", "Not Authorized", $"<b>{userRole}</b> Is Not Authorized To Access This Page", "~/View/HomePage/HomePage.aspx");
+                    SweetAlert.GetSweet(page, "info", "Not Authorized", $"<b>{userRole}</b> Is Not Authorized To Access This Page", "~/View/HomePage/HomePage.aspx");
                 }
             }
             else
             {
-                SweetAlert.getSweetHTML(page, "info", "Not Authorized", $"Kindly Login To Access This Page", "~/Account/Login.aspx");
+                SweetAlert.GetSweet(page, "info", "Not Authorized", $"Kindly Login To Access This Page", "~/Account/Login.aspx");
             }
         }
         catch(Exception ex)
         {
-            SweetAlert.getSweetHTML(page, "info", "Not Authorized", $"Kindly Login To Access This Page", "~/Account/Login.aspx");
+            SweetAlert.GetSweet(page, "info", "Not Authorized", $"Kindly Login To Access This Page", "~/Account/Login.aspx");
         }
     }
 }

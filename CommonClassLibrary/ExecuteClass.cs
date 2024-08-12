@@ -48,7 +48,7 @@ namespace CommonClassLibrary
 
                 try
                 {
-                    using (SqlCommand cmd = new SqlCommand(SQL_Query, con))
+                    using (SqlCommand cmd = new SqlCommand(SQL_Query, connection))
                     {
                         if (parameters != null)
                         {
@@ -70,7 +70,7 @@ namespace CommonClassLibrary
                 }
                 finally
                 {
-                    connection.Close();
+                    //connection.Close();
                 }
             }
 
@@ -203,7 +203,7 @@ namespace CommonClassLibrary
                 }
                 finally
                 {
-
+                    //connection.Close();
                 }
             }
         }

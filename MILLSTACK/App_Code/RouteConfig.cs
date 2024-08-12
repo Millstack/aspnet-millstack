@@ -28,6 +28,12 @@ namespace MILLSTACK
 
             //string homePageUrl = GetRouteUrl("HomePageRoute", null);
             //string productUrl = GetRouteUrl("ProductRoute", new { productId = 42 });
+
+            routes.MapPageRoute(
+               "CommonMaster_Route",
+               "CommonMaster/{Page}",
+               "~/Master_Pages/CommonMasterTwo.aspx"
+           );
         }
     }
 }

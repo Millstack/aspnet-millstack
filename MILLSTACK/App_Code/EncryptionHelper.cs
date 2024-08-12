@@ -48,7 +48,7 @@ public class EncryptionHelper
         }
         catch (Exception ex)
         {
-            SweetAlert.getSweet(page, "warning", "Encryption Failed", $"{ex.Message}");
+            SweetAlert.GetSweet(page, "warning", "Encryption Failed", $"{ex.Message}");
             return string.Empty;
         }
         finally
@@ -82,15 +82,15 @@ public class EncryptionHelper
         }
         catch (FormatException ex)
         {
-            SweetAlert.getSweet(page, "warning", "Invalid ID Foarmat", $"{ex.Message}");
+            SweetAlert.GetSweet(page, "warning", "Invalid ID Foarmat", $"{ex.Message}");
         }
         catch (CryptographicException ex)
         {
-            SweetAlert.getSweet(page, "warning", "Decryption Failed", $"{ex.Message}");
+            SweetAlert.GetSweet(page, "warning", "Decryption Failed", $"{ex.Message}");
         }
         catch (Exception ex)
         {
-            SweetAlert.getSweet(page, "warning", "Decryption Failed", $"{ex.Message}");
+            SweetAlert.GetSweet(page, "warning", "Decryption Failed", $"{ex.Message}");
         }
         finally
         {

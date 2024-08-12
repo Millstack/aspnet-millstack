@@ -12,12 +12,15 @@ using System.Web.UI.WebControls;
 public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
 {
     #region [GLobal Declaration]
+
     ExecuteClass executeClass = new ExecuteClass();
     MasterClass masterClass = new MasterClass();
+    Dictionary<string, object> parameters = new Dictionary<string, object>();
+
+    Boolean Is_Main_column_1_needed, Is_Main_column_2_needed, Is_Main_column_3_needed,
+            Is_Foreign_column_1_needed, Is_Foreign_column_2_needed, Is_Foreign_column_3_needed = false;
 
     string sqlQuery = string.Empty;
-    Boolean main_column_1_needed, main_column_2_needed, main_column_3_needed;
-    Dictionary<string, object> parameters = new Dictionary<string, object>();
 
     static string
         Main_Table_Name = "", Primary_Key_Column = "", Main_Column_1_Name = "", Main_Column_2_Name = "", Main_Column_3_Name = "",
@@ -31,11 +34,17 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
     {
         try
         {
-            if (IsPostBack)
+            if (!IsPostBack)
             {
+                if (Page.RouteData.Values["Page"] != null)
+                {
+                    Decide_Page();
+                }
+
                 if (Request.QueryString.Count != 0)
                 {
                     Decide_Page();
+                    Decide_Input_Fields();
                     Bind_Dropdown();
                     Bind_Grid();
                 }
@@ -51,6 +60,16 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
     //================================ Page Type ========================================
     private void Decide_Page()
     {
+        Page_Heading.Text = "Division Master";
+        Main_Heading_1.Text = "Division Details";
+        Main_Heading_2.Text = "Division Records";
+
+        if (Page.RouteData.Values["Page"].ToString().Trim() == "Division")
+        {
+            //  logic
+        }
+
+
         if (Request.QueryString["P"].ToString().Trim() == "Division")
         {
             // Main Table
@@ -59,46 +78,115 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
             Main_Table_Name = "M_Division";
             Primary_Key_Column = "Division_ID";
 
+            // Main Table Column 1
             Grid_Search.Columns[2].HeaderText = "Division";
-            Grid_Search.Columns[2].Visible = true;
-            main_column_1_needed = true;
-            Main_Column_1_Text.Text = "Division";
+            Is_Main_column_1_needed = true;
+            Main_Column_1_Text.Text = "Division Name";
             Main_Column_1_Name = "DivisionName";
 
+            // Main Table Column 2
             Grid_Search.Columns[3].HeaderText = "Division (Marathi)";
-            Grid_Search.Columns[3].Visible = true;
-            main_column_2_needed = true;
-            Main_Column_2_Text.Text = "Division Marathi";
+            Is_Main_column_2_needed = true;
+            Main_Column_2_Text.Text = "Division (Marathi)";
             Main_Column_2_Name = "DivisionNameMr";
 
+            // Main Table Column 3
             Grid_Search.Columns[4].HeaderText = "Division Code";
-            Grid_Search.Columns[4].Visible = true;
-            main_column_3_needed = true;
+            Is_Main_column_3_needed = true;
             Main_Column_3_Text.Text = "Division Code";
             Main_Column_3_Name = "DivisionCode";
 
             // Foreign Table 1
             Grid_Search.Columns[5].HeaderText = "State";
-            Grid_Search.Columns[5].Visible = true;
-            Div_Foriegn_DD_1.Visible = true;
-            RFV_DD_Foreign_Column_1.Enabled = true;
-            Foreign_Table_1_Name = "Tbl_M_State";
+            Is_Foreign_column_1_needed = true;
+            Foreign_Table_1_Name = "M_State";
+            Foreign_Table_1_Key_Text.Text = "State Name";
             Foreign_Table_1_Column_Name = "StateName";
             Foreign_Table_1_Key_Column = "State_ID";
-            Foreign_Table_1_Key_Text.Text = "State";
 
             // GridView Column Names
             Grid_Search.Columns[0].HeaderText = "Division ID";
-            
-            
-            
-            
+        }
+    }
 
-            // Hide GridView Columns
-           
-           
-           
-            
+    private void Decide_Input_Fields()
+    {
+        if (Is_Main_column_1_needed) // Main Table Column 1
+        {
+            Div_Main_Table_Column_1.Visible = true;
+            RFV_Main_Table_Column_1.Enabled = true;
+            Grid_Search.Columns[2].Visible = true;
+        }
+        else
+        {
+            Div_Main_Table_Column_1.Visible = false;
+            RFV_Main_Table_Column_1.Enabled = false;
+            Grid_Search.Columns[2].Visible = false;
+        }
+
+        if (Is_Main_column_2_needed) // Main Table Column 2
+        {
+            Div_Main_Table_Column_2.Visible = true;
+            RFV_Main_Table_Column_2.Enabled = true;
+            Grid_Search.Columns[3].Visible = true;
+        }
+        else
+        {
+            Div_Main_Table_Column_2.Visible = false;
+            RFV_Main_Table_Column_2.Enabled = false;
+            Grid_Search.Columns[3].Visible = false;
+        }
+
+        if (Is_Main_column_3_needed) // Main Table Column 3
+        {
+            Div_Main_Table_Column_3.Visible = true;
+            RFV_Main_Table_Column_3.Enabled = true;
+            Grid_Search.Columns[4].Visible = true;
+        }
+        else
+        {
+            Div_Main_Table_Column_3.Visible = false;
+            RFV_Main_Table_Column_3.Enabled = false;
+            Grid_Search.Columns[4].Visible = false;
+        }
+
+        if (Is_Foreign_column_1_needed) // Foreign Table 1
+        {
+            Div_Foriegn_DD_1.Visible = true;
+            RFV_DD_Foreign_Column_1.Enabled = true;
+            Grid_Search.Columns[5].Visible = true;
+        }
+        else
+        {
+            Div_Foriegn_DD_1.Visible = false;
+            RFV_DD_Foreign_Column_1.Enabled = false;
+            Grid_Search.Columns[5].Visible = false;
+        }
+
+        if (Is_Foreign_column_2_needed) // Foreign Table 2
+        {
+            Div_Foriegn_DD_2.Visible = true;
+            RFV_DD_Foreign_Column_2.Enabled = true;
+            Grid_Search.Columns[6].Visible = true;
+        }
+        else
+        {
+            Div_Foriegn_DD_2.Visible = false;
+            RFV_DD_Foreign_Column_2.Enabled = false;
+            Grid_Search.Columns[6].Visible = false;
+        }
+
+        if (Is_Foreign_column_3_needed) // Foreign Table 3
+        {
+            Div_Foriegn_DD_3.Visible = true;
+            RFV_DD_Foreign_Column_3.Enabled = true;
+            Grid_Search.Columns[7].Visible = true;
+        }
+        else
+        {
+            Div_Foriegn_DD_3.Visible = false;
+            RFV_DD_Foreign_Column_3.Enabled = false;
+            Grid_Search.Columns[7].Visible = false;
         }
     }
 
@@ -217,12 +305,12 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
                     FROM {Main_Table_Name} 
                     WHERE {Main_Table_Name}.{Primary_Key_Column} = {Primary_Key}";
         dt = executeClass.Get_Datatable(sqlQuery_Foriegn_Table_1);
-        if(dt != null && dt.Rows.Count > 0)
+        if (dt != null && dt.Rows.Count > 0)
         {
             DD_Foriegn_Column_1.ClearSelection();
             masterClass.Select_Item_In_DropDown(DD_Foriegn_Column_1, dt.Rows[0]["ID"].ToString());
         }
-       
+
         // Foreign Dropdown 2
         string sqlQuery_Foriegn_Table_2 = $@"
                     SELECT {Foreign_Table_2_Key_Column} AS ID
@@ -234,7 +322,7 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
             DD_Foriegn_Column_2.ClearSelection();
             masterClass.Select_Item_In_DropDown(DD_Foriegn_Column_2, dt.Rows[0]["ID"].ToString());
         }
-        
+
         // Foreign Dropdown 3
         string sqlQuery_Foriegn_Table_3 = $@"
                     SELECT {Foreign_Table_3_Key_Column} AS ID
@@ -277,5 +365,5 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
 
 
 
-    
+
 }

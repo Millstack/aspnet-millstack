@@ -57,6 +57,10 @@
 </head>
 <body>
     <form id="form1" runat="server">
+
+        <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePartialRendering="true"></asp:ScriptManager>
+
+
         <div>
             <asp:ContentPlaceHolder ID="main" runat="server">
             </asp:ContentPlaceHolder>
