@@ -6,6 +6,16 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="main" runat="Server">
 
+    <style>
+        .grid-custom th {
+            background-color: #4f64cc !important;
+            color: white !important;
+            font-size: 13px !important;
+            font-family: Verdana !important;
+            font-weight: normal !important;
+        }
+    </style>
+
 
     <!-- Heading -->
     <div class="col-md-11 mx-auto fw-normal fs-3 fw-bold ps-0 pb-2 text-dark-emphasis mt-1 mb-1 text-start">
@@ -17,12 +27,12 @@
         <div class="card-body">
 
             <!-- Heading - BG -->
-            <div class="fs-5 fw-medium text-white border border-dark-subtle bg-primary shadow rounded-2 text-center py-2 mb-3">
+            <div class="fs-5 fw-medium text-white border border-dark-subtle shadow rounded-2 text-center py-2 mb-3" style="background-color: #0f3f6f !important;">
                 <asp:Literal ID="Main_Heading_1" Text="" runat="server"></asp:Literal>
             </div>
 
             <!-- Control Foriegn Section Starts -->
-            <div class="row mb-2">
+            <div class="row mb-2" style="border-style: solid none none none; border-width: 1px; border-color: #d6d5d5; padding-top: 10px; padding-bottom: 10px; margin-top: 10px; margin-bottom: 10px;">
 
                 <!-- DD: Foreign Table 1 Column Name -->
                 <div id="Div_Foriegn_DD_1" runat="server" class="col-md-4 align-self-end">
@@ -124,11 +134,11 @@
                 <div class="col-md-4 text-start"></div>
                 <div class="col-md-2 text-end">
                     <asp:Button ID="Btn_Back" runat="server" Text="Back" OnClick="Btn_Back_Click"
-                        CssClass="btn col-md-8 text-white shadow rounded-0" Style="background: #4800ff; color: #fff" />
+                        CssClass="btn col-md-8 text-white shadow rounded-0" Style="background: #0f3f6f; color: #fff" />
                 </div>
-                <div class="col-md-2 text-end">
+                <div class="col-md-2 text-start">
                     <asp:Button ID="Btn_Submit" runat="server" Text="Save" OnClick="Btn_Submit_Click" ValidationGroup="finalSubmit"
-                        CssClass="btn col-md-8 text-white shadow rounded-0" Style="background: #4800ff; color: #fff" />
+                        CssClass="btn col-md-8 text-white shadow rounded-0" Style="background: #0f3f6f; color: #fff" />
                 </div>
             </div>
             <!-- Submit Button UI Ends -->
@@ -143,7 +153,7 @@
         <div class="card-body">
 
             <!-- Heading - BG -->
-            <div class="fs-5 fw-medium text-white border border-dark-subtle bg-primary shadow rounded-2 text-center py-2 mb-3">
+            <div class="fs-5 fw-medium text-white border border-dark-subtle bg-primary shadow rounded-2 text-center py-2 mb-3" style="background-color: #0f3f6f !important;">
                 <asp:Literal ID="Main_Heading_2" Text="" runat="server"></asp:Literal>
             </div>
 
@@ -153,7 +163,7 @@
                     <asp:GridView ID="Grid_Search" runat="server" ShowHeaderWhenEmpty="false" AutoGenerateColumns="false" Width="100%" SelectedRowStyle-BackColor="#F3F3F3"
                         DataKeyNames="ID" OnSelectedIndexChanged="Grid_Search_SelectedIndexChanged" OnRowDeleting="Grid_Search_RowDeleting"
                         AllowPaging="true" OnPageIndexChanging="Grid_Search_PageIndexChanging" PageSize="10"
-                        CssClass="datatables table table-bordered table-hover border border-1 border-dark-subtle text-center grid-custom" Style="">
+                        CssClass="datatables table table-bordered table-hover border border-1 border-dark-subtle shadow text-center grid-custom">
                         <HeaderStyle CssClass="" />
                         <Columns>
 
@@ -167,7 +177,7 @@
 
                             <asp:BoundField DataField="ID" Visible="false" HeaderText="ID">
                                 <HeaderStyle Width="50px" />
-                                <ItemStyle HorizontalAlign="Left" VerticalAlign="Middle" CssClass="fw-light" />
+                                <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="fw-light" />
                             </asp:BoundField>
 
                             <asp:BoundField DataField="Main_Column_1" Visible="true" HeaderText="Main_Column_1">
@@ -176,39 +186,33 @@
                             </asp:BoundField>
 
                             <asp:BoundField DataField="Main_Column_2" Visible="true" HeaderText="Main_Column_2">
-                                <%--<HeaderStyle Width="50px" />--%>
                                 <ItemStyle HorizontalAlign="Left" VerticalAlign="Middle" CssClass="fw-light" />
                             </asp:BoundField>
 
                             <asp:BoundField DataField="Main_Column_3" Visible="true" HeaderText="Main_Column_3">
-                                <%--<HeaderStyle Width="50px" />--%>
-                                <ItemStyle HorizontalAlign="Left" VerticalAlign="Middle" CssClass="fw-light" />
+                                <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="fw-light" />
                             </asp:BoundField>
 
                             <asp:BoundField DataField="Foreign_Column_1" Visible="true" HeaderText="Foreign_Column_1">
-                                <%--<HeaderStyle Width="50px" />--%>
-                                <ItemStyle HorizontalAlign="Left" VerticalAlign="Middle" CssClass="fw-light" />
+                                <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="fw-light" />
                             </asp:BoundField>
 
                             <asp:BoundField DataField="Foreign_Column_2" Visible="true" HeaderText="Foreign_Column_2">
-                                <%--<HeaderStyle Width="50px" />--%>
-                                <ItemStyle HorizontalAlign="Left" VerticalAlign="Middle" CssClass="fw-light" />
+                                <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="fw-normal" />
                             </asp:BoundField>
 
                             <asp:BoundField DataField="Foreign_Column_3" Visible="true" HeaderText="Foreign_Column_3">
-                                <%--<HeaderStyle Width="50px" />--%>
-                                <ItemStyle HorizontalAlign="Left" VerticalAlign="Middle" CssClass="fw-light" />
+                                <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="fw-light" />
                             </asp:BoundField>
 
                             <asp:BoundField DataField="DummyColumn" Visible="false" HeaderText="DummyColumn">
-                                <%--<HeaderStyle Width="50px" />--%>
                                 <ItemStyle HorizontalAlign="Left" VerticalAlign="Middle" CssClass="fw-light" />
                             </asp:BoundField>
 
                             <asp:TemplateField HeaderText="Edit" ShowHeader="true" HeaderStyle-Width="50px">
                                 <ItemTemplate>
                                     <asp:LinkButton ID="Link_Btn_Edit" runat="server" CausesValidation="False" CommandName="Select"
-                                        Text="<i class='XlFont feather icon-edit'></i>">
+                                        Text="Edit">
                                     </asp:LinkButton>
                                 </ItemTemplate>
                                 <HeaderStyle Width="50px"></HeaderStyle>
@@ -216,9 +220,9 @@
 
                             <asp:TemplateField HeaderText="Delete" ShowHeader="true" HeaderStyle-Width="50px">
                                 <ItemTemplate>
-                                    <asp:LinkButton ID="Link_Btn_Delete" runat="server" CausesValidation="False" CommandName="Delete" 
+                                    <asp:LinkButton ID="Link_Btn_Delete" runat="server" CausesValidation="False" CommandName="Delete"
                                         OnClientClick="javascript:return confirm ('Are you sure to Delete this record permanently ? ')"
-                                        ForeColor="Red" Text="<i class='XlFont feather icon-trash'></i>">
+                                        ForeColor="Red" Text="Delete">
                                     </asp:LinkButton>
                                 </ItemTemplate>
                                 <HeaderStyle Width="50px"></HeaderStyle>

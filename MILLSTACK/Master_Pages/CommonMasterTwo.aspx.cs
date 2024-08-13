@@ -39,11 +39,6 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
                 if (Page.RouteData.Values["Page"] != null)
                 {
                     Decide_Page();
-                }
-
-                if (Request.QueryString.Count != 0)
-                {
-                    Decide_Page();
                     Decide_Input_Fields();
                     Bind_Dropdown();
                     Bind_Grid();
@@ -66,12 +61,9 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
 
         if (Page.RouteData.Values["Page"].ToString().Trim() == "Division")
         {
-            //  logic
-        }
+            // Serial Number
+            Grid_Search.Columns[0].HeaderText = "Ser.No.";
 
-
-        if (Request.QueryString["P"].ToString().Trim() == "Division")
-        {
             // Main Table
             Grid_Search.Columns[1].HeaderText = "Division ID";
             Grid_Search.Columns[1].Visible = true;
@@ -103,9 +95,6 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
             Foreign_Table_1_Key_Text.Text = "State Name";
             Foreign_Table_1_Column_Name = "StateName";
             Foreign_Table_1_Key_Column = "State_ID";
-
-            // GridView Column Names
-            Grid_Search.Columns[0].HeaderText = "Division ID";
         }
     }
 
@@ -246,24 +235,19 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
                         {Main_Table_Name}.{Main_Column_1_Name} AS Main_Column_1, 
                         {Main_Table_Name}.{Main_Column_2_Name} AS Main_Column_2, 
                         {Main_Table_Name}.{Main_Column_3_Name} AS Main_Column_3, 
-                        {(string.IsNullOrEmpty(foriegn_Dropdown_1) ? "NULL AS Foreign_Column_1, " : $@" {Foreign_Table_1_Name}.{Foreign_Table_1_Column_Name} as Foreign_Column_1, ")} 
-                        {(string.IsNullOrEmpty(foriegn_Dropdown_2) ? "NULL AS Foreign_Column_2, " : $@" {Foreign_Table_2_Name}.{Foreign_Table_2_Column_Name} as Foreign_Column_2, ")} 
-                        {(string.IsNullOrEmpty(foriegn_Dropdown_3) ? "NULL AS Foreign_Column_3, " : $@" {Foreign_Table_3_Name}.{Foreign_Table_3_Column_Name} as Foreign_Column_3, ")} 
+                        {(Is_Foreign_column_1_needed ? $"{Foreign_Table_1_Name}.{Foreign_Table_1_Column_Name} AS Foreign_Column_1, " : "NULL AS Foreign_Column_1, ")} 
+                        {(Is_Foreign_column_2_needed ? $"{Foreign_Table_2_Name}.{Foreign_Table_2_Column_Name} AS Foreign_Column_2, " : "NULL AS Foreign_Column_2, ")} 
+                        {(Is_Foreign_column_3_needed ? $"{Foreign_Table_3_Name}.{Foreign_Table_3_Column_Name} AS Foreign_Column_3, " : "NULL AS Foreign_Column_3, ")} 
                         NULL AS DummyColumn 
                     FROM {Main_Table_Name} 
-                    {(string.IsNullOrEmpty(foriegn_Dropdown_1) ? "" :
-                        $@" INNER JOIN {Foreign_Table_1_Name} ON {Foreign_Table_1_Name}.{Foreign_Table_1_Key_Column} = {Main_Table_Name}.{Foreign_Table_1_Key_Column} ")} 
-                    {(string.IsNullOrEmpty(foriegn_Dropdown_2) ? "" :
-                        $@" INNER JOIN {Foreign_Table_2_Name} ON {Foreign_Table_2_Name}.{Foreign_Table_2_Key_Column} = {Main_Table_Name}.{Foreign_Table_2_Key_Column} ")} 
-                    {(string.IsNullOrEmpty(foriegn_Dropdown_3) ? "" :
-                        $@" INNER JOIN {Foreign_Table_3_Name} ON {Foreign_Table_3_Name}.{Foreign_Table_3_Key_Column} = {Main_Table_Name}.{Foreign_Table_3_Key_Column} ")} 
-                    WHERE {Main_Table_Name}.IsDeleted IS NULL";
-
-        if (DD_Foriegn_Column_1.SelectedIndex > 0) sqlQuery += $@" AND {Foreign_Table_1_Name}.{Foreign_Table_1_Key_Column} = {DD_Foriegn_Column_1.SelectedValue}";
-        if (DD_Foriegn_Column_2.SelectedIndex > 0) sqlQuery += $@" AND {Foreign_Table_2_Name}.{Foreign_Table_2_Key_Column} = {DD_Foriegn_Column_2.SelectedValue}";
-        if (DD_Foriegn_Column_3.SelectedIndex > 0) sqlQuery += $@" AND {Foreign_Table_3_Name}.{Foreign_Table_3_Key_Column} = {DD_Foriegn_Column_3.SelectedValue}";
-
-        sqlQuery += $@" Order By {Main_Table_Name}.{Main_Column_1_Name}";
+                    {(Is_Foreign_column_1_needed ? $@"INNER JOIN {Foreign_Table_1_Name} ON {Foreign_Table_1_Name}.{Foreign_Table_1_Key_Column} = {Main_Table_Name}.{Foreign_Table_1_Key_Column} " : "")} 
+                    {(Is_Foreign_column_2_needed ? $@"INNER JOIN {Foreign_Table_2_Name} ON {Foreign_Table_2_Name}.{Foreign_Table_2_Key_Column} = {Main_Table_Name}.{Foreign_Table_2_Key_Column} " : "")} 
+                    {(Is_Foreign_column_3_needed ? $@"INNER JOIN {Foreign_Table_3_Name} ON {Foreign_Table_3_Name}.{Foreign_Table_3_Key_Column} = {Main_Table_Name}.{Foreign_Table_3_Key_Column} " : "")} 
+                    WHERE {Main_Table_Name}.IsDeleted IS NULL
+                    {(DD_Foriegn_Column_1.SelectedIndex > 0 ? $@" AND {Foreign_Table_1_Name}.{Foreign_Table_1_Key_Column} = {DD_Foriegn_Column_1.SelectedValue}" : "")}
+                    {(DD_Foriegn_Column_2.SelectedIndex > 0 ? $@" AND {Foreign_Table_2_Name}.{Foreign_Table_2_Key_Column} = {DD_Foriegn_Column_2.SelectedValue}" : "")}
+                    {(DD_Foriegn_Column_3.SelectedIndex > 0 ? $@" AND {Foreign_Table_3_Name}.{Foreign_Table_3_Key_Column} = {DD_Foriegn_Column_3.SelectedValue}" : "")}
+                    ORDER BY {Main_Table_Name}.{Main_Column_1_Name}";
 
         Dictionary<string, object> parameters = new Dictionary<string, object>()
         {
@@ -358,7 +342,7 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
 
     protected void Btn_Submit_Click(object sender, EventArgs e)
     {
-
+        Btn_Submit.Text = "Save";
     }
 
 
