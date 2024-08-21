@@ -6,48 +6,36 @@
 <head runat="server">
     <title>MillStack</title>
 
-    <!-- Bootstrap CSS -->
-    <link href="<%= ResolveUrl("../assets/css/bootstrap.min.css") %>" rel="stylesheet" />
+    <!-- CSS -->
+    <link href="<%= ResolveUrl("../assets/components/bootstrap/css/bootstrap.min_v5.3.3.css") %>" rel="stylesheet" />
+    <link href="<%= ResolveUrl("../assets/components/select2/select2.min_v4.0.13.css") %>" rel="stylesheet" />
+    <link href="<%= ResolveUrl("../assets/components/sweet-alert/sweetalert2.min_v11.11.css") %>" rel="stylesheet" />
+    <link href="<%= ResolveUrl("../assets/components/chosen_v1.8.7/chosen.min.css") %>" rel="stylesheet" />
+    <link href="<%= ResolveUrl("../assets/components/sumo-select/sumoselect.min_v3.0.3.css") %>" rel="stylesheet" />
 
-    <!-- Bootstrap JS -->
-    <script src="<%= ResolveUrl("../assets/js/bootstrap.bundle.min.js") %>"></script>
-    <script src="<%= ResolveUrl("../assets/js/bootstrap1.min.js") %>"></script>
-
-    <!-- jQuery -->
-    <script src="<%= ResolveUrl("../assets/js/jquery-3.7.1.min.js") %>"></script>
-    <script src="<%= ResolveUrl("../assets/js/jquery-3.7.1.js") %>"></script>
-    <script src="<%= ResolveUrl("../assets/jquery/js/jquery-ui.min.js") %>"></script>
-
-    <!-- Select2 library CSS and JS -->
-    <link href="<%= ResolveUrl("../assets/select2/select2.min.css") %>" rel="stylesheet" />
-    <script src="<%= ResolveUrl("../assets/select2/select2.min.js") %>"></script>
-
-    <!-- Sweet Alert CSS and JS -->
-    <link href="<%= ResolveUrl("../assets/sweetalert/sweetalert2.min.css") %>" rel="stylesheet" />
-    <script src="<%= ResolveUrl("../assets/sweetalert/sweetalert2@11.js") %>"></script>
-
-    <!-- Chosen Select CSS and JS -->
-    <link href="<%= ResolveUrl("../assets/chosen_v1.8.7/chosen.min.css") %>" rel="stylesheet" />
-    <script src="<%= ResolveUrl("../assets/chosen_v1.8.7/chosen.jquery.min.js") %>"></script>
-
-    <!-- Sumo Select CSS and JS -->
-    <link href="<%= ResolveUrl("../assets/sumoselect/sumoselect.min.css") %>" rel="stylesheet" />
-    <script src="<%= ResolveUrl("../assets/sumoselect/jquery.sumoselect.min.js") %>"></script>
+    <!-- JavaScript -->
+    <script src="<%= ResolveUrl("../assets/components/bootstrap/js/bootstrap.bundle.min_v5.3.3.js") %>"></script>
+    <script src="<%= ResolveUrl("../assets/components/bootstrap/js/bootstrap.min_v5.3.3.js") %>"></script>
+    <script src="<%= ResolveUrl("../assets/components/bootstrap/js/popper.min_v2.11.8.js") %>"></script>
+    <script src="<%= ResolveUrl("../assets/components/jquery/jquery_3.7.1.js") %>"></script>
+    <script src="<%= ResolveUrl("../assets/components/jquery/jquery_3.7.1.min.js") %>"></script>
+    <script src="<%= ResolveUrl("../assets/components/sweet-alert/sweetalert2_v11.11.js") %>"></script>
+    <script src="<%= ResolveUrl("../assets/components/select2/select2.min_v4.0.13.js") %>"></script>
+    <script src="<%= ResolveUrl("../assets/components/chosen_v1.8.7/chosen.jquery.min.js") %>"></script>
+    <script src="<%= ResolveUrl("../assets/components/sumo-select/jquery.sumoselect.min_v3.0.3.js") %>"></script>
 
     <!-- DataTables CSS -->
-    <link href="<%= ResolveUrl("../assets/DataTables/datatables.min.css") %>" rel="stylesheet" />
+    <link href="<%= ResolveUrl("../assets/components/datatables/datatables.min.css") %>" rel="stylesheet" />
     <!-- DataTables - Button Extension CSS -->
-    <link href="<%= ResolveUrl("../assets/DataTables/Buttons-2.4.2/css/buttons.dataTables.min.css") %>" rel="stylesheet" />
-
+    <link href="<%= ResolveUrl("../assets/components/datatables/Buttons-2.4.2/css/buttons.dataTables.min.css") %>" rel="stylesheet" />
     <!-- DataTables JS -->
-    <script src="<%= ResolveUrl("../assets/DataTables/datatables.min.js") %>"></script>
+    <script src="<%= ResolveUrl("../assets/components/datatables/datatables.min.js") %>"></script>
     <!-- DataTables - Button Extension JS -->
-    <script src="<%= ResolveUrl("../assets/DataTables/Buttons-2.4.2/js/dataTables.buttons.min.js") %>"></script>
-    <script src="<%= ResolveUrl("../assets/DataTables/buttons.flash.min.js") %>"></script>
-    <script src="<%= ResolveUrl("../assets/DataTables/JSZip-3.10.1/jszip.min.js") %>"></script>
-    <script src="<%= ResolveUrl("../assets/DataTables/Buttons-2.4.2/js/buttons.html5.min.js") %>"></script>
-    <script src="<%= ResolveUrl("../assets/DataTables/Buttons-2.4.2/js/buttons.print.min.js") %>"></script>
-
+    <script src="<%= ResolveUrl("../assets/components/datatables/Buttons-2.4.2/js/dataTables.buttons.min.js") %>"></script>
+    <script src="<%= ResolveUrl("../assets/components/datatables/buttons.flash.min.js") %>"></script>
+    <script src="<%= ResolveUrl("../assets/components/datatables/JSZip-3.10.1/jszip.min.js") %>"></script>
+    <script src="<%= ResolveUrl("../assets/components/datatables/Buttons-2.4.2/js/buttons.html5.min.js") %>"></script>
+    <script src="<%= ResolveUrl("../assets/components/datatables/Buttons-2.4.2/js/buttons.print.min.js") %>"></script>
 
     <script src="masterpage.js"></script>
     <link rel="stylesheet" href="masterpage.css" />
@@ -66,5 +54,192 @@
             </asp:ContentPlaceHolder>
         </div>
     </form>
+
+
+    <script type="text/javascript">
+
+        function Bind_Dropdown_By_ID(dropdownID) {
+            $(dropdownID).chosen({
+                disable_search: false, // disable search bar
+                search_contains: false, // search characters anywhere instead of right-left
+                no_results_text: "No results match", // if searched not matched
+                placeholder_text_single: "Select Here......", // search bar place holder 
+                allow_single_deselect: true, // clear selected item
+                width: "100%", // width of element
+                rtl: false, // text appears on right side right-to-left
+            });
+        }
+
+        function Bind_Dropdown_By_Class(dropdownClass) {
+            $(dropdownClass).chosen({
+                disable_search: false, // disable search bar
+                search_contains: false, // search characters anywhere instead of right-left
+                no_results_text: "No results match", // if searched not matched
+                placeholder_text_single: "Select Here......", // search bar placeholder
+                allow_single_deselect: true, // clear selected item
+                width: "100%", // width of element
+                rtl: false, // text appears on right side right-to-left
+            });
+        }
+
+        function Initialize_DataTables_By_ID(GridView_ID) {
+            $(GridView_ID).each(function () {
+                var $this = $(this);
+                $this.prepend(
+                    $("<thead></thead>").append(
+                        $this.find("tr:first")
+                    )
+                ).DataTable({
+                    scrollX: false,
+                    sScrollXInner: "100%",
+                    bFilter: true,
+                    bSort: true,
+                    bPaginate: true,
+                    scrollCollapse: false,
+                    paging: true,
+                    searching: true,
+                    ordering: true,
+                    info: true,
+                    lengthChange: true,
+                    responsive: true,
+                    pagingType: 'full_numbers',
+                    lengthMenu: [
+                        [10, 20, 25, 50, -1],
+                        [10, 20, 25, 50, "All"]
+                    ],
+                    search: {
+                        return: false
+                    },
+                    language: {
+                        search: "Search: ",
+                        decimal: ',',
+                        thousands: '.'
+                    },
+                    initComplete: function () {
+                        $('.dataTables_filter input').attr('placeholder', 'Search here......');
+                    },
+                    dom: '<"top"lfB>rt<"bottom"ip><"clear">', // Configure DOM for buttons and entries (initial value - Bfrtip)
+                    buttons: [
+                        //'copy', 'csv', 'excel', 'pdf', 'print' // Add export buttons
+                        {
+                            extend: 'copy',
+                            title: 'Customer Data',
+                            filename: 'Customer_Data_Copy'
+                        },
+                        {
+                            extend: 'csv',
+                            title: 'Customer Data',
+                            filename: 'Customer Data'
+                        },
+                        {
+                            extend: 'excel',
+                            title: 'Customer Data',
+                            filename: 'Customer Data'
+                        },
+                        {
+                            extend: 'pdf',
+                            title: 'Customer Data',
+                            filename: 'Customer Data'
+                        },
+                        {
+                            extend: 'print',
+                            title: 'Customer Data'
+                        }
+                    ]
+                });
+            });
+        }
+
+        function Initialize_DataTables_By_Class(gridViewClass) {
+            $(gridViewClass).each(function () {
+                var $this = $(this);
+                if (!$this.hasClass('dataTable')) { // Prevent re-initialization
+                    $this.prepend(
+                        $("<thead></thead>").append(
+                            $this.find("tr:first")
+                        )
+                    ).DataTable({
+                        scrollX: false,
+                        sScrollXInner: "100%",
+                        bFilter: true,
+                        bSort: true,
+                        bPaginate: true,
+                        scrollCollapse: false,
+                        paging: true,
+                        searching: true,
+                        ordering: true,
+                        info: true,
+                        lengthChange: true,
+                        responsive: true,
+                        pagingType: 'full_numbers',
+                        lengthMenu: [
+                            [10, 20, 25, 50, -1],
+                            [10, 20, 25, 50, "All"]
+                        ],
+                        search: {
+                            return: false
+                        },
+                        language: {
+                            search: "Search: ",
+                            decimal: ',',
+                            thousands: '.'
+                        },
+                        initComplete: function () {
+                            $('.dataTables_filter input').attr('placeholder', 'Search here......');
+                        },
+                        dom: '<"top"lfB>rt<"bottom"ip><"clear">', // Configure DOM for buttons and entries (initial value - Bfrtip)
+                        buttons: [
+                            {
+                                extend: 'copy',
+                                title: 'Customer Data',
+                                filename: 'Customer_Data_Copy'
+                            },
+                            {
+                                extend: 'csv',
+                                title: 'Customer Data',
+                                filename: 'Customer Data'
+                            },
+                            {
+                                extend: 'excel',
+                                title: 'Customer Data',
+                                filename: 'Customer Data'
+                            },
+                            {
+                                extend: 'pdf',
+                                title: 'Customer Data',
+                                filename: 'Customer Data'
+                            },
+                            {
+                                extend: 'print',
+                                title: 'Customer Data'
+                            }
+                        ]
+                    });
+                }
+            });
+        }
+
+        $(document).ready(function () {
+
+            //Bind_Dropdown_By_ID("#main_DD_Foriegn_Column_1");
+            //Initialize_DataTables_By_ID("#main_Grid_Search");
+
+            Bind_Dropdown_By_Class(".chosen-dropdown");
+            Initialize_DataTables_By_Class(".datatables");
+
+            var prm = Sys.WebForms.PageRequestManager.getInstance();
+            prm.add_endRequest(function () {
+                setTimeout(function () {
+
+                    Bind_Dropdown_By_Class(".chosen-dropdown");
+                    Initialize_DataTables_By_Class(".datatables");
+
+                }, 0);
+            });
+        });
+
+       
+    </script>
+
 </body>
 </html>

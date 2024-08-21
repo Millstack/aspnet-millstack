@@ -121,7 +121,7 @@ namespace CommonClassLibrary
         /// <param name="Primary Key Name"></param>
         /// <param name="SqlCommand Object"></param>
         /// <returns>Primary Key</returns>
-        public string Get_Next_RefID(string TableName, string ColumnName, SqlCommand command)
+        public string Get_Next_RefID(string TableName, string ColumnName)
         {
             try
             {
@@ -210,7 +210,34 @@ namespace CommonClassLibrary
 
 
 
-        
+        /// <summary>
+        /// Executing SQL Command 
+        /// </summary>
+        /// <param name="sqlQuery String"></param>
+        /// <param name="SQL Command Object"></param>
+        /// <param name="SQL Parameter Object"></param>
+        /// <param name="SQL Transaction Object"></param>
+        /// <returns>Void</returns>
+        public void ExecuteCommand(string sql, SqlCommand command, List<SqlParameter> parameters = null, SqlTransaction transaction = null)
+        {
+            command.CommandType = CommandType.Text;
+            command.CommandText = sql;
+
+            if (transaction != null) command.Transaction = transaction;
+
+            if (parameters != null)
+            {
+                foreach (var param in parameters)
+                {
+                    command.Parameters.Add(param);
+                }
+            }
+
+            command.ExecuteNonQuery();
+            command.Parameters.Clear();
+        }
+
+
 
 
     }

@@ -18,7 +18,7 @@
 
 
     <!-- Heading -->
-    <div class="col-md-11 mx-auto fw-normal fs-3 fw-bold ps-0 pb-2 text-dark-emphasis mt-1 mb-1 text-start">
+    <div class="col-md-11 mx-auto fw-normal fs-3 fw-bold ps-0 pb-2 text-dark-emphasis mt-1 mb-1 text-center">
         <asp:Literal ID="Page_Heading" Text="" runat="server"></asp:Literal>
     </div>
 
@@ -27,7 +27,7 @@
         <div class="card-body">
 
             <!-- Heading - BG -->
-            <div class="fs-5 fw-medium text-white border border-dark-subtle shadow rounded-2 text-center py-2 mb-3" style="background-color: #0f3f6f !important;">
+            <div class="fs-5 fw-medium text-white border border-dark-subtle shadow rounded-2 text-left py-2 px-3 mb-3" style="background-color: #0f3f6f !important;">
                 <asp:Literal ID="Main_Heading_1" Text="" runat="server"></asp:Literal>
             </div>
 
@@ -44,7 +44,7 @@
                             </asp:RequiredFieldValidator>
                         </div>
                     </div>
-                    <asp:DropDownList ID="DD_Foriegn_Column_1" runat="server" Width="100%" CssClass="form-control"
+                    <asp:DropDownList ID="DD_Foriegn_Column_1" runat="server" Width="100%" CssClass="form-control chosen-dropdown"
                         OnSelectedIndexChanged="DD_Foriegn_Column_1_SelectedIndexChanged" AutoPostBack="true">
                     </asp:DropDownList>
                 </div>
@@ -59,7 +59,7 @@
                             </asp:RequiredFieldValidator>
                         </div>
                     </div>
-                    <asp:DropDownList ID="DD_Foriegn_Column_2" runat="server" Width="100%" CssClass="form-control"
+                    <asp:DropDownList ID="DD_Foriegn_Column_2" runat="server" Width="100%" CssClass="form-control chosen-dropdown"
                         OnSelectedIndexChanged="DD_Foriegn_Column_2_SelectedIndexChanged" AutoPostBack="true">
                     </asp:DropDownList>
                 </div>
@@ -74,7 +74,7 @@
                             </asp:RequiredFieldValidator>
                         </div>
                     </div>
-                    <asp:DropDownList ID="DD_Foriegn_Column_3" runat="server" Width="100%" CssClass="form-control"
+                    <asp:DropDownList ID="DD_Foriegn_Column_3" runat="server" Width="100%" CssClass="form-control chosen-dropdown"
                         OnSelectedIndexChanged="DD_Foriegn_Column_3_SelectedIndexChanged" AutoPostBack="true">
                     </asp:DropDownList>
                 </div>
@@ -94,9 +94,9 @@
                             ControlToValidate="Input_Main_Column_1" InitialValue="" ValidationGroup="finalSubmit" ErrorMessage="required field">
                         </asp:RequiredFieldValidator>
                     </div>
-                    <asp:TextBox ID="Input_Main_Column_1" runat="server" type="text" Enabled="true" CssClass="form-control border border-secondary-subtle bg-light rounded-1 fs-6 fw-light py-1"></asp:TextBox>
+                    <asp:TextBox runat="server" ID="Input_Main_Column_1" type="text" Enabled="true" CssClass="form-control border border-secondary-subtle bg-light rounded-1 fs-6 fw-light py-1"></asp:TextBox>
                     <ajax:FilteredTextBoxExtender ID="FilteredTextBoxExtender1" runat="server" TargetControlID="Input_Main_Column_1"
-                        FilterType="Numbers, UppercaseLetters, LowercaseLetters" ValidChars=" " />
+                        FilterType="Numbers, UppercaseLetters, LowercaseLetters, Custom" ValidChars=". " />
                 </div>
 
                 <!-- Tetxbox: Main Column 2 Input -->
@@ -107,9 +107,8 @@
                             ControlToValidate="Input_Main_Column_2" InitialValue="" ValidationGroup="finalSubmit" ErrorMessage="required field">
                         </asp:RequiredFieldValidator>
                     </div>
-                    <asp:TextBox runat="server" ID="Input_Main_Column_2" type="text" Enabled="true" CssClass="form-control border border-secondary-subtle bg-light rounded-1 fs-6 fw-light py-1"></asp:TextBox>
-                    <ajax:FilteredTextBoxExtender ID="FilteredTextBoxExtender2" runat="server" TargetControlID="Input_Main_Column_1"
-                        FilterType="Numbers, UppercaseLetters, LowercaseLetters" ValidChars=" " />
+                    <asp:TextBox runat="server" ID="Input_Main_Column_2" type="text" Enabled="true" CssClass="form-control border border-secondary-subtle bg-light rounded-1 fs-6 fw-light py-1"
+                        oninput="validateInput(this)"></asp:TextBox>
                 </div>
 
                 <!-- Tetxbox: Main Column 3 Input -->
@@ -121,8 +120,8 @@
                         </asp:RequiredFieldValidator>
                     </div>
                     <asp:TextBox runat="server" ID="Input_Main_Column_3" type="text" Enabled="true" CssClass="form-control border border-secondary-subtle bg-light rounded-1 fs-6 fw-light py-1"></asp:TextBox>
-                    <ajax:FilteredTextBoxExtender ID="FilteredTextBoxExtender3" runat="server" TargetControlID="Input_Main_Column_1"
-                        FilterType="Numbers, UppercaseLetters, LowercaseLetters" ValidChars=" " />
+                    <ajax:FilteredTextBoxExtender ID="FilteredTextBoxExtender3" runat="server" TargetControlID="Input_Main_Column_3"
+                        FilterType="Numbers, UppercaseLetters, LowercaseLetters, Custom" ValidChars=". " />
                 </div>
 
             </div>
@@ -133,7 +132,7 @@
                 <div class="col-md-4 text-start"></div>
                 <div class="col-md-4 text-start"></div>
                 <div class="col-md-2 text-end">
-                    <asp:Button ID="Btn_Back" runat="server" Text="Back" OnClick="Btn_Back_Click"
+                    <asp:Button ID="Btn_Reset" runat="server" Text="Reset" OnClick="Btn_Reset_Click"
                         CssClass="btn col-md-8 text-white shadow rounded-0" Style="background: #0f3f6f; color: #fff" />
                 </div>
                 <div class="col-md-2 text-start">
@@ -153,7 +152,7 @@
         <div class="card-body">
 
             <!-- Heading - BG -->
-            <div class="fs-5 fw-medium text-white border border-dark-subtle bg-primary shadow rounded-2 text-center py-2 mb-3" style="background-color: #0f3f6f !important;">
+            <div class="fs-5 fw-medium text-white border border-dark-subtle bg-primary shadow rounded-2 text-left py-2 px-3 mb-3" style="background-color: #0f3f6f !important;">
                 <asp:Literal ID="Main_Heading_2" Text="" runat="server"></asp:Literal>
             </div>
 
@@ -211,22 +210,24 @@
 
                             <asp:TemplateField HeaderText="Edit" ShowHeader="true" HeaderStyle-Width="50px">
                                 <ItemTemplate>
-                                    <asp:LinkButton ID="Link_Btn_Edit" runat="server" CausesValidation="False" CommandName="Select"
-                                        Text="Edit">
+                                    <asp:LinkButton ID="Link_Btn_Edit" runat="server" CausesValidation="False" CommandName="Select" ForeColor="#0f3f6f">
+                                        <asp:Image ID="IMG_Edit" runat="server" ImageUrl="~/assets/image/edit/pencil-square.svg" AlternateText="Edit" ToolTip="Edit" Style="width: 25px; height: 25px;" />
                                     </asp:LinkButton>
                                 </ItemTemplate>
-                                <HeaderStyle Width="50px"></HeaderStyle>
+                                <HeaderStyle Width="80px"></HeaderStyle>
                             </asp:TemplateField>
 
                             <asp:TemplateField HeaderText="Delete" ShowHeader="true" HeaderStyle-Width="50px">
                                 <ItemTemplate>
-                                    <asp:LinkButton ID="Link_Btn_Delete" runat="server" CausesValidation="False" CommandName="Delete"
-                                        OnClientClick="javascript:return confirm ('Are you sure to Delete this record permanently ? ')"
-                                        ForeColor="Red" Text="Delete">
+                                    <asp:LinkButton ID="Link_Btn_Delete" runat="server" CausesValidation="False"
+                                        CommandName="Delete" CommandArgument='<%# Container.DataItemIndex %>'
+                                        OnClientClick="javascript:return confirm ('Are you sure to Delete this record permanently ? ')" ForeColor="Red">
+                                        <asp:Image ID="IMG_Delete" runat="server" ImageUrl="~/assets/image/delete-cut/delete.png" AlternateText="Edit" ToolTip="Delete" Style="width: 30px; height: 30px;" />
                                     </asp:LinkButton>
                                 </ItemTemplate>
-                                <HeaderStyle Width="50px"></HeaderStyle>
+                                <HeaderStyle Width="80px"></HeaderStyle>
                             </asp:TemplateField>
+                            <%-- OnClientClick="return confirmDelete(this);" --%>
 
                         </Columns>
 
@@ -238,10 +239,22 @@
                 <div class="slimScrollBar" style="background: rgba(0, 0, 0, 0.95); width: 5px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 73.2899px;"></div>
                 <div class="slimScrollRail" style="width: 5px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
             </div>
+            <asp:HiddenField ID="hfDeleteId" runat="server" />
 
         </div>
     </div>
     <!-- Grid UI Ends -->
+
+
+    <script type="text/javascript">
+        function validateInput(input) {
+            var value = input.value;
+            var regex = /^[\u0900-\u097F\w\s.]*$/; // \u0900-\u097F is the Unicode range for Devanagari script (Marathi)
+            if (!regex.test(value)) {
+                input.value = value.slice(0, -1); // Remove the last invalid character
+            }
+        }
+    </script>
 
 </asp:Content>
 
