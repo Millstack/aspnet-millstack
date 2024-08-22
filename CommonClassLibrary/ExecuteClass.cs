@@ -125,12 +125,12 @@ namespace CommonClassLibrary
         {
             try
             {
-                string sql_Query = $@"SELECT ISNULL(MAX(CAST(@ColumnName AS INT)), 0) + 1 AS Next_ID FROM @TableName";
+                string sql_Query = $@"SELECT ISNULL(MAX(CAST({ColumnName} AS INT)), 0) + 1 AS Next_ID FROM {TableName}";
 
                 var parameters = new Dictionary<string, object>
                 {
-                    { "@ColumnName", ColumnName },
-                    { "@TableName", TableName },
+                    //{ "@ColumnName", ColumnName },
+                    //{ "@TableName", TableName },
                 };
 
                 dt = Get_Datatable(sql_Query, parameters);

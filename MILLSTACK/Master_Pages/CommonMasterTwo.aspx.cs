@@ -262,6 +262,33 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
     {
         try
         {
+            // re-assigning the boolean and string variabls
+            Is_Main_column_1_needed = (bool)ViewState["Is_Main_column_1_needed"];
+            Is_Main_column_2_needed = (bool)ViewState["Is_Main_column_2_needed"];
+            Is_Main_column_3_needed = (bool)ViewState["Is_Main_column_3_needed"];
+
+            Is_Foreign_column_1_needed = (bool)ViewState["Is_Foreign_column_1_needed"];
+            Is_Foreign_column_2_needed = (bool)ViewState["Is_Foreign_column_2_needed"];
+            Is_Foreign_column_3_needed = (bool)ViewState["Is_Foreign_column_3_needed"];
+
+            Main_Table_Name = (string)ViewState["Main_Table_Name"];
+            Primary_Key_Column = (string)ViewState["Primary_Key_Column"];
+            Main_Column_1_Name = (string)ViewState["Main_Column_1_Name"];
+            Main_Column_2_Name = (string)ViewState["Main_Column_2_Name"];
+            Main_Column_3_Name = (string)ViewState["Main_Column_3_Name"];
+
+            Foreign_Table_1_Name = (string)ViewState["Foreign_Table_1_Name"];
+            Foreign_Table_1_Key_Column = (string)ViewState["Foreign_Table_1_Key_Column"];
+            Foreign_Table_1_Column_Name = (string)ViewState["Foreign_Table_1_Column_Name"];
+
+            Foreign_Table_2_Name = (string)ViewState["Foreign_Table_2_Name"];
+            Foreign_Table_2_Key_Column = (string)ViewState["Foreign_Table_2_Key_Column"];
+            Foreign_Table_2_Column_Name = (string)ViewState["Foreign_Table_2_Column_Name"];
+
+            Foreign_Table_3_Name = (string)ViewState["Foreign_Table_3_Name"];
+            Foreign_Table_3_Key_Column = (string)ViewState["Foreign_Table_3_Key_Column"];
+            Foreign_Table_3_Column_Name = (string)ViewState["Foreign_Table_3_Column_Name"];
+
             sqlQuery = $@"
                     SELECT 
                         {Main_Table_Name}.{Primary_Key_Column} AS ID, 
@@ -386,7 +413,8 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
 
     protected void Grid_Search_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
-
+        Grid_Search.PageIndex = e.NewPageIndex;
+        Bind_Grid();
     }
 
 
@@ -481,15 +509,19 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
                 {
                     string Primary_Key = executeClass.Get_Next_RefID(Main_Table_Name, Primary_Key_Column);
 
+                    Session["User_ID"] = 1;
+                    string User_ID = Session["User_ID"].ToString();
+
                     sqlQuery = $@"
                         INSERT INTO {Main_Table_Name} (
                             {Primary_Key_Column},
                             {(Is_Main_column_1_needed ? $"{Main_Column_1_Name}, " : "")}
-                            {(Is_Main_column_2_needed ? $",{Main_Column_2_Name} " : "")}
-                            {(Is_Main_column_3_needed ? $",{Main_Column_3_Name} " : "")}
-                            {(Is_Foreign_column_1_needed ? $",{Foreign_Table_1_Key_Column} " : "")}
-                            {(Is_Foreign_column_2_needed ? $",{Foreign_Table_2_Key_Column} " : "")}
-                            {(Is_Foreign_column_3_needed ? $",{Foreign_Table_3_Key_Column} " : "")}
+                            {(Is_Main_column_2_needed ? $"{Main_Column_2_Name}, " : "")}
+                            {(Is_Main_column_3_needed ? $"{Main_Column_3_Name}, " : "")}
+                            {(Is_Foreign_column_1_needed ? $"{Foreign_Table_1_Key_Column}, " : "")}
+                            {(Is_Foreign_column_2_needed ? $"{Foreign_Table_2_Key_Column}, " : "")}
+                            {(Is_Foreign_column_3_needed ? $"{Foreign_Table_3_Key_Column}, " : "")}
+                            SavedBy
                         ) VALUES (
                             {Primary_Key},
                             {(Is_Main_column_1_needed ? $"'{input_Main_Column_1}', " : "")}
@@ -497,7 +529,8 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
                             {(Is_Main_column_3_needed ? $"'{input_Main_Column_3}', " : "")}
                             {(Is_Foreign_column_1_needed ? $"'{foriegn_Column_Value_1}', " : "")}
                             {(Is_Foreign_column_2_needed ? $"'{foriegn_Column_Value_2}', " : "")}
-                            {(Is_Foreign_column_3_needed ? $"'{foriegn_Column_Value_3}' " : "")}
+                            {(Is_Foreign_column_3_needed ? $"'{foriegn_Column_Value_3}', " : "")}
+                            {User_ID}
                         )";
 
                     List<SqlParameter> parameters = new List<SqlParameter>
@@ -508,7 +541,6 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
                     executeClass.ExecuteCommand(sqlQuery, command, parameters);
 
                     SweetAlert.GetSweet(this.Page, "success", "", $"Record inserted !!");
-
                 }
                 else
                 {

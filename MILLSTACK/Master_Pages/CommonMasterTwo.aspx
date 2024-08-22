@@ -228,8 +228,17 @@
                                 <HeaderStyle Width="80px"></HeaderStyle>
                             </asp:TemplateField>
                             <%-- OnClientClick="return confirmDelete(this);" --%>
-
                         </Columns>
+
+                        <EmptyDataTemplate>
+                            <tr>
+                                <td colspan="4" class="text-center">
+                                    <div class="alert alert-info" role="alert">
+                                        No Data Available To Display.
+                                    </div>
+                                </td>
+                            </tr>
+                        </EmptyDataTemplate>
 
                         <FooterStyle CssClass="" />
                         <PagerStyle Font-Bold="True" />
