@@ -42,7 +42,7 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
         {
             if (!IsPostBack)
             {
-                //SweetAlert.GetSweet(this.Page, "success", $"Sweet alert test", $"getting sweet alert", GetRouteUrl("CommonMaster_Route", new { Page = "District" }));
+                //SweetAlert.GetSweet(this.Page, "success", $"Sweet alert test", $"getting sweet alert", GetRouteUrl("CommonMaster_Route", new { Page = "Taluka" }));
 
                 if (Page.RouteData.Values["Page"] != null)
                 {
@@ -184,6 +184,65 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
                 Foreign_Table_3_Key_Text.Text = "Division Name";
                 Foreign_Table_3_Column_Name = "DivisionName";
                 Foreign_Table_3_Key_Column = "Division_ID";
+            }
+            else if (Page.RouteData.Values["Page"].ToString().Trim() == "Taluka")
+            {
+                Page_Heading.Text = "Taluka Master";
+                Main_Heading_1.Text = "Taluka Details";
+                Main_Heading_2.Text = "Taluka Records";
+
+                // Serial Number
+                Grid_Search.Columns[0].HeaderText = "Ser.No.";
+
+                // Main Table
+                Grid_Search.Columns[1].HeaderText = "Taluka ID";
+                Grid_Search.Columns[1].Visible = true;
+                Main_Table_Name = "M_Taluka";
+                Primary_Key_Column = "Taluka_ID";
+
+                // Main Table Column 1
+                Grid_Search.Columns[2].HeaderText = "Taluka";
+                Is_Main_column_1_needed = true;
+                Main_Column_1_Text.Text = "Taluka Name";
+                Main_Column_1_Name = "TalukaName";
+
+                // Main Table Column 2
+                Grid_Search.Columns[3].HeaderText = "Taluka (Marathi)";
+                Is_Main_column_2_needed = true;
+                Main_Column_2_Text.Text = "Taluka (Marathi)";
+                Main_Column_2_Name = "TalukaNameMr";
+
+                // Main Table Column 3
+                Grid_Search.Columns[4].HeaderText = "Taluka Code";
+                Is_Main_column_3_needed = true;
+                Main_Column_3_Text.Text = "Taluka Code";
+                Main_Column_3_Name = "TalukaCode";
+
+                // Foreign Table 1
+                Grid_Search.Columns[5].HeaderText = "State";
+                Is_Foreign_column_1_needed = true;
+                Foreign_Table_1_Name = "M_State";
+                Foreign_Table_1_Key_Text.Text = "State Name";
+                Foreign_Table_1_Column_Name = "StateName";
+                Foreign_Table_1_Key_Column = "State_ID";
+
+                // Foreign Table 2
+                Grid_Search.Columns[6].HeaderText = "Division";
+                Is_Foreign_column_2_needed = true;
+                Is_Foreign_Dropdown_2_Is_Dependant_On_1 = true;
+                Foreign_Table_2_Name = "M_Division";
+                Foreign_Table_2_Key_Text.Text = "Division Name";
+                Foreign_Table_2_Column_Name = "DivisionName";
+                Foreign_Table_2_Key_Column = "Division_ID";
+
+                // Foreign Table 3
+                Grid_Search.Columns[7].HeaderText = "District";
+                Is_Foreign_column_3_needed = true;
+                Is_Foreign_Dropdown_3_Is_Dependant_On_2 = true;
+                Foreign_Table_3_Name = "M_District";
+                Foreign_Table_3_Key_Text.Text = "District Name";
+                Foreign_Table_3_Column_Name = "DistrictName";
+                Foreign_Table_3_Key_Column = "District_ID";
             }
             else
             {
@@ -434,7 +493,7 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
                       Order By {Foreign_Table_3_Column_Name}";
 
                     parameters = new Dictionary<string, object> { /*{ "@Bank_ID", DD_Bank_Master.SelectedValue },*/ };
-                    executeClass.Bind_Dropdown_Generic(DD_Foriegn_Column_2, sqlQuery, "Value", "ID", parameters);
+                    executeClass.Bind_Dropdown_Generic(DD_Foriegn_Column_3, sqlQuery, "Value", "ID", parameters);
                 }
                 else
                 {
@@ -537,18 +596,6 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
                 Grid_Search.DataSource = null;
                 Grid_Search.DataBind();
                 ViewState["Grid_Common_DT"] = null;
-            }
-
-            if (ViewState["Operation"].ToString() == "UPDATE" && Btn_Submit.Text == "Update")
-            {
-                // clearing user inputs
-                DD_Foriegn_Column_1.ClearSelection();
-                DD_Foriegn_Column_2.ClearSelection();
-                DD_Foriegn_Column_3.ClearSelection();
-                Input_Main_Column_1.Text = string.Empty;
-                Input_Main_Column_2.Text = string.Empty;
-                Input_Main_Column_3.Text = string.Empty;
-                Btn_Submit.Text = "Save";
             }
         }
         catch (Exception ex)
@@ -703,7 +750,7 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
     //================================ Save / Update Button Event ========================================
     protected void Btn_Reset_Click(object sender, EventArgs e)
     {
-        string redirectURL = GetRouteUrl("CommonMaster_Route", new { Page = "District" });
+        string redirectURL = GetRouteUrl("CommonMaster_Route", new { Page = Page.RouteData.Values["Page"].ToString().Trim() });
         Response.Redirect(redirectURL);
     }
 
@@ -829,6 +876,15 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
                 if (transaction.Connection != null)
                 {
                     transaction.Commit();
+
+                    // clearing user inputs
+                    DD_Foriegn_Column_1.ClearSelection();
+                    DD_Foriegn_Column_2.ClearSelection();
+                    DD_Foriegn_Column_3.ClearSelection();
+                    Input_Main_Column_1.Text = string.Empty;
+                    Input_Main_Column_2.Text = string.Empty;
+                    Input_Main_Column_3.Text = string.Empty;
+                    Btn_Submit.Text = "Save";
                 }
             }
             catch (Exception ex)

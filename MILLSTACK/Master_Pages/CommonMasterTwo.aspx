@@ -14,6 +14,40 @@
             font-family: Verdana !important;
             font-weight: normal !important;
         }
+
+
+        .grid-pager {
+            text-align: center;
+            padding: 15px 0;
+            font-weight: normal;
+        }
+
+            .grid-pager a, .grid-pager span {
+                text-decoration: none; /* Remove underline */
+                padding: 6px 10px; /* Add space between page numbers */
+                margin: 10px 0px; /* Add space around page numbers */
+                border: 0px solid #eeeaea; /* Light border around page numbers */
+                border-radius: 0px;
+                color: #898989;
+                line-height: 1.5; /* Ensure text is vertically centered */
+            }
+
+            .grid-pager a {
+                background-color: #ffffff; 
+                transition: background-color 0.3s ease;
+            }
+
+                .grid-pager a:hover {
+                    background-color: #0f3f6f;
+                    border-color: #4f64cc;
+                    color: #fbfbfb;
+                }
+
+            .grid-pager span {
+                background-color: #ffffff;
+                font-weight: bold;
+                border-color: #e0dcdc;
+            }
     </style>
 
 
@@ -193,7 +227,7 @@
                             </asp:BoundField>
 
                             <asp:BoundField DataField="Foreign_Column_1" Visible="true" HeaderText="Foreign_Column_1">
-                                <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="fw-light" />
+                                <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="fw-normal" />
                             </asp:BoundField>
 
                             <asp:BoundField DataField="Foreign_Column_2" Visible="true" HeaderText="Foreign_Column_2">
@@ -201,7 +235,7 @@
                             </asp:BoundField>
 
                             <asp:BoundField DataField="Foreign_Column_3" Visible="true" HeaderText="Foreign_Column_3">
-                                <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="fw-light" />
+                                <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="fw-normal" />
                             </asp:BoundField>
 
                             <asp:BoundField DataField="DummyColumn" Visible="false" HeaderText="DummyColumn">
@@ -227,7 +261,6 @@
                                 </ItemTemplate>
                                 <HeaderStyle Width="80px"></HeaderStyle>
                             </asp:TemplateField>
-                            <%-- OnClientClick="return confirmDelete(this);" --%>
                         </Columns>
 
                         <EmptyDataTemplate>
@@ -241,7 +274,7 @@
                         </EmptyDataTemplate>
 
                         <FooterStyle CssClass="" />
-                        <PagerStyle Font-Bold="True" />
+                        <PagerStyle CssClass="grid-pager" />
 
                     </asp:GridView>
                 </div>
