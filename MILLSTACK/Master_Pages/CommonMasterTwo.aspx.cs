@@ -24,6 +24,8 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
     Boolean Is_Main_column_1_needed, Is_Main_column_2_needed, Is_Main_column_3_needed,
             Is_Foreign_column_1_needed, Is_Foreign_column_2_needed, Is_Foreign_column_3_needed = false;
 
+    Boolean Is_Foreign_Dropdown_2_Is_Dependant_On_1, Is_Foreign_Dropdown_3_Is_Dependant_On_2 = false;
+
     string sqlQuery = string.Empty;
 
     static string
@@ -40,16 +42,16 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
         {
             if (!IsPostBack)
             {
-                //SweetAlert.GetSweet(this.Page, "success", $"Sweet alert test", $"getting sweet alert", GetRouteUrl("CommonMaster_Route", new { Page = "Division" }));
+                //SweetAlert.GetSweet(this.Page, "success", $"Sweet alert test", $"getting sweet alert", GetRouteUrl("CommonMaster_Route", new { Page = "District" }));
 
                 if (Page.RouteData.Values["Page"] != null)
                 {
+                    ViewState["Operation"] = "INSERT";
+
                     Decide_Page();
                     Decide_Input_Fields();
                     Bind_Dropdown();
                     Bind_Grid();
-
-                    ViewState["Operation"] = "INSERT";
                 }
             }
         }
@@ -63,154 +65,252 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
     //================================ Page Type ========================================
     private void Decide_Page()
     {
-        Page_Heading.Text = "Division Master";
-        Main_Heading_1.Text = "Division Details";
-        Main_Heading_2.Text = "Division Records";
-
-        if (Page.RouteData.Values["Page"].ToString().Trim() == "Division")
+        try
         {
-            // Serial Number
-            Grid_Search.Columns[0].HeaderText = "Ser.No.";
+            if (Page.RouteData.Values["Page"].ToString().Trim() == "Division")
+            {
+                Page_Heading.Text = "Division Master";
+                Main_Heading_1.Text = "Division Details";
+                Main_Heading_2.Text = "Division Records";
 
-            // Main Table
-            Grid_Search.Columns[1].HeaderText = "Division ID";
-            Grid_Search.Columns[1].Visible = true;
-            Main_Table_Name = "M_Division";
-            Primary_Key_Column = "Division_ID";
+                // Serial Number
+                Grid_Search.Columns[0].HeaderText = "Ser.No.";
 
-            // Main Table Column 1
-            Grid_Search.Columns[2].HeaderText = "Division";
-            Is_Main_column_1_needed = true;
-            Main_Column_1_Text.Text = "Division Name";
-            Main_Column_1_Name = "DivisionName";
+                // Main Table
+                Grid_Search.Columns[1].HeaderText = "Division ID";
+                Grid_Search.Columns[1].Visible = true;
+                Main_Table_Name = "M_Division";
+                Primary_Key_Column = "Division_ID";
 
-            // Main Table Column 2
-            Grid_Search.Columns[3].HeaderText = "Division (Marathi)";
-            Is_Main_column_2_needed = true;
-            Main_Column_2_Text.Text = "Division (Marathi)";
-            Main_Column_2_Name = "DivisionNameMr";
+                // Main Table Column 1
+                Grid_Search.Columns[2].HeaderText = "Division";
+                Is_Main_column_1_needed = true;
+                Main_Column_1_Text.Text = "Division Name";
+                Main_Column_1_Name = "DivisionName";
 
-            // Main Table Column 3
-            Grid_Search.Columns[4].HeaderText = "Division Code";
-            Is_Main_column_3_needed = true;
-            Main_Column_3_Text.Text = "Division Code";
-            Main_Column_3_Name = "DivisionCode";
+                // Main Table Column 2
+                Grid_Search.Columns[3].HeaderText = "Division (Marathi)";
+                Is_Main_column_2_needed = true;
+                Main_Column_2_Text.Text = "Division (Marathi)";
+                Main_Column_2_Name = "DivisionNameMr";
 
-            // Foreign Table 1
-            Grid_Search.Columns[5].HeaderText = "State";
-            Is_Foreign_column_1_needed = true;
-            Foreign_Table_1_Name = "M_State";
-            Foreign_Table_1_Key_Text.Text = "State Name";
-            Foreign_Table_1_Column_Name = "StateName";
-            Foreign_Table_1_Key_Column = "State_ID";
+                // Main Table Column 3
+                Grid_Search.Columns[4].HeaderText = "Division Code";
+                Is_Main_column_3_needed = true;
+                Main_Column_3_Text.Text = "Division Code";
+                Main_Column_3_Name = "DivisionCode";
+
+                // Foreign Table 1
+                Grid_Search.Columns[5].HeaderText = "State";
+                Is_Foreign_column_1_needed = true;
+                Foreign_Table_1_Name = "M_State";
+                Foreign_Table_1_Key_Text.Text = "State Name";
+                Foreign_Table_1_Column_Name = "StateName";
+                Foreign_Table_1_Key_Column = "State_ID";
+
+                // Foreign Table 2
+                Grid_Search.Columns[6].HeaderText = "Division";
+                Is_Foreign_column_2_needed = false;
+                Is_Foreign_Dropdown_2_Is_Dependant_On_1 = false;
+                Foreign_Table_2_Name = "M_Division";
+                Foreign_Table_2_Key_Text.Text = "Division Name";
+                Foreign_Table_2_Column_Name = "DivisionName";
+                Foreign_Table_2_Key_Column = "Division_ID";
+
+                // Foreign Table 3
+                Grid_Search.Columns[7].HeaderText = "Division";
+                Is_Foreign_column_3_needed = false;
+                Is_Foreign_Dropdown_3_Is_Dependant_On_2 = false;
+                Foreign_Table_3_Name = "M_Division";
+                Foreign_Table_3_Key_Text.Text = "Division Name";
+                Foreign_Table_3_Column_Name = "DivisionName";
+                Foreign_Table_3_Key_Column = "Division_ID";
+            }
+            else if (Page.RouteData.Values["Page"].ToString().Trim() == "District")
+            {
+                Page_Heading.Text = "District Master";
+                Main_Heading_1.Text = "District Details";
+                Main_Heading_2.Text = "District Records";
+
+                // Serial Number
+                Grid_Search.Columns[0].HeaderText = "Ser.No.";
+
+                // Main Table
+                Grid_Search.Columns[1].HeaderText = "District ID";
+                Grid_Search.Columns[1].Visible = true;
+                Main_Table_Name = "M_District";
+                Primary_Key_Column = "District_ID";
+
+                // Main Table Column 1
+                Grid_Search.Columns[2].HeaderText = "District";
+                Is_Main_column_1_needed = true;
+                Main_Column_1_Text.Text = "District Name";
+                Main_Column_1_Name = "DistrictName";
+
+                // Main Table Column 2
+                Grid_Search.Columns[3].HeaderText = "District (Marathi)";
+                Is_Main_column_2_needed = true;
+                Main_Column_2_Text.Text = "District (Marathi)";
+                Main_Column_2_Name = "DistrictNameMr";
+
+                // Main Table Column 3
+                Grid_Search.Columns[4].HeaderText = "District Code";
+                Is_Main_column_3_needed = true;
+                Main_Column_3_Text.Text = "District Code";
+                Main_Column_3_Name = "DistrictCode";
+
+                // Foreign Table 1
+                Grid_Search.Columns[5].HeaderText = "State";
+                Is_Foreign_column_1_needed = true;
+                Foreign_Table_1_Name = "M_State";
+                Foreign_Table_1_Key_Text.Text = "State Name";
+                Foreign_Table_1_Column_Name = "StateName";
+                Foreign_Table_1_Key_Column = "State_ID";
+
+                // Foreign Table 2
+                Grid_Search.Columns[6].HeaderText = "Division";
+                Is_Foreign_column_2_needed = true;
+                Is_Foreign_Dropdown_2_Is_Dependant_On_1 = true;
+                Foreign_Table_2_Name = "M_Division";
+                Foreign_Table_2_Key_Text.Text = "Division Name";
+                Foreign_Table_2_Column_Name = "DivisionName";
+                Foreign_Table_2_Key_Column = "Division_ID";
+
+                // Foreign Table 3
+                Grid_Search.Columns[7].HeaderText = "Division";
+                Is_Foreign_column_3_needed = false;
+                Is_Foreign_Dropdown_3_Is_Dependant_On_2 = false;
+                Foreign_Table_3_Name = "M_Division";
+                Foreign_Table_3_Key_Text.Text = "Division Name";
+                Foreign_Table_3_Column_Name = "DivisionName";
+                Foreign_Table_3_Key_Column = "Division_ID";
+            }
+            else
+            {
+                // no page found, hiding the parent div for no UI and notification to user
+            }
+
+            // retaining the boolean values
+            ViewState["Is_Main_column_1_needed"] = Is_Main_column_1_needed;
+            ViewState["Is_Main_column_2_needed"] = Is_Main_column_2_needed;
+            ViewState["Is_Main_column_3_needed"] = Is_Main_column_3_needed;
+
+            ViewState["Is_Foreign_column_1_needed"] = Is_Foreign_column_1_needed;
+            ViewState["Is_Foreign_column_2_needed"] = Is_Foreign_column_2_needed;
+            ViewState["Is_Foreign_column_3_needed"] = Is_Foreign_column_3_needed;
+
+            ViewState["Main_Table_Name"] = Main_Table_Name;
+            ViewState["Primary_Key_Column"] = Primary_Key_Column;
+            ViewState["Main_Column_1_Name"] = Main_Column_1_Name;
+            ViewState["Main_Column_2_Name"] = Main_Column_2_Name;
+            ViewState["Main_Column_3_Name"] = Main_Column_3_Name;
+
+            ViewState["Foreign_Table_1_Name"] = Foreign_Table_1_Name;
+            ViewState["Foreign_Table_1_Key_Column"] = Foreign_Table_1_Key_Column;
+            ViewState["Foreign_Table_1_Column_Name"] = Foreign_Table_1_Column_Name;
+
+            ViewState["Foreign_Table_2_Name"] = Foreign_Table_2_Name;
+            ViewState["Foreign_Table_2_Key_Column"] = Foreign_Table_2_Key_Column;
+            ViewState["Foreign_Table_2_Column_Name"] = Foreign_Table_2_Column_Name;
+            ViewState["Is_Foreign_Dropdown_2_Is_Dependant_On_1"] = Is_Foreign_Dropdown_2_Is_Dependant_On_1;
+
+            ViewState["Foreign_Table_3_Name"] = Foreign_Table_3_Name;
+            ViewState["Foreign_Table_3_Key_Column"] = Foreign_Table_3_Key_Column;
+            ViewState["Foreign_Table_3_Column_Name"] = Foreign_Table_3_Column_Name;
+            ViewState["Is_Foreign_Dropdown_3_Is_Dependant_On_2"] = Is_Foreign_Dropdown_3_Is_Dependant_On_2;
         }
-
-        // retaining the boolean values
-        ViewState["Is_Main_column_1_needed"] = Is_Main_column_1_needed;
-        ViewState["Is_Main_column_2_needed"] = Is_Main_column_2_needed;
-        ViewState["Is_Main_column_3_needed"] = Is_Main_column_3_needed;
-
-        ViewState["Is_Foreign_column_1_needed"] = Is_Foreign_column_1_needed;
-        ViewState["Is_Foreign_column_2_needed"] = Is_Foreign_column_2_needed;
-        ViewState["Is_Foreign_column_3_needed"] = Is_Foreign_column_3_needed;
-
-        ViewState["Main_Table_Name"] = Main_Table_Name;
-        ViewState["Primary_Key_Column"] = Primary_Key_Column;
-        ViewState["Main_Column_1_Name"] = Main_Column_1_Name;
-        ViewState["Main_Column_2_Name"] = Main_Column_2_Name;
-        ViewState["Main_Column_3_Name"] = Main_Column_3_Name;
-
-        ViewState["Foreign_Table_1_Name"] = Foreign_Table_1_Name;
-        ViewState["Foreign_Table_1_Key_Column"] = Foreign_Table_1_Key_Column;
-        ViewState["Foreign_Table_1_Column_Name"] = Foreign_Table_1_Column_Name;
-
-        ViewState["Foreign_Table_2_Name"] = Foreign_Table_2_Name;
-        ViewState["Foreign_Table_2_Key_Column"] = Foreign_Table_2_Key_Column;
-        ViewState["Foreign_Table_2_Column_Name"] = Foreign_Table_2_Column_Name;
-
-        ViewState["Foreign_Table_3_Name"] = Foreign_Table_3_Name;
-        ViewState["Foreign_Table_3_Key_Column"] = Foreign_Table_3_Key_Column;
-        ViewState["Foreign_Table_3_Column_Name"] = Foreign_Table_3_Column_Name;
+        catch (Exception ex)
+        {
+            SweetAlert.GetSweet(this.Page, "error", "", $"{ex.Message}");
+        }
     }
+
 
     private void Decide_Input_Fields()
     {
-        if (Is_Main_column_1_needed) // Main Table Column 1
+        try
         {
-            Div_Main_Table_Column_1.Visible = true;
-            RFV_Main_Table_Column_1.Enabled = true;
-            Grid_Search.Columns[2].Visible = true;
-        }
-        else
-        {
-            Div_Main_Table_Column_1.Visible = false;
-            RFV_Main_Table_Column_1.Enabled = false;
-            Grid_Search.Columns[2].Visible = false;
-        }
+            if (Is_Main_column_1_needed) // Main Table Column 1
+            {
+                Div_Main_Table_Column_1.Visible = true;
+                RFV_Main_Table_Column_1.Enabled = true;
+                Grid_Search.Columns[2].Visible = true;
+            }
+            else
+            {
+                Div_Main_Table_Column_1.Visible = false;
+                RFV_Main_Table_Column_1.Enabled = false;
+                Grid_Search.Columns[2].Visible = false;
+            }
 
-        if (Is_Main_column_2_needed) // Main Table Column 2
-        {
-            Div_Main_Table_Column_2.Visible = true;
-            RFV_Main_Table_Column_2.Enabled = true;
-            Grid_Search.Columns[3].Visible = true;
-        }
-        else
-        {
-            Div_Main_Table_Column_2.Visible = false;
-            RFV_Main_Table_Column_2.Enabled = false;
-            Grid_Search.Columns[3].Visible = false;
-        }
+            if (Is_Main_column_2_needed) // Main Table Column 2
+            {
+                Div_Main_Table_Column_2.Visible = true;
+                RFV_Main_Table_Column_2.Enabled = true;
+                Grid_Search.Columns[3].Visible = true;
+            }
+            else
+            {
+                Div_Main_Table_Column_2.Visible = false;
+                RFV_Main_Table_Column_2.Enabled = false;
+                Grid_Search.Columns[3].Visible = false;
+            }
 
-        if (Is_Main_column_3_needed) // Main Table Column 3
-        {
-            Div_Main_Table_Column_3.Visible = true;
-            RFV_Main_Table_Column_3.Enabled = true;
-            Grid_Search.Columns[4].Visible = true;
-        }
-        else
-        {
-            Div_Main_Table_Column_3.Visible = false;
-            RFV_Main_Table_Column_3.Enabled = false;
-            Grid_Search.Columns[4].Visible = false;
-        }
+            if (Is_Main_column_3_needed) // Main Table Column 3
+            {
+                Div_Main_Table_Column_3.Visible = true;
+                RFV_Main_Table_Column_3.Enabled = true;
+                Grid_Search.Columns[4].Visible = true;
+            }
+            else
+            {
+                Div_Main_Table_Column_3.Visible = false;
+                RFV_Main_Table_Column_3.Enabled = false;
+                Grid_Search.Columns[4].Visible = false;
+            }
 
-        if (Is_Foreign_column_1_needed) // Foreign Table 1
-        {
-            Div_Foriegn_DD_1.Visible = true;
-            RFV_DD_Foreign_Column_1.Enabled = true;
-            Grid_Search.Columns[5].Visible = true;
-        }
-        else
-        {
-            Div_Foriegn_DD_1.Visible = false;
-            RFV_DD_Foreign_Column_1.Enabled = false;
-            Grid_Search.Columns[5].Visible = false;
-        }
+            if (Is_Foreign_column_1_needed) // Foreign Table 1
+            {
+                Div_Foriegn_DD_1.Visible = true;
+                RFV_DD_Foreign_Column_1.Enabled = true;
+                Grid_Search.Columns[5].Visible = true;
+            }
+            else
+            {
+                Div_Foriegn_DD_1.Visible = false;
+                RFV_DD_Foreign_Column_1.Enabled = false;
+                Grid_Search.Columns[5].Visible = false;
+            }
 
-        if (Is_Foreign_column_2_needed) // Foreign Table 2
-        {
-            Div_Foriegn_DD_2.Visible = true;
-            RFV_DD_Foreign_Column_2.Enabled = true;
-            Grid_Search.Columns[6].Visible = true;
-        }
-        else
-        {
-            Div_Foriegn_DD_2.Visible = false;
-            RFV_DD_Foreign_Column_2.Enabled = false;
-            Grid_Search.Columns[6].Visible = false;
-        }
+            if (Is_Foreign_column_2_needed) // Foreign Table 2
+            {
+                Div_Foriegn_DD_2.Visible = true;
+                RFV_DD_Foreign_Column_2.Enabled = true;
+                Grid_Search.Columns[6].Visible = true;
+            }
+            else
+            {
+                Div_Foriegn_DD_2.Visible = false;
+                RFV_DD_Foreign_Column_2.Enabled = false;
+                Grid_Search.Columns[6].Visible = false;
+            }
 
-        if (Is_Foreign_column_3_needed) // Foreign Table 3
-        {
-            Div_Foriegn_DD_3.Visible = true;
-            RFV_DD_Foreign_Column_3.Enabled = true;
-            Grid_Search.Columns[7].Visible = true;
+            if (Is_Foreign_column_3_needed) // Foreign Table 3
+            {
+                Div_Foriegn_DD_3.Visible = true;
+                RFV_DD_Foreign_Column_3.Enabled = true;
+                Grid_Search.Columns[7].Visible = true;
+            }
+            else
+            {
+                Div_Foriegn_DD_3.Visible = false;
+                RFV_DD_Foreign_Column_3.Enabled = false;
+                Grid_Search.Columns[7].Visible = false;
+            }
         }
-        else
+        catch (Exception ex)
         {
-            Div_Foriegn_DD_3.Visible = false;
-            RFV_DD_Foreign_Column_3.Enabled = false;
-            Grid_Search.Columns[7].Visible = false;
+            SweetAlert.GetSweet(this.Page, "error", "", $"{ex.Message}");
         }
     }
 
@@ -220,17 +320,65 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
 
     private void Bind_Dropdown()
     {
-        sqlQuery = $@"Select {Foreign_Table_1_Key_Column} as ID, {Foreign_Table_1_Column_Name} as Value 
+        try
+        {
+            if (Is_Foreign_column_1_needed)
+            {
+                sqlQuery = $@"Select {Foreign_Table_1_Key_Column} as ID, {Foreign_Table_1_Column_Name} as Value 
                       From {Foreign_Table_1_Name} 
                       Where IsDeleted IS NULL 
                       Order By {Foreign_Table_1_Column_Name}";
 
-        parameters = new Dictionary<string, object>
-        {
-            //{ "@Bank_ID", DD_Bank_Master.SelectedValue },
-        };
+                parameters = new Dictionary<string, object> { /*{ "@Bank_ID", DD_Bank_Master.SelectedValue },*/ };
+                executeClass.Bind_Dropdown_Generic(DD_Foriegn_Column_1, sqlQuery, "Value", "ID", parameters);
+            }
 
-        executeClass.Bind_Dropdown_Generic(DD_Foriegn_Column_1, sqlQuery, "Value", "ID", parameters);
+            if (Is_Foreign_column_2_needed)
+            {
+                if (Is_Foreign_Dropdown_2_Is_Dependant_On_1)
+                {
+                    sqlQuery = $@"Select {Foreign_Table_2_Key_Column} as ID, {Foreign_Table_2_Column_Name} as Value 
+                              From {Foreign_Table_2_Name} 
+                              Where {Foreign_Table_1_Key_Column} = {DD_Foriegn_Column_1.SelectedValue} AND IsDeleted IS NULL 
+                              Order By {Foreign_Table_2_Column_Name}";
+                }
+                else
+                {
+                    sqlQuery = $@"Select {Foreign_Table_2_Key_Column} as ID, {Foreign_Table_2_Column_Name} as Value 
+                                From {Foreign_Table_2_Name} 
+                                Where IsDeleted IS NULL 
+                                Order By {Foreign_Table_2_Column_Name}";
+                }
+
+                parameters = new Dictionary<string, object> { /*{ "@Bank_ID", DD_Bank_Master.SelectedValue },*/ };
+                executeClass.Bind_Dropdown_Generic(DD_Foriegn_Column_2, sqlQuery, "Value", "ID", parameters);
+            }
+
+            if (Is_Foreign_column_3_needed)
+            {
+                if (Is_Foreign_Dropdown_3_Is_Dependant_On_2)
+                {
+                    sqlQuery = $@"Select {Foreign_Table_3_Key_Column} as ID, {Foreign_Table_3_Column_Name} as Value 
+                          From {Foreign_Table_3_Name} 
+                          Where {Foreign_Table_2_Key_Column} = {DD_Foriegn_Column_2.SelectedValue} AND IsDeleted IS NULL 
+                          Order By {Foreign_Table_3_Column_Name}";
+                }
+                else
+                {
+                    sqlQuery = $@"Select {Foreign_Table_3_Key_Column} as ID, {Foreign_Table_3_Column_Name} as Value 
+                          From {Foreign_Table_3_Name} 
+                          Where IsDeleted IS NULL 
+                          Order By {Foreign_Table_3_Column_Name}";
+                }
+
+                parameters = new Dictionary<string, object> { /*{ "@Bank_ID", DD_Bank_Master.SelectedValue },*/ };
+                executeClass.Bind_Dropdown_Generic(DD_Foriegn_Column_3, sqlQuery, "Value", "ID", parameters);
+            }
+        }
+        catch (Exception ex)
+        {
+            SweetAlert.GetSweet(this.Page, "error", "", $"{ex.Message}");
+        }
     }
 
 
@@ -239,17 +387,80 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
     //================================ Dropdown Event ========================================
     protected void DD_Foriegn_Column_1_SelectedIndexChanged(object sender, EventArgs e)
     {
-        Bind_Grid();
+        try
+        {
+            Is_Foreign_Dropdown_2_Is_Dependant_On_1 = (bool)ViewState["Is_Foreign_Dropdown_2_Is_Dependant_On_1"];
+
+            if (Is_Foreign_Dropdown_2_Is_Dependant_On_1)
+            {
+                if (DD_Foriegn_Column_1.SelectedIndex > 0)
+                {
+                    sqlQuery = $@"Select {Foreign_Table_2_Key_Column} as ID, {Foreign_Table_2_Column_Name} as Value 
+                        From {Foreign_Table_2_Name} 
+                        Where {Foreign_Table_1_Key_Column} = {DD_Foriegn_Column_1.SelectedValue} AND IsDeleted IS NULL 
+                        Order By {Foreign_Table_2_Column_Name}";
+
+                    parameters = new Dictionary<string, object> { /*{ "@Bank_ID", DD_Bank_Master.SelectedValue },*/ };
+                    executeClass.Bind_Dropdown_Generic(DD_Foriegn_Column_2, sqlQuery, "Value", "ID", parameters);
+                }
+                else
+                {
+                    DD_Foriegn_Column_2.ClearSelection();
+                    DD_Foriegn_Column_2.Items.Clear();
+                }
+            }
+
+            Bind_Grid();
+        }
+        catch (Exception ex)
+        {
+            SweetAlert.GetSweet(this.Page, "error", "", $"{ex.Message}");
+        }
     }
 
     protected void DD_Foriegn_Column_2_SelectedIndexChanged(object sender, EventArgs e)
     {
-        Bind_Grid();
+        try
+        {
+            Is_Foreign_Dropdown_3_Is_Dependant_On_2 = (bool)ViewState["Is_Foreign_Dropdown_3_Is_Dependant_On_2"];
+
+            if (Is_Foreign_Dropdown_3_Is_Dependant_On_2)
+            {
+                if (DD_Foriegn_Column_2.SelectedIndex > 0)
+                {
+                    sqlQuery = $@"Select {Foreign_Table_3_Key_Column} as ID, {Foreign_Table_3_Column_Name} as Value 
+                      From {Foreign_Table_3_Name} 
+                      Where {Foreign_Table_2_Key_Column} = {DD_Foriegn_Column_2.SelectedValue} AND IsDeleted IS NULL 
+                      Order By {Foreign_Table_3_Column_Name}";
+
+                    parameters = new Dictionary<string, object> { /*{ "@Bank_ID", DD_Bank_Master.SelectedValue },*/ };
+                    executeClass.Bind_Dropdown_Generic(DD_Foriegn_Column_2, sqlQuery, "Value", "ID", parameters);
+                }
+                else
+                {
+                    DD_Foriegn_Column_3.ClearSelection();
+                    DD_Foriegn_Column_3.Items.Clear();
+                }
+            }
+
+            Bind_Grid();
+        }
+        catch (Exception ex)
+        {
+            SweetAlert.GetSweet(this.Page, "error", "", $"{ex.Message}");
+        }
     }
 
     protected void DD_Foriegn_Column_3_SelectedIndexChanged(object sender, EventArgs e)
     {
-        Bind_Grid();
+        try
+        {
+            Bind_Grid();
+        }
+        catch (Exception ex)
+        {
+            SweetAlert.GetSweet(this.Page, "error", "", $"{ex.Message}");
+        }
     }
 
 
@@ -327,6 +538,18 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
                 Grid_Search.DataBind();
                 ViewState["Grid_Common_DT"] = null;
             }
+
+            if (ViewState["Operation"].ToString() == "UPDATE" && Btn_Submit.Text == "Update")
+            {
+                // clearing user inputs
+                DD_Foriegn_Column_1.ClearSelection();
+                DD_Foriegn_Column_2.ClearSelection();
+                DD_Foriegn_Column_3.ClearSelection();
+                Input_Main_Column_1.Text = string.Empty;
+                Input_Main_Column_2.Text = string.Empty;
+                Input_Main_Column_3.Text = string.Empty;
+                Btn_Submit.Text = "Save";
+            }
         }
         catch (Exception ex)
         {
@@ -362,6 +585,8 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
                 masterClass.Select_Item_In_DropDown(DD_Foriegn_Column_1, dt.Rows[0]["ID"].ToString());
             }
 
+            DD_Foriegn_Column_1_SelectedIndexChanged(null, null);
+
             // Foreign Dropdown 2
             string sqlQuery_Foriegn_Table_2 = $@"
                     SELECT {Foreign_Table_2_Key_Column} AS ID
@@ -374,6 +599,8 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
                 masterClass.Select_Item_In_DropDown(DD_Foriegn_Column_2, dt.Rows[0]["ID"].ToString());
             }
 
+            DD_Foriegn_Column_2_SelectedIndexChanged(null, null);
+
             // Foreign Dropdown 3
             string sqlQuery_Foriegn_Table_3 = $@"
                     SELECT {Foreign_Table_3_Key_Column} AS ID
@@ -385,6 +612,58 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
                 DD_Foriegn_Column_3.ClearSelection();
                 masterClass.Select_Item_In_DropDown(DD_Foriegn_Column_3, dt.Rows[0]["ID"].ToString());
             }
+
+            DD_Foriegn_Column_3_SelectedIndexChanged(null, null);
+
+
+            //// Foreign Dropdown 1
+            //if (Is_Foreign_column_1_needed)
+            //{
+            //    string sqlQuery_Foriegn_Table_1 = $@"
+            //        SELECT {Foreign_Table_1_Key_Column} AS ID
+            //        FROM {Main_Table_Name} 
+            //        WHERE {Main_Table_Name}.{Primary_Key_Column} = {Primary_Key}";
+            //    dt = executeClass.Get_Datatable(sqlQuery_Foriegn_Table_1);
+            //    if (dt != null && dt.Rows.Count > 0)
+            //    {
+            //        DD_Foriegn_Column_1.ClearSelection();
+            //        masterClass.Select_Item_In_DropDown(DD_Foriegn_Column_1, dt.Rows[0]["ID"].ToString());
+            //    }
+            //}
+
+            //// Foreign Dropdown 2
+            //if (Is_Foreign_column_2_needed)
+            //{
+            //    DD_Foriegn_Column_1_SelectedIndexChanged(null, null);
+
+            //    string sqlQuery_Foriegn_Table_2 = $@"
+            //        SELECT {Foreign_Table_2_Key_Column} AS ID
+            //        FROM {Main_Table_Name} 
+            //        WHERE {Main_Table_Name}.{Primary_Key_Column} = {Primary_Key}";
+            //    dt = executeClass.Get_Datatable(sqlQuery_Foriegn_Table_2);
+            //    if (dt != null && dt.Rows.Count > 0)
+            //    {
+            //        DD_Foriegn_Column_2.ClearSelection();
+            //        masterClass.Select_Item_In_DropDown(DD_Foriegn_Column_2, dt.Rows[0]["ID"].ToString());
+            //    }
+            //}
+
+            //// Foreign Dropdown 3
+            //if (Is_Foreign_column_3_needed)
+            //{
+            //    DD_Foriegn_Column_2_SelectedIndexChanged(null, null);
+
+            //    string sqlQuery_Foriegn_Table_3 = $@"
+            //        SELECT {Foreign_Table_3_Key_Column} AS ID
+            //        FROM {Main_Table_Name} 
+            //        WHERE {Main_Table_Name}.{Primary_Key_Column} = {Primary_Key}";
+            //    dt = executeClass.Get_Datatable(sqlQuery_Foriegn_Table_3);
+            //    if (dt != null && dt.Rows.Count > 0)
+            //    {
+            //        DD_Foriegn_Column_3.ClearSelection();
+            //        masterClass.Select_Item_In_DropDown(DD_Foriegn_Column_3, dt.Rows[0]["ID"].ToString());
+            //    }
+            //}
 
             Btn_Submit.Text = "Update";
             ViewState["Operation"] = "UPDATE";
@@ -424,7 +703,7 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
     //================================ Save / Update Button Event ========================================
     protected void Btn_Reset_Click(object sender, EventArgs e)
     {
-        string redirectURL = GetRouteUrl("CommonMaster_Route", new { Page = "Division" });
+        string redirectURL = GetRouteUrl("CommonMaster_Route", new { Page = "District" });
         Response.Redirect(redirectURL);
     }
 

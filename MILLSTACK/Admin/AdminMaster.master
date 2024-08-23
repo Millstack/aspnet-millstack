@@ -40,6 +40,43 @@
     <script src="masterpage.js"></script>
     <link rel="stylesheet" href="masterpage.css" />
 
+    <style>
+        .chosen-container .chosen-drop .chosen-results li {
+            padding: 10px 5px; /* Increase padding for thicker dropdown items */
+        }
+
+        .chosen-container .chosen-single {
+            height: 35px; /* Increase height of the chosen dropdown */
+            line-height: 35px; /* Align text vertically */
+            border-radius: 1px; /* chosen UI border roundness */
+            border: 1px solid #ccc; /* chosen UI border color */
+            background-color: #f00 !important;
+        }
+
+            .chosen-container .chosen-single div b {
+                margin-top: 35%; /* Adjust arrow position */
+            }
+
+            .chosen-container .chosen-single abbr {
+                top: 35%; /* Adjust clear button position */
+                right: 25px; /* Adjust clear button position to the right */
+            }
+
+        .chosen-container .chosen-drop {
+            border-radius: 5px; /* Round edges for the dropdown menu */
+            background-color: #fff; /* Background color of the dropdown menu */
+            border: 1px solid #0094ff; /* Border color of the dropdown menu */
+        }
+
+        .chosen-container .chosen-search input[type="text"] {
+            margin-top: 5px; /* search box margin from top */
+            border-radius: 10px; /* Round edges for the search input */
+            border: 1px solid #808080; /* Border color of the search input */
+            padding-left: 10px; /* search box text padding to left */
+            background-color: #fff; /* search box background color */
+        }
+    </style>
+
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 </head>
@@ -247,7 +284,7 @@
             });
         });
 
-       
+
     </script>
 
 </body>
