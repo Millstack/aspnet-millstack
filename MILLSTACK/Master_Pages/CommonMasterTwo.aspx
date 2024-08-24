@@ -33,7 +33,7 @@
             }
 
             .grid-pager a {
-                background-color: #ffffff; 
+                background-color: #ffffff;
                 transition: background-color 0.3s ease;
             }
 
@@ -162,9 +162,15 @@
             <!-- Control Main Section Ends -->
 
             <!-- Submit Button UI Starts -->
-            <div class="row mt-5 mb-2">
-                <div class="col-md-4 text-start"></div>
-                <div class="col-md-4 text-start"></div>
+            <div class="row mt-5 mb-2 align-self-end">
+                <div class="col-md-2 mb-1 fw-semibold fs-6 align-middle text-center">
+                    <asp:Literal ID="Search_Text" runat="server" Text="Search Division Name"></asp:Literal>
+                </div>
+                <div class="col-md-6 text-start">
+                    <asp:TextBox runat="server" ID="Input_Search_" type="text" Enabled="true"
+                        CssClass="form-control border border-secondary-subtle bg-light rounded-1 fs-6 fw-light py-1"
+                        placeholder="" oninput=""></asp:TextBox>
+                </div>
                 <div class="col-md-2 text-end">
                     <asp:Button ID="Btn_Reset" runat="server" Text="Reset" OnClick="Btn_Reset_Click"
                         CssClass="btn col-md-8 text-white shadow rounded-0" Style="background: #0f3f6f; color: #fff" />
@@ -191,7 +197,8 @@
             </div>
 
             <div id="Div_Grid_Search" visible="true" runat="server" style="position: relative; overflow: hidden; width: auto; height: 580px;">
-                <div class="card-body pt-0 slimScroll" data-height="580" style="overflow: auto; width: auto; height: 580px;">
+                <div class="card-body border border-dark-subtle bg-light p-2 rounded-2 shadow" data-height="580" style="overflow: auto; width: auto; height: 580px;">
+
 
                     <asp:GridView ID="Grid_Search" runat="server" ShowHeaderWhenEmpty="false" AutoGenerateColumns="false" Width="100%" SelectedRowStyle-BackColor="#F3F3F3"
                         DataKeyNames="ID" OnSelectedIndexChanged="Grid_Search_SelectedIndexChanged" OnRowDeleting="Grid_Search_RowDeleting"
@@ -227,15 +234,15 @@
                             </asp:BoundField>
 
                             <asp:BoundField DataField="Foreign_Column_1" Visible="true" HeaderText="Foreign_Column_1">
-                                <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="fw-normal" />
+                                <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="fw-bold text-body-secondary text-bg-light" />
                             </asp:BoundField>
 
                             <asp:BoundField DataField="Foreign_Column_2" Visible="true" HeaderText="Foreign_Column_2">
-                                <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="fw-normal" />
+                                <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="fw-bold text-body-secondary text-bg-light" />
                             </asp:BoundField>
 
                             <asp:BoundField DataField="Foreign_Column_3" Visible="true" HeaderText="Foreign_Column_3">
-                                <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="fw-normal" />
+                                <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="fw-bold text-body-secondary text-bg-light" />
                             </asp:BoundField>
 
                             <asp:BoundField DataField="DummyColumn" Visible="false" HeaderText="DummyColumn">
@@ -277,6 +284,7 @@
                         <PagerStyle CssClass="grid-pager" />
 
                     </asp:GridView>
+
                 </div>
                 <div class="slimScrollBar" style="background: rgba(0, 0, 0, 0.95); width: 5px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 73.2899px;"></div>
                 <div class="slimScrollRail" style="width: 5px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
@@ -296,6 +304,88 @@
                 input.value = value.slice(0, -1); // Remove the last invalid character
             }
         }
+
+        function Initialize_DataTables_By_ID(GridView_ID) {
+            $(GridView_ID).each(function () {
+                var $this = $(this);
+                $this.prepend(
+                    $("<thead></thead>").append(
+                        $this.find("tr:first")
+                    )
+                ).DataTable({
+                    scrollX: false,
+                    sScrollXInner: "100%",
+                    bFilter: true,
+                    bSort: true,
+                    bPaginate: true,
+                    scrollCollapse: false,
+                    paging: true,
+                    searching: true,
+                    ordering: true,
+                    info: true,
+                    lengthChange: true,
+                    responsive: true,
+                    pagingType: 'full_numbers',
+                    lengthMenu: [
+                        [10, 20, 25, 50, -1],
+                        [10, 20, 25, 50, "All"]
+                    ],
+                    search: {
+                        return: false
+                    },
+                    language: {
+                        search: "Search: ",
+                        decimal: ',',
+                        thousands: '.'
+                    },
+                    initComplete: function () {
+                        $('.dataTables_filter input').attr('placeholder', 'Search here......');
+                    },
+                    dom: '<"top"lfB>rt<"bottom"ip><"clear">', // Configure DOM for buttons and entries (initial value - Bfrtip)
+                    buttons: [
+                        //'copy', 'csv', 'excel', 'pdf', 'print' // Add export buttons
+                        {
+                            extend: 'copy',
+                            title: 'Customer Data',
+                            filename: 'Customer_Data_Copy'
+                        },
+                        {
+                            extend: 'csv',
+                            title: 'Customer Data',
+                            filename: 'Customer Data'
+                        },
+                        {
+                            extend: 'excel',
+                            title: 'Customer Data',
+                            filename: 'Customer Data'
+                        },
+                        {
+                            extend: 'pdf',
+                            title: 'Customer Data',
+                            filename: 'Customer Data'
+                        },
+                        {
+                            extend: 'print',
+                            title: 'Customer Data'
+                        }
+                    ]
+                });
+            });
+        }
+
+        $(document).ready(function () {
+
+            //Initialize_DataTables_By_ID("#main_Grid_Search");
+
+            var prm = Sys.WebForms.PageRequestManager.getInstance();
+            prm.add_endRequest(function () {
+                setTimeout(function () {
+
+                    //Initialize_DataTables_By_ID("#main_Grid_Search");
+
+                }, 0);
+            });
+        });
     </script>
 
 </asp:Content>

@@ -54,6 +54,11 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
                     Bind_Grid();
                 }
             }
+            else
+            {
+                // Call on every postback to handle the search
+                //Bind_Grid(); 
+            }
         }
         catch (Exception ex)
         {
@@ -578,6 +583,8 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
                     {(DD_Foriegn_Column_2.SelectedIndex > 0 ? $@" AND {Foreign_Table_2_Name}.{Foreign_Table_2_Key_Column} = {DD_Foriegn_Column_2.SelectedValue}" : "")}
                     {(DD_Foriegn_Column_3.SelectedIndex > 0 ? $@" AND {Foreign_Table_3_Name}.{Foreign_Table_3_Key_Column} = {DD_Foriegn_Column_3.SelectedValue}" : "")}
                     ORDER BY {Main_Table_Name}.{Main_Column_1_Name}";
+
+            //{ (Input_Search.Text.Trim().Length > 0 ? $@" AND {Main_Table_Name}.{Main_Column_1_Name} LIKE '%{Input_Search.Text.Trim()}%'" : "")}
 
             Dictionary<string, object> parameters = new Dictionary<string, object>()
             {
