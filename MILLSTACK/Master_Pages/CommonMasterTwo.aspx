@@ -57,7 +57,7 @@
     </div>
 
     <!-- Control Starts -->
-    <div class="card col-md-11 mx-auto mt-1 py-2 shadow rounded-3">
+    <div id="Div_Control" runat="server" class="card col-md-11 mx-auto mt-1 py-2 shadow rounded-3">
         <div class="card-body">
 
             <!-- Heading - BG -->
@@ -164,12 +164,12 @@
             <!-- Submit Button UI Starts -->
             <div class="row mt-5 mb-2 align-self-end">
                 <div class="col-md-2 mb-1 fw-semibold fs-6 align-middle text-center">
-                    <asp:Literal ID="Search_Text" runat="server" Text="Search Division Name"></asp:Literal>
+                    <%--<asp:Literal ID="Search_Text" runat="server" Text="Search Division Name"></asp:Literal>--%>
                 </div>
                 <div class="col-md-6 text-start">
-                    <asp:TextBox runat="server" ID="Input_Search_" type="text" Enabled="true"
+                    <%--<asp:TextBox runat="server" ID="Input_Search_" type="text" Enabled="true"
                         CssClass="form-control border border-secondary-subtle bg-light rounded-1 fs-6 fw-light py-1"
-                        placeholder="" oninput=""></asp:TextBox>
+                        placeholder="" oninput=""></asp:TextBox>--%>
                 </div>
                 <div class="col-md-2 text-end">
                     <asp:Button ID="Btn_Reset" runat="server" Text="Reset" OnClick="Btn_Reset_Click"
@@ -188,7 +188,7 @@
 
 
     <!-- Grid UI Starts -->
-    <div class="card col-md-11 mx-auto my-5 py-2 shadow rounded-3">
+    <div id="Div_Grid" runat="server" class="card col-md-11 mx-auto my-5 py-2 shadow rounded-3">
         <div class="card-body">
 
             <!-- Heading - BG -->
@@ -202,7 +202,7 @@
 
                     <asp:GridView ID="Grid_Search" runat="server" ShowHeaderWhenEmpty="false" AutoGenerateColumns="false" Width="100%" SelectedRowStyle-BackColor="#F3F3F3"
                         DataKeyNames="ID" OnSelectedIndexChanged="Grid_Search_SelectedIndexChanged" OnRowDeleting="Grid_Search_RowDeleting"
-                        AllowPaging="true" OnPageIndexChanging="Grid_Search_PageIndexChanging" PageSize="10"
+                        AllowPaging="false" OnPageIndexChanging="Grid_Search_PageIndexChanging" PageSize="10"
                         CssClass="datatables table table-bordered table-hover border border-1 border-dark-subtle shadow text-center grid-custom">
                         <HeaderStyle CssClass="" />
                         <Columns>
@@ -375,13 +375,13 @@
 
         $(document).ready(function () {
 
-            //Initialize_DataTables_By_ID("#main_Grid_Search");
+            Initialize_DataTables_By_ID("#main_Grid_Search");
 
             var prm = Sys.WebForms.PageRequestManager.getInstance();
             prm.add_endRequest(function () {
                 setTimeout(function () {
 
-                    //Initialize_DataTables_By_ID("#main_Grid_Search");
+                    Initialize_DataTables_By_ID("#main_Grid_Search");
 
                 }, 0);
             });

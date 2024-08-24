@@ -3,9 +3,8 @@
 ### Database: *MillStack*
 
 
-### Master Schemas
+### User Management
 ----------------------
-
 
 ## User Mater
 ```
@@ -47,12 +46,48 @@ CREATE TABLE M_UserMaster (
 ```
 
 
+# Role Master
+```
+CREATE TABLE M_RoleMaster (
+	Role_ID BIGINT PRIMARY KEY,
+	RoleName NVARCHAR(1000) NOT NULL,
+	RoleNameMr NVARCHAR(1000) NOT NULL,
+	RoleCode NVARCHAR(100) NOT NULL,
+    SavedBy VARCHAR(1000) NOT NULL,
+    SavedOn DATETIME DEFAULT GETDATE() NOT NULL,
+	IsDeleted BIT NULL
+);
+```
+
+
+# User Role Master
+```
+CREATE TABLE MAP_UserRole (
+	UserRole_ID BIGINT PRIMARY KEY,
+	User_ID BIGINT NOT NULL,
+	Role_ID BIGINT NOT NULL,
+    SavedBy VARCHAR(1000) NOT NULL,
+    SavedOn DATETIME DEFAULT GETDATE() NOT NULL,
+	IsDeleted BIT NULL
+);
+```
+
+
+
+
+
+
+
+### Geographical Masters
+----------------------
+
 # Country
 ```
 CREATE TABLE M_Country (
     Country_ID BIGINT PRIMARY KEY,
 	CountryName NVARCHAR(1000) NOT NULL,
-	CountryNameMr NVARCHAR(1000) NOT NULL,
+	CountryNameMr NVARCHAR(1000) NULL,
+	CountryCode NVARCHAR(20) NOT NULL,
     SavedBy VARCHAR(1000) NOT NULL,
     SavedOn DATETIME DEFAULT GETDATE() NOT NULL,
 	IsDeleted BIT NULL
@@ -121,6 +156,8 @@ CREATE TABLE M_Taluka (
 	IsDeleted BIT NULL
 );
 ```
+
+
 
 
 
