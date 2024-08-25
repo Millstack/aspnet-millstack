@@ -6,42 +6,39 @@
 <head runat="server">
     <title>Login</title>
 
-    <!-- Boottrap CSS -->
-    <link href="../assests/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="../assests/css/bootstrap1.min.css" rel="stylesheet" />
+    <!-- CSS -->
+    <link href="<%= ResolveUrl("../assets/components/bootstrap/css/bootstrap.min_v5.3.3.css") %>" rel="stylesheet" />
+    <link href="<%= ResolveUrl("../assets/components/select2/select2.min_v4.0.13.css") %>" rel="stylesheet" />
+    <link href="<%= ResolveUrl("../assets/components/sweet-alert/sweetalert2.min_v11.11.css") %>" rel="stylesheet" />
+    <link href="<%= ResolveUrl("../assets/components/chosen_v1.8.7/chosen.min.css") %>" rel="stylesheet" />
+    <link href="<%= ResolveUrl("../assets/components/sumo-select/sumoselect.min_v3.0.3.css") %>" rel="stylesheet" />
 
-    <!-- Bootstrap JS -->
-    <script src="../assests/js/bootstrap.bundle.min.js"></script>
-    <script src="../assests/js/bootstrap1.min.js"></script>
+    <!-- JavaScript -->
+    <script src="<%= ResolveUrl("../assets/components/bootstrap/js/bootstrap.bundle.min_v5.3.3.js") %>"></script>
+    <script src="<%= ResolveUrl("../assets/components/bootstrap/js/bootstrap.min_v5.3.3.js") %>"></script>
+    <script src="<%= ResolveUrl("../assets/components/bootstrap/js/popper.min_v2.11.8.js") %>"></script>
+    <script src="<%= ResolveUrl("../assets/components/jquery/jquery_3.7.1.js") %>"></script>
+    <script src="<%= ResolveUrl("../assets/components/jquery/jquery_3.7.1.min.js") %>"></script>
+    <script src="<%= ResolveUrl("../assets/components/sweet-alert/sweetalert2_v11.11.js") %>"></script>
+    <script src="<%= ResolveUrl("../assets/components/select2/select2.min_v4.0.13.js") %>"></script>
+    <script src="<%= ResolveUrl("../assets/components/chosen_v1.8.7/chosen.jquery.min.js") %>"></script>
+    <script src="<%= ResolveUrl("../assets/components/sumo-select/jquery.sumoselect.min_v3.0.3.js") %>"></script>
 
-    <!-- Popper.js -->
-    <script src="../assests/js/popper.min.js"></script>
-    <script src="../assests/js/popper1.min.js"></script>
-
-    <!-- jQuery -->
-    <script src="../assests/js/jquery-3.6.0.min.js"></script>
-    <script src="../assests/js/jquery.min.js"></script>
-    <script src="../assests/js/jquery-3.3.1.slim.min.js"></script>
-
-    <!-- Select2 library CSS and JS -->
-    <link href="../assests/select2/select2.min.css" rel="stylesheet" />
-    <script src="../assests/select2/select2.min.js"></script>
-
-    <!-- Sweet Alert CSS and JS -->
-    <link href="../assests/sweertalert/sweetalert2.min.css" rel="stylesheet" />
-    <script src="../assests/sweertalert/sweetalert2.all.min.js"></script>
-
-    <!-- Sumo Select CSS and JS -->
-    <link href="../assests/sumoselect/sumoselect.min.css" rel="stylesheet" />
-    <script src="../assests/sumoselect/jquery.sumoselect.min.js"></script>
-
-    <!-- DataTables CSS & JS -->
-    <link href="../assests/DataTables/datatables.min.css" rel="stylesheet" />
-    <script src="../assests/DataTables/datatables.min.js"></script>
+    <!-- DataTables CSS -->
+    <link href="<%= ResolveUrl("../assets/components/datatables/datatables.min.css") %>" rel="stylesheet" />
+    <!-- DataTables - Button Extension CSS -->
+    <link href="<%= ResolveUrl("../assets/components/datatables/Buttons-2.4.2/css/buttons.dataTables.min.css") %>" rel="stylesheet" />
+    <!-- DataTables JS -->
+    <script src="<%= ResolveUrl("../assets/components/datatables/datatables.min.js") %>"></script>
+    <!-- DataTables - Button Extension JS -->
+    <script src="<%= ResolveUrl("../assets/components/datatables/Buttons-2.4.2/js/dataTables.buttons.min.js") %>"></script>
+    <script src="<%= ResolveUrl("../assets/components/datatables/buttons.flash.min.js") %>"></script>
+    <script src="<%= ResolveUrl("../assets/components/datatables/JSZip-3.10.1/jszip.min.js") %>"></script>
+    <script src="<%= ResolveUrl("../assets/components/datatables/Buttons-2.4.2/js/buttons.html5.min.js") %>"></script>
+    <script src="<%= ResolveUrl("../assets/components/datatables/Buttons-2.4.2/js/buttons.print.min.js") %>"></script>
 
     <script src="login.js"></script>
     <link rel="stylesheet" href="login.css" />
-
 
 </head>
 <body>
@@ -111,7 +108,6 @@
                         <div class="">
                             <div class="row mt-4 mb-0">
                                 <div class="col-md-6 text-start">
-
                                 </div>
                                 <div class="col-md-6 text-end">
                                     <asp:Button ID="btnLogin" runat="server" Text="Login" OnClick="btnLogin_Click" ValidationGroup="finalSubmit" CssClass="btn btn-custom text-white shadow " />

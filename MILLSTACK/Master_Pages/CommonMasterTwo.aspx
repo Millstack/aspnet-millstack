@@ -6,49 +6,6 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="main" runat="Server">
 
-    <style>
-        .grid-custom th {
-            background-color: #4f64cc !important;
-            color: white !important;
-            font-size: 13px !important;
-            font-family: Verdana !important;
-            font-weight: normal !important;
-        }
-
-
-        .grid-pager {
-            text-align: center;
-            padding: 15px 0;
-            font-weight: normal;
-        }
-
-            .grid-pager a, .grid-pager span {
-                text-decoration: none; /* Remove underline */
-                padding: 6px 10px; /* Add space between page numbers */
-                margin: 10px 0px; /* Add space around page numbers */
-                border: 0px solid #eeeaea; /* Light border around page numbers */
-                border-radius: 0px;
-                color: #898989;
-                line-height: 1.5; /* Ensure text is vertically centered */
-            }
-
-            .grid-pager a {
-                background-color: #ffffff;
-                transition: background-color 0.3s ease;
-            }
-
-                .grid-pager a:hover {
-                    background-color: #0f3f6f;
-                    border-color: #4f64cc;
-                    color: #fbfbfb;
-                }
-
-            .grid-pager span {
-                background-color: #ffffff;
-                font-weight: bold;
-                border-color: #e0dcdc;
-            }
-    </style>
 
 
     <!-- Heading -->
@@ -196,99 +153,100 @@
                 <asp:Literal ID="Main_Heading_2" Text="" runat="server"></asp:Literal>
             </div>
 
-            <div id="Div_Grid_Search" visible="true" runat="server" style="position: relative; overflow: hidden; width: auto; height: 580px;">
+            <!-- Scrollable Div For Gridview -->
+            <div id="Div_Grid_Search" visible="false" runat="server" style="position: relative; overflow: hidden; width: auto; height: 580px;">
                 <div class="card-body border border-dark-subtle bg-light p-2 rounded-2 shadow" data-height="580" style="overflow: auto; width: auto; height: 580px;">
-
-
-                    <asp:GridView ID="Grid_Search" runat="server" ShowHeaderWhenEmpty="false" AutoGenerateColumns="false" Width="100%" SelectedRowStyle-BackColor="#F3F3F3"
-                        DataKeyNames="ID" OnSelectedIndexChanged="Grid_Search_SelectedIndexChanged" OnRowDeleting="Grid_Search_RowDeleting"
-                        AllowPaging="false" OnPageIndexChanging="Grid_Search_PageIndexChanging" PageSize="10"
-                        CssClass="datatables table table-bordered table-hover border border-1 border-dark-subtle shadow text-center grid-custom">
-                        <HeaderStyle CssClass="" />
-                        <Columns>
-
-                            <asp:TemplateField ControlStyle-CssClass="col-md-1" HeaderText="Sr.No">
-                                <ItemTemplate>
-                                    <asp:HiddenField ID="id" runat="server" Value="id" />
-                                    <span><%#Container.DataItemIndex + 1%></span>
-                                </ItemTemplate>
-                                <ItemStyle CssClass="align-middle" Width="30px" />
-                            </asp:TemplateField>
-
-                            <asp:BoundField DataField="ID" Visible="false" HeaderText="ID">
-                                <HeaderStyle Width="50px" />
-                                <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="fw-light" />
-                            </asp:BoundField>
-
-                            <asp:BoundField DataField="Main_Column_1" Visible="true" HeaderText="Main_Column_1">
-                                <%--<HeaderStyle Width="50px" />--%>
-                                <ItemStyle HorizontalAlign="Left" VerticalAlign="Middle" CssClass="fw-light" />
-                            </asp:BoundField>
-
-                            <asp:BoundField DataField="Main_Column_2" Visible="true" HeaderText="Main_Column_2">
-                                <ItemStyle HorizontalAlign="Left" VerticalAlign="Middle" CssClass="fw-light" />
-                            </asp:BoundField>
-
-                            <asp:BoundField DataField="Main_Column_3" Visible="true" HeaderText="Main_Column_3">
-                                <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="fw-light" />
-                            </asp:BoundField>
-
-                            <asp:BoundField DataField="Foreign_Column_1" Visible="true" HeaderText="Foreign_Column_1">
-                                <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="fw-bold text-body-secondary text-bg-light" />
-                            </asp:BoundField>
-
-                            <asp:BoundField DataField="Foreign_Column_2" Visible="true" HeaderText="Foreign_Column_2">
-                                <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="fw-bold text-body-secondary text-bg-light" />
-                            </asp:BoundField>
-
-                            <asp:BoundField DataField="Foreign_Column_3" Visible="true" HeaderText="Foreign_Column_3">
-                                <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="fw-bold text-body-secondary text-bg-light" />
-                            </asp:BoundField>
-
-                            <asp:BoundField DataField="DummyColumn" Visible="false" HeaderText="DummyColumn">
-                                <ItemStyle HorizontalAlign="Left" VerticalAlign="Middle" CssClass="fw-light" />
-                            </asp:BoundField>
-
-                            <asp:TemplateField HeaderText="Edit" ShowHeader="true" HeaderStyle-Width="50px">
-                                <ItemTemplate>
-                                    <asp:LinkButton ID="Link_Btn_Edit" runat="server" CausesValidation="False" CommandName="Select" ForeColor="#0f3f6f">
-                                        <asp:Image ID="IMG_Edit" runat="server" ImageUrl="~/assets/image/edit/pencil-square.svg" AlternateText="Edit" ToolTip="Edit" Style="width: 25px; height: 25px;" />
-                                    </asp:LinkButton>
-                                </ItemTemplate>
-                                <HeaderStyle Width="80px"></HeaderStyle>
-                            </asp:TemplateField>
-
-                            <asp:TemplateField HeaderText="Delete" ShowHeader="true" HeaderStyle-Width="50px">
-                                <ItemTemplate>
-                                    <asp:LinkButton ID="Link_Btn_Delete" runat="server" CausesValidation="False"
-                                        CommandName="Delete" CommandArgument='<%# Container.DataItemIndex %>'
-                                        OnClientClick="javascript:return confirm ('Are you sure to Delete this record permanently ? ')" ForeColor="Red">
-                                        <asp:Image ID="IMG_Delete" runat="server" ImageUrl="~/assets/image/delete-cut/delete.png" AlternateText="Edit" ToolTip="Delete" Style="width: 30px; height: 30px;" />
-                                    </asp:LinkButton>
-                                </ItemTemplate>
-                                <HeaderStyle Width="80px"></HeaderStyle>
-                            </asp:TemplateField>
-                        </Columns>
-
-                        <EmptyDataTemplate>
-                            <tr>
-                                <td colspan="4" class="text-center">
-                                    <div class="alert alert-info" role="alert">
-                                        No Data Available To Display.
-                                    </div>
-                                </td>
-                            </tr>
-                        </EmptyDataTemplate>
-
-                        <FooterStyle CssClass="" />
-                        <PagerStyle CssClass="grid-pager" />
-
-                    </asp:GridView>
-
                 </div>
-                <div class="slimScrollBar" style="background: rgba(0, 0, 0, 0.95); width: 5px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 73.2899px;"></div>
-                <div class="slimScrollRail" style="width: 5px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
             </div>
+
+            <div class="p-3 border border-dark-subtle shadow rounded-2 bg-light">
+                <asp:GridView ID="Grid_Search" runat="server" ShowHeaderWhenEmpty="false" AutoGenerateColumns="false" Width="100%" SelectedRowStyle-BackColor="#F3F3F3"
+                    DataKeyNames="ID" OnSelectedIndexChanged="Grid_Search_SelectedIndexChanged" OnRowDeleting="Grid_Search_RowDeleting"
+                    AllowPaging="false" OnPageIndexChanging="Grid_Search_PageIndexChanging" PageSize="10"
+                    CssClass="datatables table table-bordered table-hover border border-1 border-dark-subtle shadow text-center grid-custom">
+                    <HeaderStyle CssClass="" />
+                    <Columns>
+
+                        <asp:TemplateField ControlStyle-CssClass="col-md-1" HeaderText="Sr.No">
+                            <ItemTemplate>
+                                <asp:HiddenField ID="id" runat="server" Value="id" />
+                                <span><%#Container.DataItemIndex + 1%></span>
+                            </ItemTemplate>
+                            <ItemStyle CssClass="align-middle" Width="30px" />
+                        </asp:TemplateField>
+
+                        <asp:BoundField DataField="ID" Visible="false" HeaderText="ID">
+                            <HeaderStyle Width="50px" />
+                            <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="fw-light" />
+                        </asp:BoundField>
+
+                        <asp:BoundField DataField="Main_Column_1" Visible="true" HeaderText="Main_Column_1">
+                            <%--<HeaderStyle Width="50px" />--%>
+                            <ItemStyle HorizontalAlign="Left" VerticalAlign="Middle" CssClass="fw-light" />
+                        </asp:BoundField>
+
+                        <asp:BoundField DataField="Main_Column_2" Visible="true" HeaderText="Main_Column_2">
+                            <ItemStyle HorizontalAlign="Left" VerticalAlign="Middle" CssClass="fw-light" />
+                        </asp:BoundField>
+
+                        <asp:BoundField DataField="Main_Column_3" Visible="true" HeaderText="Main_Column_3">
+                            <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="fw-light" />
+                        </asp:BoundField>
+
+                        <asp:BoundField DataField="Foreign_Column_1" Visible="true" HeaderText="Foreign_Column_1">
+                            <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="fw-bold text-body-secondary text-bg-light" />
+                        </asp:BoundField>
+
+                        <asp:BoundField DataField="Foreign_Column_2" Visible="true" HeaderText="Foreign_Column_2">
+                            <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="fw-bold text-body-secondary text-bg-light" />
+                        </asp:BoundField>
+
+                        <asp:BoundField DataField="Foreign_Column_3" Visible="true" HeaderText="Foreign_Column_3">
+                            <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="fw-bold text-body-secondary text-bg-light" />
+                        </asp:BoundField>
+
+                        <asp:BoundField DataField="DummyColumn" Visible="false" HeaderText="DummyColumn">
+                            <ItemStyle HorizontalAlign="Left" VerticalAlign="Middle" CssClass="fw-light" />
+                        </asp:BoundField>
+
+                        <asp:TemplateField HeaderText="Edit" ShowHeader="true" HeaderStyle-Width="50px">
+                            <ItemTemplate>
+                                <asp:LinkButton ID="Link_Btn_Edit" runat="server" CausesValidation="False" CommandName="Select" ForeColor="#0f3f6f">
+                                    <asp:Image ID="IMG_Edit" runat="server" ImageUrl="~/assets/image/edit/pencil-square.svg" AlternateText="Edit" ToolTip="Edit" Style="width: 25px; height: 25px;" />
+                                </asp:LinkButton>
+                            </ItemTemplate>
+                            <HeaderStyle Width="80px"></HeaderStyle>
+                        </asp:TemplateField>
+
+                        <asp:TemplateField HeaderText="Delete" ShowHeader="true" HeaderStyle-Width="50px">
+                            <ItemTemplate>
+                                <asp:LinkButton ID="Link_Btn_Delete" runat="server" CausesValidation="False"
+                                    CommandName="Delete" CommandArgument='<%# Container.DataItemIndex %>'
+                                    OnClientClick="javascript:return confirm ('Are you sure to Delete this record permanently ? ')" ForeColor="Red">
+                                    <asp:Image ID="IMG_Delete" runat="server" ImageUrl="~/assets/image/delete-cut/delete.png" AlternateText="Edit" ToolTip="Delete" Style="width: 30px; height: 30px;" />
+                                </asp:LinkButton>
+                            </ItemTemplate>
+                            <HeaderStyle Width="80px"></HeaderStyle>
+                        </asp:TemplateField>
+                    </Columns>
+
+                    <EmptyDataTemplate>
+                        <tr>
+                            <td colspan="4" class="text-center">
+                                <div class="alert alert-info" role="alert">
+                                    No Data Available To Display.
+                                </div>
+                            </td>
+                        </tr>
+                    </EmptyDataTemplate>
+
+                    <FooterStyle CssClass="" />
+                    <PagerStyle CssClass="grid-pager" />
+
+                </asp:GridView>
+            </div>
+
+
             <asp:HiddenField ID="hfDeleteId" runat="server" />
 
         </div>
@@ -304,88 +262,6 @@
                 input.value = value.slice(0, -1); // Remove the last invalid character
             }
         }
-
-        function Initialize_DataTables_By_ID(GridView_ID) {
-            $(GridView_ID).each(function () {
-                var $this = $(this);
-                $this.prepend(
-                    $("<thead></thead>").append(
-                        $this.find("tr:first")
-                    )
-                ).DataTable({
-                    scrollX: false,
-                    sScrollXInner: "100%",
-                    bFilter: true,
-                    bSort: true,
-                    bPaginate: true,
-                    scrollCollapse: false,
-                    paging: true,
-                    searching: true,
-                    ordering: true,
-                    info: true,
-                    lengthChange: true,
-                    responsive: true,
-                    pagingType: 'full_numbers',
-                    lengthMenu: [
-                        [10, 20, 25, 50, -1],
-                        [10, 20, 25, 50, "All"]
-                    ],
-                    search: {
-                        return: false
-                    },
-                    language: {
-                        search: "Search: ",
-                        decimal: ',',
-                        thousands: '.'
-                    },
-                    initComplete: function () {
-                        $('.dataTables_filter input').attr('placeholder', 'Search here......');
-                    },
-                    dom: '<"top"lfB>rt<"bottom"ip><"clear">', // Configure DOM for buttons and entries (initial value - Bfrtip)
-                    buttons: [
-                        //'copy', 'csv', 'excel', 'pdf', 'print' // Add export buttons
-                        {
-                            extend: 'copy',
-                            title: 'Customer Data',
-                            filename: 'Customer_Data_Copy'
-                        },
-                        {
-                            extend: 'csv',
-                            title: 'Customer Data',
-                            filename: 'Customer Data'
-                        },
-                        {
-                            extend: 'excel',
-                            title: 'Customer Data',
-                            filename: 'Customer Data'
-                        },
-                        {
-                            extend: 'pdf',
-                            title: 'Customer Data',
-                            filename: 'Customer Data'
-                        },
-                        {
-                            extend: 'print',
-                            title: 'Customer Data'
-                        }
-                    ]
-                });
-            });
-        }
-
-        $(document).ready(function () {
-
-            Initialize_DataTables_By_ID("#main_Grid_Search");
-
-            var prm = Sys.WebForms.PageRequestManager.getInstance();
-            prm.add_endRequest(function () {
-                setTimeout(function () {
-
-                    Initialize_DataTables_By_ID("#main_Grid_Search");
-
-                }, 0);
-            });
-        });
     </script>
 
 </asp:Content>

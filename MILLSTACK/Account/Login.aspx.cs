@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommonClassLibrary;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -12,7 +13,11 @@ using System.Web.UI.WebControls;
 
 public partial class Login_Login : System.Web.UI.Page
 {
-    string connectionString = ConfigurationManager.ConnectionStrings["Ginie"].ConnectionString;
+    #region [GLobal Declaration]
+    ExecuteClass executeClass = new ExecuteClass();
+    MasterClass masterClass = new MasterClass();
+    Dictionary<string, object> parameters = new Dictionary<string, object>();
+    #endregion
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
@@ -41,7 +46,7 @@ public partial class Login_Login : System.Web.UI.Page
         string email = LoginEmail.Text;
         string password = LoginPassword.Text;
 
-        using (SqlConnection con = new SqlConnection(connectionString))
+        using (SqlConnection con = new SqlConnection(ConnectionClass.connection_String_Local))
         {
             con.Open();
             SqlTransaction transaction = con.BeginTransaction();

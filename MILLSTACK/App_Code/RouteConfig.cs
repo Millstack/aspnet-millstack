@@ -30,6 +30,18 @@ namespace MILLSTACK
             //string productUrl = GetRouteUrl("ProductRoute", new { productId = 42 });
 
             routes.MapPageRoute(
+               "Login_Route",
+               "Login",
+               "~/Account/Login.aspx"
+           );
+
+            routes.MapPageRoute(
+               "UserCreation_Route",
+               "UserCreation",
+               "~/Master_Pages/UserCreation.aspx"
+           );
+
+            routes.MapPageRoute(
                "CommonMaster_Route",
                "CommonMaster/{Page}",
                "~/Master_Pages/CommonMasterTwo.aspx"

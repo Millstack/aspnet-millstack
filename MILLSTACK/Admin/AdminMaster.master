@@ -40,7 +40,87 @@
     <script src="masterpage.js"></script>
     <link rel="stylesheet" href="masterpage.css" />
 
-    <style>
+    <style type="text/css">
+        /*--------------------------- General Overall CSS ---------------------------*/
+        ::placeholder {
+            font-size: small;
+            color: gray;
+            font-style: italic;
+        }
+
+        /*--------------------------- GridView Pager Style ---------------------------*/
+
+        .grid-custom th {
+            background-color: black !important; /*#4f64cc*/
+            color: white !important;
+            font-size: 13px !important;
+            font-family: Verdana !important;
+            font-weight: normal !important;
+        }
+
+
+        /*--------------------------- GridView ---------------------------*/
+        .grid-pager {
+            text-align: center;
+            padding: 15px 0;
+            font-weight: normal;
+        }
+
+            .grid-pager a, .grid-pager span {
+                text-decoration: none; /* Remove underline */
+                padding: 6px 10px; /* Add space between page numbers */
+                margin: 10px 0px; /* Add space around page numbers */
+                border: 0px solid #eeeaea; /* Light border around page numbers */
+                border-radius: 0px;
+                color: #898989;
+                line-height: 1.5; /* Ensure text is vertically centered */
+            }
+
+            .grid-pager a {
+                background-color: #ffffff;
+                transition: background-color 0.3s ease;
+            }
+
+                .grid-pager a:hover {
+                    background-color: #0f3f6f;
+                    border-color: #4f64cc;
+                    color: #fbfbfb;
+                }
+
+            .grid-pager span {
+                background-color: #ffffff;
+                font-weight: bold;
+                border-color: #e0dcdc;
+            }
+
+
+
+        /*--------------------------- Select2 Dropdown Plugin ---------------------------*/
+
+        .select2-container {
+            width: 100% !important; /* Ensures Select2 container takes the full width */
+        }
+
+        .select2-selection__rendered {
+            line-height: 31px !important;
+        }
+
+        .select2-container .select2-selection--single {
+            height: 35px !important;
+        }
+
+        .select2-selection__arrow {
+            height: 34px !important;
+        }
+
+        .select2-container--open {
+            z-index: 9999999; /* Ensures Select2 (open state) list visible inside the modal or popup */
+        }
+
+
+        /*--------------------------- Chosen DropDown Plugin ---------------------------*/
+
+        /* choosen select default styling */
         .chosen-container .chosen-drop .chosen-results li {
             padding: 10px 5px; /* Increase padding for thicker dropdown items */
         }
@@ -75,6 +155,93 @@
             padding-left: 10px; /* search box text padding to left */
             background-color: #fff; /* search box background color */
         }
+
+        /*--------------------------- Datatables.JS UI CSS ---------------------------*/
+
+        /* DataTables.js CSS - Header */
+        .dataTables_wrapper .dataTables_length,
+        .dataTables_wrapper .dataTables_filter {
+            margin-bottom: 5px;
+        }
+
+        /* DataTables.js CSS - Footer */
+        .dataTables_wrapper .dataTables_info,
+        .dataTables_wrapper .dataTables_paginate {
+            margin-top: 5px;
+        }
+
+        /* Style the pagination container */
+        .dataTables_wrapper .dataTables_paginate {
+            border: 1px solid #ddd;
+            padding: 6px;
+            border-radius: 10px; /* Optional: add rounded corners to the border */
+        }
+
+            /* Style the pagination buttons */
+            .dataTables_wrapper .dataTables_paginate .paginate_button .paginate_button:not(.previous):not(.next):not(.first):not(.last) {
+                border: 1px solid #ddd;
+                padding: 5px 10px;
+                margin: 0 2px;
+                cursor: pointer;
+                color: #007bff;
+                background-color: #f9f9f9;
+                transition: background-color 0.3s, color 0.3s;
+            }
+
+            /* Style the active pagination button */
+            .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+                background-color: #4f64cc;
+                color: #fff !important;
+                border-color: #11101D;
+            }
+
+        .dataTables_wrapper .dataTables_length,
+        .dataTables_wrapper .dt-buttons {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        /* DataTables export buttons margin */
+        .dataTables_wrapper .dt-buttons {
+            margin-left: 20px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+
+        /* Style for search input with icon */
+        .dataTables_wrapper .dataTables_filter {
+            position: relative;
+        }
+
+            .dataTables_wrapper .dataTables_filter input[type="search"] {
+                width: 500px; /* Set the desired search bar width */
+                margin-right: 10px;
+                padding-right: 30px; /* Make space for the icon */
+                box-sizing: border-box;
+                border-radius: 5px; /* search bar border radius */
+            }
+
+
+            .dataTables_wrapper .dataTables_filter::after {
+                content: "";
+                background-image: url('/assets/image/search-view/search-lens.png'); /* Path to your search icon image */
+                background-size: contain;
+                background-repeat: no-repeat;
+                position: absolute;
+                width: 20px; /* Set the width of your icon */
+                height: 20px; /* Set the height of your icon */
+                right: 15px;
+                top: 50%;
+                transform: translateY(-50%);
+                pointer-events: none;
+            }
+
+            .dataTables_wrapper .dataTables_filter input[type="search"]:focus {
+                border-color: #808080; /* Focus border color */
+                box-shadow: 0 0 0 0.1rem rgba(0, 123, 255, .25); /* Focus shadow color and thickness */
+                outline: none;
+            }
     </style>
 
     <asp:ContentPlaceHolder ID="head" runat="server">
@@ -85,13 +252,194 @@
 
         <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePartialRendering="true"></asp:ScriptManager>
 
+        <!-- Side bar UI Starts -->
+        <div class="sidebar ">
+            <div class="logo-details">
+                <asp:Image runat="server" ImageUrl="~/assets/image/logo/millstack.png" AlternateText="na" Style="height: 66px; width: 66px;" CssClass="px-2 py-3" />
+                <span class="logo_name">MillStack</span>
+            </div>
 
-        <div>
+            <ul id="MainMenu" class="nav-links" runat="server">
+                <asp:Literal ID="LiteralMenu" runat="server"></asp:Literal>
+            </ul>
+        </div>
+        <!-- Side bar UI Ends -->
+
+
+        <%--        <div>
             <asp:ContentPlaceHolder ID="main" runat="server">
             </asp:ContentPlaceHolder>
-        </div>
+        </div>--%>
+
+        <!-- Main content Starts -->
+        <section class="home-section pt-0 px-0 mx-0">
+            <div class="home-content">
+
+                <!-- fixed-top w-100 -->
+                <nav class="navbar navbar-dark py-0 col-md-12">
+                    <div class="container-fluid">
+
+                        <!-- toggle button & Navbar -->
+                        <div class="d-flex">
+
+                            <asp:Image ID="nav_Image" runat="server" ImageUrl="~/assets/icons/bootstrap-icons/list.svg" AlternateText="na" Style="height: 30px; width: 30px;" CssClass="my-auto bx-menu" />
+
+                            <asp:Button ID="HomeBtn" runat="server" Text="Home" OnClick="HomeBtn_Click" CssClass="p-0 border-0 text-dark fw-light bg-transparent" />
+
+                            <asp:Label ID="lblLiveDayDateTime" runat="server" CssClass="navbar-brand ms-4 text-dark fw-light fs-6 py-2"></asp:Label>
+
+                            <span id="Live_Date_Time" class="navbar-brand ms-4 text-dark fw-light fs-6 py-2" style="font-family: Verdana; font-size: 9pt;"></span>
+                            <script type="text/javascript"> window.onload = updateDateTime(); </script>
+
+                            <!-- Add other menu items here -->
+                        </div>
+
+                        <div class="d-flex">
+
+                            <!--  From Uiverse.io by Galahhad -->
+                            <!-- https://uiverse.io/Galahhad/strong-squid-82 -->
+                            <div>
+                                <label class="theme-switch">
+                                    <input type="checkbox" class="theme-switch__checkbox">
+                                    <div class="theme-switch__container">
+                                        <div class="theme-switch__clouds"></div>
+                                        <div class="theme-switch__stars-container">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144 55" fill="none">
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M135.831 3.00688C135.055 3.85027 134.111 4.29946 133 4.35447C134.111 4.40947 135.055 4.85867 135.831 5.71123C136.607 6.55462 136.996 7.56303 136.996 8.72727C136.996 7.95722 137.172 7.25134 137.525 6.59129C137.886 5.93124 138.372 5.39954 138.98 5.00535C139.598 4.60199 140.268 4.39114 141 4.35447C139.88 4.2903 138.936 3.85027 138.16 3.00688C137.384 2.16348 136.996 1.16425 136.996 0C136.996 1.16425 136.607 2.16348 135.831 3.00688ZM31 23.3545C32.1114 23.2995 33.0551 22.8503 33.8313 22.0069C34.6075 21.1635 34.9956 20.1642 34.9956 19C34.9956 20.1642 35.3837 21.1635 36.1599 22.0069C36.9361 22.8503 37.8798 23.2903 39 23.3545C38.2679 23.3911 37.5976 23.602 36.9802 24.0053C36.3716 24.3995 35.8864 24.9312 35.5248 25.5913C35.172 26.2513 34.9956 26.9572 34.9956 27.7273C34.9956 26.563 34.6075 25.5546 33.8313 24.7112C33.0551 23.8587 32.1114 23.4095 31 23.3545ZM0 36.3545C1.11136 36.2995 2.05513 35.8503 2.83131 35.0069C3.6075 34.1635 3.99559 33.1642 3.99559 32C3.99559 33.1642 4.38368 34.1635 5.15987 35.0069C5.93605 35.8503 6.87982 36.2903 8 36.3545C7.26792 36.3911 6.59757 36.602 5.98015 37.0053C5.37155 37.3995 4.88644 37.9312 4.52481 38.5913C4.172 39.2513 3.99559 39.9572 3.99559 40.7273C3.99559 39.563 3.6075 38.5546 2.83131 37.7112C2.05513 36.8587 1.11136 36.4095 0 36.3545ZM56.8313 24.0069C56.0551 24.8503 55.1114 25.2995 54 25.3545C55.1114 25.4095 56.0551 25.8587 56.8313 26.7112C57.6075 27.5546 57.9956 28.563 57.9956 29.7273C57.9956 28.9572 58.172 28.2513 58.5248 27.5913C58.8864 26.9312 59.3716 26.3995 59.9802 26.0053C60.5976 25.602 61.2679 25.3911 62 25.3545C60.8798 25.2903 59.9361 24.8503 59.1599 24.0069C58.3837 23.1635 57.9956 22.1642 57.9956 21C57.9956 22.1642 57.6075 23.1635 56.8313 24.0069ZM81 25.3545C82.1114 25.2995 83.0551 24.8503 83.8313 24.0069C84.6075 23.1635 84.9956 22.1642 84.9956 21C84.9956 22.1642 85.3837 23.1635 86.1599 24.0069C86.9361 24.8503 87.8798 25.2903 89 25.3545C88.2679 25.3911 87.5976 25.602 86.9802 26.0053C86.3716 26.3995 85.8864 26.9312 85.5248 27.5913C85.172 28.2513 84.9956 28.9572 84.9956 29.7273C84.9956 28.563 84.6075 27.5546 83.8313 26.7112C83.0551 25.8587 82.1114 25.4095 81 25.3545ZM136 36.3545C137.111 36.2995 138.055 35.8503 138.831 35.0069C139.607 34.1635 139.996 33.1642 139.996 32C139.996 33.1642 140.384 34.1635 141.16 35.0069C141.936 35.8503 142.88 36.2903 144 36.3545C143.268 36.3911 142.598 36.602 141.98 37.0053C141.372 37.3995 140.886 37.9312 140.525 38.5913C140.172 39.2513 139.996 39.9572 139.996 40.7273C139.996 39.563 139.607 38.5546 138.831 37.7112C138.055 36.8587 137.111 36.4095 136 36.3545ZM101.831 49.0069C101.055 49.8503 100.111 50.2995 99 50.3545C100.111 50.4095 101.055 50.8587 101.831 51.7112C102.607 52.5546 102.996 53.563 102.996 54.7273C102.996 53.9572 103.172 53.2513 103.525 52.5913C103.886 51.9312 104.372 51.3995 104.98 51.0053C105.598 50.602 106.268 50.3911 107 50.3545C105.88 50.2903 104.936 49.8503 104.16 49.0069C103.384 48.1635 102.996 47.1642 102.996 46C102.996 47.1642 102.607 48.1635 101.831 49.0069Z" fill="currentColor"></path>
+                                            </svg>
+                                        </div>
+                                        <div class="theme-switch__circle-container">
+                                            <div class="theme-switch__sun-moon-container">
+                                                <div class="theme-switch__moon">
+                                                    <div class="theme-switch__spot"></div>
+                                                    <div class="theme-switch__spot"></div>
+                                                    <div class="theme-switch__spot"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+
+
+                            <div class="navbar-brand text-dark ms-4 fw-light fs-6 py-2 ">
+                                Welcome, 
+                                <asp:Literal ID="Literal_Navbar_UserName" Text="" runat="server"></asp:Literal>
+                                    <span class="white-icon">
+                                        <img src="~/assets/icons/bootstrap-icons/person-circle.svg" alt="" />
+                                    </span>
+                                | 
+                                <asp:Literal ID="Literal_Navbar_UserRole" Text="" runat="server"></asp:Literal>
+                            </div>
+
+                            <asp:Button ID="LogoutBtn" runat="server" Text="Logout" OnClick="LogoutBtn_Click" CssClass="p-0 border-0 text-dark fw-light bg-transparent" />
+
+                        </div>
+
+                    </div>
+                </nav>
+
+            </div>
+
+
+
+            <!-- Home Page Starts -->
+            <div class="mt-5">
+                <main role="main" class="pb-3 px-2">
+                    <asp:ContentPlaceHolder ID="main" runat="server">
+                    </asp:ContentPlaceHolder>
+                </main>
+            </div>
+            <!-- Home Page Ends -->
+
+        </section>
+        <!-- Main content Ends -->
+
     </form>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script type="text/javascript">
+
+        // function to set live day, date and time
+        setInterval(function () {
+            updateDateTime();
+        }, 1000);
+
+        function updateDateTime() {
+
+            var now = new Date();
+
+            var day = now.toLocaleDateString('en-US', {
+                weekday: 'long'
+            });
+
+            var month = now.toLocaleDateString('en-US', {
+                month: 'long'
+            });
+
+            var date = now.getDate();
+            var year = now.getFullYear();
+
+            var time = now.toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true
+            });
+
+            var formattedDateTime = day + ', ' + month + ' ' + date + ', ' + year + ' | ' + time;
+
+            document.getElementById('<%= lblLiveDayDateTime.ClientID %>').innerHTML = formattedDateTime; ime;
+        }
+
+        // open parent dropdown
+        let iconLinks = document.querySelectorAll(".iocn-link");
+        for (let i = 0; i < iconLinks.length; i++) {
+            iconLinks[i].addEventListener("click", (e) => {
+                let iconLinkParent = e.currentTarget.parentElement; // selecting main parent of iconLink
+                iconLinkParent.classList.toggle("showMenu");
+            });
+        }
+
+        // open parent dropdown
+        let arrows = document.querySelectorAll(".arrow");
+        for (let i = 0; i < arrows.length; i++) {
+            arrows[i].addEventListener("click", (e) => {
+                e.stopPropagation(); // prevent the event from bubbling up to the parent div
+                let arrowParent = e.target.parentElement.parentElement; // selecting main parent of arrow
+                arrowParent.classList.toggle("showMenu");
+            });
+        }
+
+
+        // toggle side bar to open and close
+        let sidebar = document.querySelector(".sidebar");
+        let sidebarBtn = document.querySelector(".bx-menu");
+        console.log(sidebarBtn);
+        sidebarBtn.addEventListener("click", () => {
+            sidebar.classList.toggle("close");
+        });
+    </script>
 
     <script type="text/javascript">
 
@@ -263,22 +611,20 @@
             });
         }
 
-
-
         $(document).ready(function () {
 
             //Bind_Dropdown_By_ID("#main_DD_Foriegn_Column_1");
             //Initialize_DataTables_By_ID("#main_Grid_Search");
 
             Bind_Dropdown_By_Class(".chosen-dropdown");
-            //Initialize_DataTables_By_Class(".datatables");
+            Initialize_DataTables_By_Class(".datatables");
 
             var prm = Sys.WebForms.PageRequestManager.getInstance();
             prm.add_endRequest(function () {
                 setTimeout(function () {
 
                     Bind_Dropdown_By_Class(".chosen-dropdown");
-                    //Initialize_DataTables_By_Class(".datatables");
+                    Initialize_DataTables_By_Class(".datatables");
 
                 }, 0);
             });
