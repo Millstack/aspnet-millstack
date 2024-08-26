@@ -156,6 +156,60 @@
             background-color: #fff; /* search box background color */
         }
 
+
+        /*--------------------------- Sumo Select ---------------------------*/
+        .SumoSelect {
+            width: 100% !important;
+        }
+
+            /* Style the OK and Cancel buttons in SumoSelect */
+            .SumoSelect .optWrapper .btnOk,
+            .SumoSelect .optWrapper .btnCancel {
+                background-color: green !important; /* OK button background color */
+                color: white !important; /* OK button text color */
+                border-color: green !important; /* OK button border color */
+            }
+
+            .SumoSelect .optWrapper .btnCancel {
+                background-color: red !important; /* Cancel button background color */
+                border-color: red !important; /* Cancel button border color */
+            }
+
+            /* Style the "Select All" option */
+            .SumoSelect .optWrapper .select-all {
+                background-color: lavender;
+            }
+
+
+            /* Hover styles for OK and Cancel buttons */
+            .SumoSelect .optWrapper .btnOk:hover {
+                background-color: darkgreen !important; /* Override default hover background color */
+                color: white !important; /* Keep text color on hover */
+                border-color: green !important; /* Override default hover border color */
+            }
+
+
+            .SumoSelect .optWrapper .btnCancel:hover {
+                background-color: darkred !important; /* Override default hover background color */
+                color: white !important; /* Keep text color on hover */
+                border-color: green !important; /* Override default hover border color */
+            }
+
+
+            /* Add top margin to the expand symbol */
+            .SumoSelect .CaptionCont span {
+                display: flex;
+                align-items: center;
+            }
+
+            .SumoSelect .CaptionCont b {
+                margin-top: 5px; /* Adjust the value as needed */
+                vertical-align: middle;
+            }
+
+
+
+
         /*--------------------------- Datatables.JS UI CSS ---------------------------*/
 
         /* DataTables.js CSS - Header */
@@ -242,6 +296,18 @@
                 box-shadow: 0 0 0 0.1rem rgba(0, 123, 255, .25); /* Focus shadow color and thickness */
                 outline: none;
             }
+
+
+        /*------------------ Telerik RA Grid ------------------*/
+
+        .radgrid-container {
+            height: auto; /* or min-height: 100%; */
+            overflow: auto; /* Optional: Add scrollbars if needed */
+        }
+
+        .radgrid-content {
+            height: auto !important; /* Ensure content height adjusts dynamically */
+        }
     </style>
 
     <asp:ContentPlaceHolder ID="head" runat="server">
@@ -325,9 +391,9 @@
                             <div class="navbar-brand text-dark ms-4 fw-light fs-6 py-2 ">
                                 Welcome, 
                                 <asp:Literal ID="Literal_Navbar_UserName" Text="" runat="server"></asp:Literal>
-                                    <span class="white-icon">
-                                        <img src="~/assets/icons/bootstrap-icons/person-circle.svg" alt="" />
-                                    </span>
+                                <span class="white-icon">
+                                    <img src="~/assets/icons/bootstrap-icons/person-circle.svg" alt="" />
+                                </span>
                                 | 
                                 <asp:Literal ID="Literal_Navbar_UserRole" Text="" runat="server"></asp:Literal>
                             </div>
@@ -409,7 +475,7 @@
 
             var formattedDateTime = day + ', ' + month + ' ' + date + ', ' + year + ' | ' + time;
 
-            document.getElementById('<%= lblLiveDayDateTime.ClientID %>').innerHTML = formattedDateTime; ime;
+            document.getElementById('<%= lblLiveDayDateTime.ClientID %>').innerHTML = formattedDateTime;
         }
 
         // open parent dropdown
@@ -464,6 +530,73 @@
                 allow_single_deselect: true, // clear selected item
                 width: "100%", // width of element
                 rtl: false, // text appears on right side right-to-left
+            });
+        }
+
+        function Bind_Dropdown_Multicheck_By_ID(dropdownID) {
+            $(dropdownID).on('sumo:opening', function () {
+                $('.select-all').css('height', '40px');
+            });
+
+            $(dropdownID).SumoSelect({
+                search: true,
+                searchText: "search here....",
+                multiSelect: true,
+                okCancelInMulti: true,
+                prefix: "",
+                up: false, // list at top side
+                selectAll: true, // select all option
+                clearAll: true, // not working at all
+                renderOption: function (data, escape) {
+                    // Check if the option is the "Select Values" item
+                    if (data.value === "0") {
+                        // Add a class to "Select Values" item to handle differently
+                        return '<div class="title special-item">' + escape(data.text) + '</div>';
+                    } else {
+                        return '<div><label><input type="checkbox" />' + escape(data.text) + '</label></div>';
+                    }
+                }
+            });
+            $(dropdownID).on('sumo:opened', function () {
+                // Check if the "Select Values" item is present
+                if ($(dropdownID + ' .special-item').length > 0) {
+                    // Disable multiselect for the "Select Values" item
+                    $(dropdownID + ' .special-item input').prop('disabled', true);
+                }
+            });
+        }
+
+        function Bind_Dropdown_Multicheck_By_Class(dropdownClass) {
+            $(dropdownClass).on('sumo:opening', function () {
+                $('.select-all').css('height', '40px');
+            });
+
+            $(dropdownClass).SumoSelect({
+                search: true,
+                searchText: "search here....",
+                multiSelect: true,
+                okCancelInMulti: true,
+                prefix: "",
+                up: false, // list at top side
+                selectAll: true, // select all option
+                clearAll: true, // not working at all
+                renderOption: function (data, escape) {
+                    // Check if the option is the "Select Values" item
+                    if (data.value === "0") {
+                        // Add a class to "Select Values" item to handle differently
+                        return '<div class="title special-item">' + escape(data.text) + '</div>';
+                    } else {
+                        return '<div><label><input type="checkbox" />' + escape(data.text) + '</label></div>';
+                    }
+                }
+            });
+
+            $(dropdownClass).on('sumo:opened', function () {
+                // Check if the "Select Values" item is present
+                if ($(dropdownClass + ' .special-item').length > 0) {
+                    // Disable multiselect for the "Select Values" item
+                    $(dropdownClass + ' .special-item input').prop('disabled', true);
+                }
             });
         }
 
@@ -615,9 +748,11 @@
 
             //Bind_Dropdown_By_ID("#main_DD_Foriegn_Column_1");
             //Initialize_DataTables_By_ID("#main_Grid_Search");
+            //Bind_Dropdown_Multicheck_By_ID("#main_MCDD_Role");
 
             Bind_Dropdown_By_Class(".chosen-dropdown");
             Initialize_DataTables_By_Class(".datatables");
+            Bind_Dropdown_Multicheck_By_Class('.listbox');
 
             var prm = Sys.WebForms.PageRequestManager.getInstance();
             prm.add_endRequest(function () {
@@ -625,6 +760,7 @@
 
                     Bind_Dropdown_By_Class(".chosen-dropdown");
                     Initialize_DataTables_By_Class(".datatables");
+                    Bind_Dropdown_Multicheck_By_Class('.listbox');
 
                 }, 0);
             });

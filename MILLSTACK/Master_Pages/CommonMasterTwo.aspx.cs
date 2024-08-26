@@ -72,7 +72,67 @@ public partial class Master_Pages_CommonMasterTwo : System.Web.UI.Page
     {
         try
         {
-            if (Page.RouteData.Values["Page"].ToString().Trim() == "Role")
+            if (Page.RouteData.Values["Page"].ToString().Trim() == "Gender")
+            {
+                Page_Heading.Text = "Gender Master";
+                Main_Heading_1.Text = "Gender Details";
+                Main_Heading_2.Text = "Gender Records";
+
+                // Serial Number
+                Grid_Search.Columns[0].HeaderText = "Ser.No.";
+                Grid_Search.Columns[0].Visible = true;
+
+                // Main Table
+                Grid_Search.Columns[1].HeaderText = "Gender ID";
+                Grid_Search.Columns[1].Visible = true;
+                Main_Table_Name = "M_Gender";
+                Primary_Key_Column = "Gender_ID";
+
+                // Main Table Column 1
+                Grid_Search.Columns[2].HeaderText = "Gender";
+                Is_Main_column_1_needed = true;
+                Main_Column_1_Text.Text = "Gender Name";
+                Main_Column_1_Name = "GenderName";
+
+                // Main Table Column 2
+                Grid_Search.Columns[3].HeaderText = "Gender (Marathi)";
+                Is_Main_column_2_needed = false;
+                Main_Column_2_Text.Text = "Gender (Marathi)";
+                Main_Column_2_Name = "GenderNameMr";
+
+                // Main Table Column 3
+                Grid_Search.Columns[4].HeaderText = "Gender Code";
+                Is_Main_column_3_needed = true;
+                Main_Column_3_Text.Text = "Gender Code";
+                Main_Column_3_Name = "GenderCode";
+
+                // Foreign Table 1
+                Grid_Search.Columns[5].HeaderText = "State";
+                Is_Foreign_column_1_needed = false;
+                Foreign_Table_1_Name = "M_State";
+                Foreign_Table_1_Key_Text.Text = "State Name";
+                Foreign_Table_1_Column_Name = "StateName";
+                Foreign_Table_1_Key_Column = "State_ID";
+
+                // Foreign Table 2
+                Grid_Search.Columns[6].HeaderText = "Division";
+                Is_Foreign_column_2_needed = false;
+                Is_Foreign_Dropdown_2_Is_Dependant_On_1 = false;
+                Foreign_Table_2_Name = "M_Division";
+                Foreign_Table_2_Key_Text.Text = "Division Name";
+                Foreign_Table_2_Column_Name = "DivisionName";
+                Foreign_Table_2_Key_Column = "Division_ID";
+
+                // Foreign Table 3
+                Grid_Search.Columns[7].HeaderText = "Division";
+                Is_Foreign_column_3_needed = false;
+                Is_Foreign_Dropdown_3_Is_Dependant_On_2 = false;
+                Foreign_Table_3_Name = "M_Division";
+                Foreign_Table_3_Key_Text.Text = "Division Name";
+                Foreign_Table_3_Column_Name = "DivisionName";
+                Foreign_Table_3_Key_Column = "Division_ID";
+            }
+            else if (Page.RouteData.Values["Page"].ToString().Trim() == "Role")
             {
                 Page_Heading.Text = "Role Master";
                 Main_Heading_1.Text = "Role Details";

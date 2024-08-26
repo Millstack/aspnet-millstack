@@ -23,7 +23,7 @@
             <!-- Row 1 Starts -->
             <div class="row mb-2" style="border-style: solid none none none; border-width: 1px; border-color: #d6d5d5; padding-top: 10px; padding-bottom: 10px; margin-top: 10px; margin-bottom: 10px;">
 
-                <!-- TetxtBbox: First Name -->
+                <!-- TetxtBox: First Name -->
                 <div class="col-md-4 mb-3 align-self-end">
                     <div class="mb-1 fw-normal fs-6">
                         <asp:Literal ID="TxtID1" runat="server" Text="">First Name
@@ -39,7 +39,7 @@
                         FilterType="Numbers, UppercaseLetters, LowercaseLetters, Custom" ValidChars=". " />
                 </div>
 
-                <!-- TetxtBbox: Middle Name -->
+                <!-- TetxtBox: Middle Name -->
                 <div class="col-md-4 mb-3 align-self-end">
                     <div class="mb-1 fw-normal fs-6">
                         <asp:Literal ID="Literal1" runat="server" Text="">Middle Name
@@ -55,7 +55,7 @@
                         FilterType="Numbers, UppercaseLetters, LowercaseLetters, Custom" ValidChars=". " />
                 </div>
 
-                <!-- TetxtBbox: Last Name -->
+                <!-- TetxtBox: Last Name -->
                 <div class="col-md-4 mb-3 align-self-end">
                     <div class="mb-1 fw-normal fs-6">
                         <asp:Literal ID="Literal2" runat="server" Text="">Last Name
@@ -88,7 +88,7 @@
                     </asp:DropDownList>
                 </div>
 
-                <!-- TetxtBbox: Phone Number -->
+                <!-- TetxtBox: Phone Number -->
                 <div class="col-md-4 mb-3 align-self-end">
                     <div class="mb-1 fw-normal fs-6">
                         <asp:Literal ID="Literal3" runat="server" Text="">Phone Number
@@ -107,7 +107,7 @@
                     </asp:RegularExpressionValidator>
                 </div>
 
-                <!-- TetxtBbox: Email -->
+                <!-- TetxtBox: Email -->
                 <div class="col-md-4 mb-3 align-self-end">
                     <div class="mb-1 fw-normal fs-6">
                         <asp:Literal ID="Literal4" runat="server" Text="">Email
@@ -137,7 +137,7 @@
                         class="form-control focus-input border border-secondary-subtle bg-light rounded-1 fs-6 fw-light py-1 shadow-sm"></textarea>
                 </div>
 
-                <!-- TetxtBbox: Username -->
+                <!-- TetxtBox: Username -->
                 <div class="col-md-4 mb-3 align-self-end">
                     <div class="mb-1 fw-normal fs-6">
                         <asp:Literal ID="Literal6" runat="server" Text="">Username
@@ -153,7 +153,7 @@
                         FilterType="Numbers, LowercaseLetters, Custom" ValidChars="." />
                 </div>
 
-                <!-- TetxtBbox: Password -->
+                <!-- TetxtBox: Password -->
                 <div class="col-md-4 mb-3 align-self-end">
                     <div class="mb-1 fw-normal fs-6">
                         <asp:Literal ID="Literal7" runat="server" Text="">Password
@@ -169,7 +169,7 @@
                         FilterType="Numbers, UppercaseLetters, LowercaseLetters, Custom" ValidChars=".#$@_" />
                 </div>
 
-                <!-- TetxtBbox: Confirm Password -->
+                <!-- TetxtBox: Confirm Password -->
                 <div class="col-md-4 mb-3 align-self-end">
                     <div class="mb-1 fw-normal fs-6">
                         <asp:Literal ID="Literal8" runat="server">Confirm Password
@@ -197,7 +197,7 @@
     <!-- User Details Ends -->
 
     <!-- Work Area Allocation Starts -->
-    <div id="Div1" runat="server" class="card col-md-11 mx-auto mt-1 py-2 mt-5 shadow rounded-3">
+    <div id="Div1" runat="server" class="card col-md-11 mx-auto mt-1 py-2 mt-5 mb-5 shadow rounded-3">
         <div class="card-body">
 
             <!-- Heading - BG -->
@@ -205,7 +205,63 @@
                 <asp:Literal ID="Literal9" Text="Work Area Details" runat="server"></asp:Literal>
             </div>
 
+            <!-- Row 1 Starts -->
+            <div class="row mb-2" style="border-style: solid none none none; border-width: 1px; border-color: #d6d5d5; padding-top: 10px; padding-bottom: 10px; margin-top: 10px; margin-bottom: 10px;">
 
+                <!-- DropDown: Hierarchy -->
+                <div class="col-md-4 mb-3 align-self-end">
+                    <div class="mb-1 fw-normal fs-6">
+                        <asp:Literal ID="Literal10" runat="server" Text="">Hierarchy
+                            <em style="color: red">*</em>
+                        </asp:Literal>
+                        <div>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator11" runat="server" CssClass="invalid-feedback" SetFocusOnError="True" Display="Dynamic" ToolTip="Required"
+                                ControlToValidate="DD_Hierarchy" InitialValue="" ValidationGroup="finalSubmit" ErrorMessage="required field">
+                            </asp:RequiredFieldValidator>
+                        </div>
+                    </div>
+                    <asp:DropDownList ID="DD_Hierarchy" runat="server" Width="100%" CssClass="form-control chosen-dropdown"
+                        AutoPostBack="false">
+                    </asp:DropDownList>
+                </div>
+
+                <!-- ListBox: Role -->
+                <div class="col-md-4 mb-3 align-self-end">
+                    <div class="mb-1 fw-normal fs-6">
+                        <asp:Literal ID="Literal11" runat="server" Text="">Role
+                            <em style="color: red">*</em>
+                        </asp:Literal>
+                        <div>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator12" runat="server" CssClass="invalid-feedback" SetFocusOnError="True" Display="Dynamic" ToolTip="Required"
+                                ControlToValidate="MCDD_Role" InitialValue="" ValidationGroup="finalSubmit" ErrorMessage="required field">
+                            </asp:RequiredFieldValidator>
+                        </div>
+                    </div>
+                    <asp:ListBox ID="MCDD_Role" runat="server" SelectionMode="Multiple" Width="100%" CssClass="form-control listbox"
+                        AutoPostBack="false"></asp:ListBox>
+                </div>
+
+                <!-- DropDown: Status -->
+                <div class="col-md-4 mb-3 align-self-end">
+                    <div class="mb-1 fw-normal fs-6">
+                        <asp:Literal ID="Literal12" runat="server" Text="">Status
+                            <em style="color: red">*</em>
+                        </asp:Literal>
+                        <div>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator13" runat="server" CssClass="invalid-feedback" SetFocusOnError="True" Display="Dynamic" ToolTip="Required"
+                                ControlToValidate="DD_Status" InitialValue="" ValidationGroup="finalSubmit" ErrorMessage="required field">
+                            </asp:RequiredFieldValidator>
+                        </div>
+                    </div>
+                    <asp:DropDownList ID="DD_Status" runat="server" Width="100%" CssClass="form-control chosen-dropdown"
+                        AutoPostBack="false">
+                        <asp:ListItem Text="" Value="-1"></asp:ListItem>
+                        <asp:ListItem Text="Active" Value="1"></asp:ListItem>
+                        <asp:ListItem Text="In-Active" Value="0"></asp:ListItem>
+                    </asp:DropDownList>
+                </div>
+
+            </div>
 
         </div>
     </div>
