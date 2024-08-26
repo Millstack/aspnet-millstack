@@ -6,6 +6,68 @@
 ### User Management
 ----------------------
 
+
+# Gender Master
+```
+CREATE TABLE M_Gender (
+	Gender_ID BIGINT PRIMARY KEY,
+	GenderName NVARCHAR(1000) NOT NULL,
+	GenderNameMr NVARCHAR(1000) NULL,
+	GenderCode NVARCHAR(100) NOT NULL,
+    SavedBy VARCHAR(1000) NOT NULL,
+    SavedOn DATETIME DEFAULT GETDATE() NOT NULL,
+	IsDeleted BIT NULL
+);
+```
+
+
+
+# Level Master
+```
+CREATE TABLE M_Level (
+	Level_ID BIGINT PRIMARY KEY,
+	LevelType NVARCHAR(1000) NOT NULL,
+	LevelTypeMr NVARCHAR(1000) NULL,
+	LevelCode NVARCHAR(100) NOT NULL,
+    SavedBy VARCHAR(1000) NOT NULL,
+    SavedOn DATETIME DEFAULT GETDATE() NOT NULL,
+	IsDeleted BIT NULL
+);
+```
+
+
+
+# Designation Master
+```
+CREATE TABLE M_Designation (
+	Designation_ID BIGINT PRIMARY KEY,
+	Parent_Designation_ID BIGINT NULL,
+	Level_ID BIGINT NOT NULL,
+	DesignationName NVARCHAR(1000) NOT NULL,
+	DesignationNameMr NVARCHAR(1000) NULL,
+	DesignationCode NVARCHAR(100) NOT NULL,
+    SavedBy VARCHAR(1000) NOT NULL,
+    SavedOn DATETIME DEFAULT GETDATE() NOT NULL,
+	IsDeleted BIT NULL
+);
+```
+
+
+
+# Role Master
+```
+CREATE TABLE M_RoleMaster (
+	Role_ID BIGINT PRIMARY KEY,
+	RoleName NVARCHAR(1000) NOT NULL,
+	RoleNameMr NVARCHAR(1000) NULL,
+	RoleCode NVARCHAR(100) NOT NULL,
+    SavedBy VARCHAR(1000) NOT NULL,
+    SavedOn DATETIME DEFAULT GETDATE() NOT NULL,
+	IsDeleted BIT NULL
+);
+```
+
+
 ## User Mater
 ```
 CREATE TABLE M_UserMaster (
@@ -46,35 +108,6 @@ CREATE TABLE M_UserMaster (
 ```
 
 
-# Gender Master
-```
-CREATE TABLE M_Gender (
-	Gender_ID BIGINT PRIMARY KEY,
-	GenderName NVARCHAR(1000) NOT NULL,
-	GenderNameMr NVARCHAR(1000) NULL,
-	GenderCode NVARCHAR(100) NOT NULL,
-    SavedBy VARCHAR(1000) NOT NULL,
-    SavedOn DATETIME DEFAULT GETDATE() NOT NULL,
-	IsDeleted BIT NULL
-);
-```
-
-
-
-# Role Master
-```
-CREATE TABLE M_RoleMaster (
-	Role_ID BIGINT PRIMARY KEY,
-	RoleName NVARCHAR(1000) NOT NULL,
-	RoleNameMr NVARCHAR(1000) NULL,
-	RoleCode NVARCHAR(100) NOT NULL,
-    SavedBy VARCHAR(1000) NOT NULL,
-    SavedOn DATETIME DEFAULT GETDATE() NOT NULL,
-	IsDeleted BIT NULL
-);
-```
-
-
 # User Role Master
 ```
 CREATE TABLE MAP_UserRole (
@@ -86,6 +119,8 @@ CREATE TABLE MAP_UserRole (
 	IsDeleted BIT NULL
 );
 ```
+
+
 
 
 
