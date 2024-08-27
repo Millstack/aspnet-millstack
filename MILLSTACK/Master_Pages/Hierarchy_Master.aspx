@@ -107,26 +107,31 @@
             </div>
             <!-- Submit Button UI Ends -->
 
-            <div class="mt-5">
-                <asp:TreeView ID="Hierarchy" runat="server"
-                    BorderWidth="0px" EnableTheming="True" HoverNodeStyle-BorderWidth="0px"
-                    ImageSet="Simple" LeafNodeStyle-BorderWidth="0px" NodeStyle-BorderWidth="0px"
-                    ParentNodeStyle-BorderWidth="0px" RootNodeStyle-BorderWidth="0px"
-                    ShowLines="True" OnSelectedNodeChanged="Hierarchy_SelectedNodeChanged">
-                    <LevelStyles>
-                        <asp:TreeNodeStyle CssClass="nodeLevel1" />
-                        <asp:TreeNodeStyle CssClass="nodeLevel2" />
-                        <asp:TreeNodeStyle CssClass="nodeLevel3" />
-                    </LevelStyles>
-                    <ParentNodeStyle BorderWidth="0px" />
-                    <HoverNodeStyle BorderWidth="0px" />
-                    <SelectedNodeStyle Font-Bold="True" />
-                    <RootNodeStyle BorderWidth="0px" />
-                    <NodeStyle BorderWidth="0px" />
-                    <LeafNodeStyle BorderStyle="None" BorderWidth="0px" />
-                </asp:TreeView>
-            </div>
+            <div class="border-top border-dark-subtle mt-5">
+                <div class="col-md-11 mx-auto bg-white p-4"">
+                    <asp:Literal ID="Literal3" runat="server" Text="">Designation Types</asp:Literal>
+                </div>
+                <div class=" col-md-11 mx-auto bg-light p-4">
+                    <asp:TreeView ID="Hierarchy" runat="server"
+                        BorderWidth="0px" EnableTheming="True" HoverNodeStyle-BorderWidth="0px"
+                        ImageSet="Simple" LeafNodeStyle-BorderWidth="0px" NodeStyle-BorderWidth="0px"
+                        ParentNodeStyle-BorderWidth="0px" RootNodeStyle-BorderWidth="0px"
+                        ShowLines="True" OnSelectedNodeChanged="Hierarchy_SelectedNodeChanged" CssClass="fw-normal fs-6">
+                        <LevelStyles>
+                            <asp:TreeNodeStyle CssClass="text-body-secondary" />
+                            <asp:TreeNodeStyle CssClass="text-body-secondary" />
+                            <asp:TreeNodeStyle CssClass="text-body-secondary" />
+                        </LevelStyles>
+                        <ParentNodeStyle BorderWidth="0px"/>
+                        <HoverNodeStyle BorderWidth="0px" CssClass="fw-semibold text-dark-emphasis" />
+                        <SelectedNodeStyle Font-Bold="True" CssClass="" />
+                        <RootNodeStyle BorderWidth="0px" />
+                        <NodeStyle BorderWidth="0px" CssClass="" />
+                        <LeafNodeStyle BorderStyle="None" BorderWidth="0px" />
+                    </asp:TreeView>
+                </div>
 
+            </div>
         </div>
     </div>
     <!-- Hierarchy TreeView Ends -->

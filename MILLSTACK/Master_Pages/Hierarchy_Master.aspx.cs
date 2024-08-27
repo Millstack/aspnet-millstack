@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Web;
 using System.Web.UI;
@@ -170,7 +171,47 @@ public partial class Master_Pages_Hierarchy_Master : System.Web.UI.Page
 
     protected void Hierarchy_SelectedNodeChanged(object sender, EventArgs e)
     {
+        try
+        {
+            ViewState["Designation_ID"] = "";
+            int Designation_ID = Convert.ToInt32(Hierarchy.SelectedNode.Value);
+            ViewState["Designation_ID"] = Designation_ID.ToString();
 
+            // designation details by ID
+            string query = @"Select Designation_ID, Parent_Designation_ID, Level_ID, DesignationName, DesignationNameMr, DesignationCode, IsDeleted
+                            From M_Designation as dsg
+                            Where IsDeleted IS NULL	AND Designation_ID = @Designation_ID";
+            parameters = new Dictionary<string, object> { { "@Designation_ID", Designation_ID }, };
+            DataTable dt = executeClass.Get_Datatable(query, parameters);
+            if (dt.Rows.Count > 0)
+            {
+                Txt_Designation_Name.Text = dt.Rows[0]["DesignationName"].ToString();
+                Txt_Designation_Code.Text = dt.Rows[0]["DesignationCode"].ToString();
+
+                string Parent_Designation_ID = dt.Rows[0]["Parent_Designation_ID"].ToString();
+                if (DD_Parent_Designation.Items.FindByValue(Parent_Designation_ID) != null)
+                {
+                    DD_Parent_Designation.SelectedValue = Parent_Designation_ID;
+                }
+
+                string Level_ID = dt.Rows[0]["Level_ID"].ToString();
+                if (DD_Level_Type.Items.FindByValue(Level_ID) != null)
+                {
+                    DD_Level_Type.SelectedValue = Level_ID;
+                }
+
+                Btn_Submit.Text = "UPDATE";
+                //btnDelete.Enabled = true;
+            }
+            else
+            {
+                ViewState["Designation_ID"] = "";
+            }
+        }
+        catch(Exception ex)
+        {
+            SweetAlert.GetSweet(this.Page, "error", "", $"{ex.Message}");
+        }
     }
 
 
@@ -180,7 +221,7 @@ public partial class Master_Pages_Hierarchy_Master : System.Web.UI.Page
 
     protected void Btn_Reset_Click(object sender, EventArgs e)
     {
-
+        Response.Redirect("Hierarchy_Master.aspx");
     }
 
     protected void Btn_Submit_Click(object sender, EventArgs e)
