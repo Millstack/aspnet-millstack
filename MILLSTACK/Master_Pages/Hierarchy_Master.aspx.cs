@@ -36,6 +36,7 @@ public partial class Master_Pages_Hierarchy_Master : System.Web.UI.Page
 
         try
         {
+            // binding level types
             sql = $@"Select Level_ID, LevelType, LevelTypeMr, LevelCode, IsDeleted
                      From M_Level as lvl
                      Where IsDeleted IS NULL";
@@ -44,11 +45,11 @@ public partial class Master_Pages_Hierarchy_Master : System.Web.UI.Page
             executeClass.Bind_Dropdown_Generic(DD_Level_Type, sql, "LevelType", "Level_ID", parameters);
 
 
-
+            // binding existing designation hierarchy
             DD_Parent_Designation.Items.Clear();
-            DataTable dsHead = ddlBindDesignation(0);
-            //DD_Parent_Designation.Items.Insert(0, new ListItem("--Select--", "0"));
-            RecursiveFillTree(dsHead, 0, 0);
+            DataTable Designation_DT = Get_Designations(0);
+            DD_Parent_Designation.Items.Insert(0, new ListItem("--Select--", "0"));
+            Get_Recersive_Designation_Dropdown(Designation_DT, 0, 0);
         }
         catch (Exception ex)
         {
@@ -57,7 +58,7 @@ public partial class Master_Pages_Hierarchy_Master : System.Web.UI.Page
     }
 
 
-    public DataTable ddlBindDesignation(int HeadId)
+    public DataTable Get_Designations(int HeadId)
     {
         string query = @"
         SELECT 
@@ -65,8 +66,8 @@ public partial class Master_Pages_Hierarchy_Master : System.Web.UI.Page
             ISNULL(Parent_Designation_ID, 0) AS Parent_Designation_ID, 
             DesignationName 
         FROM M_Designation 
-        WHERE 
-            Designation_ID = 1 
+        WHERE 1 = 1
+            -- AND Designation_ID = 1
             AND IsDeleted IS NULL 
         ORDER BY 
             Parent_Designation_ID, Designation_ID";
@@ -75,16 +76,16 @@ public partial class Master_Pages_Hierarchy_Master : System.Web.UI.Page
         return executeClass.Get_Datatable(query, parameters);
     }
 
-
-    private void RecursiveFillTree(DataTable dtParent, int parentID, int level)
+    private void Get_Recersive_Designation_Dropdown(DataTable Designation_DT, int parentID, int level)
     {
-        DataView dv = new DataView(dtParent);
+        DataView dv = new DataView(Designation_DT);
         dv.RowFilter = string.Format("Parent_Designation_ID = {0}", parentID);
 
         StringBuilder appender = new StringBuilder();
         for (int j = 0; j < level; j++)
         {
-            appender.Append("&nbsp;&nbsp;&nbsp;&nbsp;"); // Indentation based on the level
+            // Indentation based on the level
+            appender.Append("&nbsp;&nbsp;&nbsp;&nbsp;");
         }
         if (level > 0)
         {
@@ -98,7 +99,7 @@ public partial class Master_Pages_Hierarchy_Master : System.Web.UI.Page
             DD_Parent_Designation.Items.Add(new ListItem(text, value));
 
             // Recursively call to add child nodes
-            RecursiveFillTree(dtParent, int.Parse(row["Designation_ID"].ToString()), level + 1);
+            Get_Recersive_Designation_Dropdown(Designation_DT, int.Parse(row["Designation_ID"].ToString()), level + 1);
         }
     }
 
@@ -106,19 +107,7 @@ public partial class Master_Pages_Hierarchy_Master : System.Web.UI.Page
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    //-------------------------- Bind Designation TreeView --------------------------
 
     private void BindTreeView()
     {
@@ -126,7 +115,6 @@ public partial class Master_Pages_Hierarchy_Master : System.Web.UI.Page
         DataTable Parent_Node_DT = BindDesigHead(0);
         PopulateTreeView(Parent_Node_DT, null);
     }
-
 
     private void PopulateTreeView(DataTable Parent_Node_DT, TreeNode parentNode)
     {
@@ -161,7 +149,6 @@ public partial class Master_Pages_Hierarchy_Master : System.Web.UI.Page
         }
     }
 
-
     public DataTable BindDesigHead(int? parentId)
     {
         string query = $@"Select Designation_ID, Parent_Designation_ID, Level_ID, DesignationName, DesignationNameMr, DesignationCode, IsDeleted
@@ -179,20 +166,22 @@ public partial class Master_Pages_Hierarchy_Master : System.Web.UI.Page
 
 
 
+    //-------------------------- TreeView Node Event --------------------------
 
     protected void Hierarchy_SelectedNodeChanged(object sender, EventArgs e)
     {
 
     }
 
+
+
+
+    //-------------------------- Save / Reset / Delete Events --------------------------
+
     protected void Btn_Reset_Click(object sender, EventArgs e)
     {
 
     }
-
-
-
-
 
     protected void Btn_Submit_Click(object sender, EventArgs e)
     {
@@ -219,9 +208,9 @@ public partial class Master_Pages_Hierarchy_Master : System.Web.UI.Page
 
                 if (Btn_Submit.Text == "Save")
                 {
-                    string sql = $@"Insert Into M_Designation 
+                    string sql = $@"INSERT INTO M_Designation 
                                     (Designation_ID, Parent_Designation_ID, Level_ID, DesignationName, DesignationCode, SavedBy) 
-                                    Values 
+                                    VALUES 
                                     (@Designation_ID, @Parent_Designation_ID, @Level_ID, @DesignationName, @DesignationCode, @SavedBy)";
 
                     List<SqlParameter> parameters = new List<SqlParameter>
@@ -240,9 +229,18 @@ public partial class Master_Pages_Hierarchy_Master : System.Web.UI.Page
                 }
                 else if (Btn_Submit.Text == "Update")
                 {
-                    string sql = $@"";
+                    string sql = $@"UPDATE M_Designation SET Parent_Designation_ID=@Parent_Designation_ID, Level_ID=@Level_ID, 
+                                        DesignationName=@DesignationName, DesignationCode=@DesignationCode
+                                    WHERE Designation_ID = @Designation_ID";
 
-                    List<SqlParameter> parameters = new List<SqlParameter> { /*new SqlParameter("@SavedBy", savedBy)*/ };
+                    List<SqlParameter> parameters = new List<SqlParameter>
+                    {
+                        new SqlParameter("@Parent_Designation_ID", parent_Designation),
+                        new SqlParameter("@Level_ID", level),
+                        new SqlParameter("@DesignationName", designation_Name),
+                        new SqlParameter("@DesignationCode", designation_Code),
+                        new SqlParameter("@Designation_ID", Designation_ID),
+                    };
 
                     executeClass.ExecuteCommand(sql, command, parameters);
 
