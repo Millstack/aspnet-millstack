@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Admin/AdminMaster.master" AutoEventWireup="true" CodeFile="Hierarchy_Master.aspx.cs" Inherits="Master_Pages_Hierarchy_Master" %>
+﻿<%@ Page Title="" Language="C#" Async="true" UnobtrusiveValidationMode="None" MaintainScrollPositionOnPostback="true" MasterPageFile="~/Admin/AdminMaster.master" AutoEventWireup="true" CodeFile="Hierarchy_Master.aspx.cs" Inherits="Master_Pages_Hierarchy_Master" %>
 
 <%@ Register Namespace="AjaxControlToolkit" Assembly="AjaxControlToolkit" TagPrefix="ajax" %>
 
@@ -6,6 +6,13 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="main" runat="Server">
 
+
+    <style type="text/css">
+        .selected-node {
+            font-weight: bold;
+            color: #000;
+        }
+    </style>
 
     <!-- Heading -->
     <div class="col-md-11 mx-auto fw-normal fs-3 fw-bold ps-0 pb-2 text-dark-emphasis mt-1 mb-1 text-center">
@@ -15,6 +22,7 @@
     <!-- Hierarchy TreeView Starts -->
     <div id="Div_Control" runat="server" class="card col-md-11 mx-auto mt-1 py-2 shadow rounded-3">
         <div class="card-body">
+
 
             <!-- Heading - BG -->
             <div class="fs-5 fw-medium text-white border border-dark-subtle shadow rounded-2 text-left py-2 px-3 mb-3" style="background-color: #0f3f6f !important;">
@@ -90,25 +98,34 @@
                     </asp:DropDownList>
                 </div>
 
+                <!-- Submit Button UI Starts -->
+                <div class="col-md-6 row mb-3 align-self-end">
+                    <div class="col-md-4 text-right">
+                        <asp:Button ID="Btn_Submit" runat="server" Text="Save" OnClick="Btn_Submit_Click" ValidationGroup="finalSubmit"
+                            CssClass="btn col-md-12 text-white shadow rounded-0" Style="background: #0f3f6f; color: #fff" />
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <asp:Button ID="Btn_Reset" runat="server" Text="Reset" OnClick="Btn_Reset_Click"
+                            CssClass="btn col-md-12 text-white shadow rounded-0" Style="background: #0f3f6f; color: #fff" />
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <asp:LinkButton ID="Btn_Delete" runat="server" Text="Delete" OnClick="Btn_Delete_Click"
+                            OnClientClick="javascript:return confirm ('Are you sure to Delete this record ? ')"
+                            CssClass="btn col-md-12 text-white shadow rounded-0" Style="background: #ea523b; color: #fff">
+                            <asp:Image ID="IMG_Delete" runat="server" ImageUrl="~/assets/image/delete-cut/delete.png" AlternateText="Edit" CssClass="ms-2"
+                                ToolTip="Delete" Style="width: 25px; height: 25px;" />
+                        </asp:LinkButton>
+                    </div>
+                </div>
+
             </div>
             <!-- Row 1 Ends -->
 
-            <!-- Submit Button UI Starts -->
-            <div class="row mt-5 mb-2 align-self-end">
-                <div class="col-md-8 text-start"></div>
-                <div class="col-md-2 text-end">
-                    <asp:Button ID="Btn_Reset" runat="server" Text="Reset" OnClick="Btn_Reset_Click"
-                        CssClass="btn col-md-8 text-white shadow rounded-0" Style="background: #0f3f6f; color: #fff" />
-                </div>
-                <div class="col-md-2 text-start">
-                    <asp:Button ID="Btn_Submit" runat="server" Text="Save" OnClick="Btn_Submit_Click" ValidationGroup="finalSubmit"
-                        CssClass="btn col-md-8 text-white shadow rounded-0" Style="background: #0f3f6f; color: #fff" />
-                </div>
-            </div>
-            <!-- Submit Button UI Ends -->
 
-            <div class="border-top border-dark-subtle mt-5">
-                <div class="col-md-11 mx-auto bg-white p-4"">
+
+            <!-- Hierarchy TreeView Starts -->
+            <div class="border-top border-secondary-subtle mt-3">
+                <div class="col-md-11 mx-auto bg-white p-4">
                     <asp:Literal ID="Literal3" runat="server" Text="">Designation Types</asp:Literal>
                 </div>
                 <div class=" col-md-11 mx-auto bg-light p-4">
@@ -122,21 +139,22 @@
                             <asp:TreeNodeStyle CssClass="text-body-secondary" />
                             <asp:TreeNodeStyle CssClass="text-body-secondary" />
                         </LevelStyles>
-                        <ParentNodeStyle BorderWidth="0px"/>
+                        <ParentNodeStyle BorderWidth="0px" CssClass="fw-normal" />
                         <HoverNodeStyle BorderWidth="0px" CssClass="fw-semibold text-dark-emphasis" />
                         <SelectedNodeStyle Font-Bold="True" CssClass="" />
-                        <RootNodeStyle BorderWidth="0px" />
+                        <RootNodeStyle BorderWidth="0px" CssClass="" />
                         <NodeStyle BorderWidth="0px" CssClass="" />
                         <LeafNodeStyle BorderStyle="None" BorderWidth="0px" />
                     </asp:TreeView>
                 </div>
+                <!-- Hierarchy TreeView Ends -->
 
             </div>
+
+
         </div>
     </div>
     <!-- Hierarchy TreeView Ends -->
-
-
 
 
 

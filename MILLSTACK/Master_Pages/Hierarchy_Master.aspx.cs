@@ -23,6 +23,8 @@ public partial class Master_Pages_Hierarchy_Master : System.Web.UI.Page
     {
         if (!IsPostBack)
         {
+            ViewState["Operation"] = "INSERT";
+
             Bind_Dropdown();
             BindTreeView();
         }
@@ -57,7 +59,6 @@ public partial class Master_Pages_Hierarchy_Master : System.Web.UI.Page
             SweetAlert.GetSweet(this.Page, "error", "", $"{ex.Message}");
         }
     }
-
 
     public DataTable Get_Designations(int HeadId)
     {
@@ -200,15 +201,17 @@ public partial class Master_Pages_Hierarchy_Master : System.Web.UI.Page
                     DD_Level_Type.SelectedValue = Level_ID;
                 }
 
-                Btn_Submit.Text = "UPDATE";
-                //btnDelete.Enabled = true;
+                Btn_Submit.Text = "Update";
+                ViewState["Operation"] = "UPDATE";
             }
             else
             {
+                Btn_Submit.Text = "Save";
                 ViewState["Designation_ID"] = "";
+                ViewState["Operation"] = "INSERT";
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             SweetAlert.GetSweet(this.Page, "error", "", $"{ex.Message}");
         }
@@ -247,7 +250,9 @@ public partial class Master_Pages_Hierarchy_Master : System.Web.UI.Page
 
                 string Designation_ID = executeClass.Get_Next_RefID("M_Designation", "Designation_ID");
 
-                if (Btn_Submit.Text == "Save")
+                string OperationStatus = string.IsNullOrEmpty(ViewState["Operation"]?.ToString()) ? string.Empty : ViewState["Operation"].ToString();
+
+                if (OperationStatus == "INSERT" && Btn_Submit.Text == "Save")
                 {
                     string sql = $@"INSERT INTO M_Designation 
                                     (Designation_ID, Parent_Designation_ID, Level_ID, DesignationName, DesignationCode, SavedBy) 
@@ -266,9 +271,9 @@ public partial class Master_Pages_Hierarchy_Master : System.Web.UI.Page
 
                     executeClass.ExecuteCommand(sql, command, parameters);
 
-                    SweetAlert.GetSweet(this.Page, "success", "", $"Designation Created");
+                    SweetAlert.GetSweet(this.Page, "success", "", $"Designation: <b>{Txt_Designation_Name.Text}</b> Created");
                 }
-                else if (Btn_Submit.Text == "Update")
+                else if(OperationStatus == "UPDATE" && Btn_Submit.Text == "Update")
                 {
                     string sql = $@"UPDATE M_Designation SET Parent_Designation_ID=@Parent_Designation_ID, Level_ID=@Level_ID, 
                                         DesignationName=@DesignationName, DesignationCode=@DesignationCode
@@ -285,7 +290,7 @@ public partial class Master_Pages_Hierarchy_Master : System.Web.UI.Page
 
                     executeClass.ExecuteCommand(sql, command, parameters);
 
-                    SweetAlert.GetSweet(this.Page, "success", "", $"Designation Updated");
+                    SweetAlert.GetSweet(this.Page, "success", "", $"Designation: <b>{Txt_Designation_Name.Text}</b> Updated");
                 }
                 else
                 {
@@ -316,6 +321,63 @@ public partial class Master_Pages_Hierarchy_Master : System.Web.UI.Page
             {
                 connection.Close();
                 transaction.Dispose();
+            }
+        }
+    }
+
+    protected void Btn_Delete_Click(object sender, EventArgs e)
+    {
+        using (SqlConnection connection = new SqlConnection(ConnectionClass.connection_String_Local))
+        {
+            connection.Open();
+            SqlCommand command = connection.CreateCommand();
+            SqlTransaction transaction = connection.BeginTransaction(IsolationLevel.Serializable, "Transaction_");
+            command.Connection = connection;
+            command.Transaction = transaction;
+
+            try
+            {
+                if (ViewState["Designation_ID"] != null && ViewState["Designation_ID"].ToString().Trim() != string.Empty)
+                {
+                    Int64 Designation_ID = Convert.ToInt32(ViewState["Designation_ID"]);
+
+                    //if (dl.RecordExistanceChk("Tbl_Employee_Other_Details", "Designation_ID", id.ToString(), "Designation_ID"))
+
+                    string sql = $@"UPDATE M_Designation SET IsDeleted = 1 WHERE Designation_ID = @Designation_ID";
+
+                    List<SqlParameter> parameters = new List<SqlParameter>
+                    {
+                        new SqlParameter("@Designation_ID", Designation_ID),
+                    };
+
+                    executeClass.ExecuteCommand(sql, command, parameters);
+
+
+                    if (transaction.Connection != null)
+                    {
+                        transaction.Commit();
+
+                        Bind_Dropdown();
+                        BindTreeView();
+
+                        // clearing user inputs
+                        DD_Parent_Designation.ClearSelection();
+                        DD_Level_Type.ClearSelection();
+                        Txt_Designation_Name.Text = string.Empty;
+                        Txt_Designation_Code.Text = string.Empty;
+                        Btn_Submit.Text = "Save";
+
+                        SweetAlert.GetSweet(this.Page, "success", "", $"Designation: <b>{Txt_Designation_Name.Text}</b> deleted successfully");
+                    }
+                }
+                else
+                {
+                    SweetAlert.GetSweet(this.Page, "info", "", $"Please select a node to delete");
+                }
+            }
+            catch (Exception ex)
+            {
+                SweetAlert.GetSweet(this.Page, "error", "", $"{ex.Message}");
             }
         }
     }
