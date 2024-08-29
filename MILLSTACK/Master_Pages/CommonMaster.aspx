@@ -217,6 +217,7 @@
                                 </asp:LinkButton>
                             </ItemTemplate>
                             <HeaderStyle Width="80px"></HeaderStyle>
+                            <ItemStyle CssClass="align-middle" />
                         </asp:TemplateField>
 
                         <asp:TemplateField HeaderText="Delete" ShowHeader="true" HeaderStyle-Width="50px">
@@ -228,6 +229,7 @@
                                 </asp:LinkButton>
                             </ItemTemplate>
                             <HeaderStyle Width="80px"></HeaderStyle>
+                             <ItemStyle CssClass="align-middle" />
                         </asp:TemplateField>
                     </Columns>
 
