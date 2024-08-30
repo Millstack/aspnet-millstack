@@ -98,14 +98,14 @@
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" CssClass="invalid-feedback" SetFocusOnError="True" Display="Dynamic" ToolTip="Required"
                             ControlToValidate="Txt_Phone_Number" InitialValue="" ValidationGroup="finalSubmit" ErrorMessage="required field">
                         </asp:RequiredFieldValidator>
+                        <asp:RegularExpressionValidator ID="RegularExpressionValidator1" CssClass="invalid-feedback" ErrorMessage="Invalid mobile number"
+                            runat="server" SetFocusOnError="True" Display="Dynamic" ToolTip="" ValidationExpression="^\d{10}$" ControlToValidate="Txt_Phone_Number">
+                        </asp:RegularExpressionValidator>
                     </div>
-                    <asp:TextBox runat="server" ID="Txt_Phone_Number" type="number" Enabled="true" min="1000000000" max="9999999999" MaxLength="10"
+                    <asp:TextBox runat="server" ID="Txt_Phone_Number" type="number" Enabled="true" min="0" MaxLength="10"
                         CssClass="form-control border border-secondary-subtle bg-light rounded-1 fs-6 fw-light py-1"></asp:TextBox>
                     <ajax:FilteredTextBoxExtender ID="FilteredTextBoxExtender4" runat="server" TargetControlID="Txt_Phone_Number"
                         FilterType="Numbers" />
-                    <asp:RegularExpressionValidator ID="RegularExpressionValidator1" CssClass="badge badge-danger badge-mini" ErrorMessage="Invalid mobile number"
-                        runat="server" SetFocusOnError="True" Display="Dynamic" ToolTip="" ValidationExpression="^\d{10}$" ControlToValidate="Txt_Phone_Number">
-                    </asp:RegularExpressionValidator>
                 </div>
 
                 <!-- TetxtBox: Email -->
@@ -206,6 +206,8 @@
                 <asp:Literal ID="Literal9" Text="Work Area Details" runat="server"></asp:Literal>
             </div>
 
+
+
             <!-- Row 1 Starts -->
             <div class="row mb-2" style="border-style: solid none none none; border-width: 1px; border-color: #d6d5d5; padding-top: 10px; padding-bottom: 10px; margin-top: 10px; margin-bottom: 10px;">
 
@@ -222,7 +224,7 @@
                         </div>
                     </div>
                     <asp:DropDownList ID="DD_Hierarchy" runat="server" Width="100%" CssClass="form-control chosen-dropdown"
-                        AutoPostBack="false">
+                        OnSelectedIndexChanged="DD_Hierarchy_SelectedIndexChanged" AutoPostBack="true">
                     </asp:DropDownList>
                 </div>
 
@@ -250,7 +252,7 @@
                         </asp:Literal>
                         <div>
                             <asp:RequiredFieldValidator ID="RequiredFieldValidator13" runat="server" CssClass="invalid-feedback" SetFocusOnError="True" Display="Dynamic" ToolTip="Required"
-                                ControlToValidate="DD_Status" InitialValue="" ValidationGroup="finalSubmit" ErrorMessage="required field">
+                                ControlToValidate="DD_Status" InitialValue="-1" ValidationGroup="finalSubmit" ErrorMessage="required field">
                             </asp:RequiredFieldValidator>
                         </div>
                     </div>
@@ -263,10 +265,56 @@
                 </div>
 
             </div>
+            <!-- Row 1 Ends -->
+
+
+
+            <!-- Row 2 Starts -->
+            <div class="row mb-3">
+
+                <!-- CheckList: Division -->
+                <div id="Div_Division" runat="server" visible="false" class="form-group col-md-4 m-0 shadow">
+                    <div class="mb-1 fw-normal fs-6">
+                        <asp:Literal ID="Literal13" runat="server" Text="">Division
+                            <em style="color: red">*</em>
+                        </asp:Literal>
+                    </div>
+                    <div class="col-md-12 bg-light mb-2" style="height: 290px; overflow: auto">
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <asp:TextBox ID="Txt_CheckBoxList_Division" placeholder="Search..." CssClass="form-control" runat="server"></asp:TextBox>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <asp:CheckBox ID="Check_All_Division" CssClass="form-control" Text="Select All" runat="server" AutoPostBack="True" OnCheckedChanged="Check_All_Division_CheckedChanged" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-12 m-0">
+                                <asp:CheckBoxList ID="CheckBoxList_Division" runat="server" OnSelectedIndexChanged="CheckBoxList_Division_SelectedIndexChanged1" AutoPostBack="true"></asp:CheckBoxList>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- Row 2 Ends -->
 
         </div>
     </div>
     <!-- Work Area Allocation Ends -->
+
+    <!-- Submit Button UI Starts -->
+    <div class="col-md-11 mx-auto row mt-5 mb-2 align-self-end">
+        <div class="col-md-6 text-start">
+            <asp:Button ID="Btn_Back" runat="server" Text="Back" OnClick="Btn_Back_Click"
+                CssClass="btn col-md-2 text-white shadow rounded-0" Style="background: #0f3f6f; color: #fff" />
+        </div>
+        <div class="col-md-6 text-end">
+            <asp:Button ID="Btn_Submit" runat="server" Text="Save" OnClick="Btn_Submit_Click" ValidationGroup="finalSubmit"
+                CssClass="btn col-md-2 text-white shadow rounded-0" Style="background: #0f3f6f; color: #fff" />
+        </div>
+    </div>
+    <!-- Submit Button UI Ends -->
 
 
 

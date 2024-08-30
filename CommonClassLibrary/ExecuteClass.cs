@@ -209,6 +209,55 @@ namespace CommonClassLibrary
         }
 
 
+        /// <summary>
+        /// Bind CheckBoxList generic method 
+        /// </summary>
+        /// <param name="CheckBoxList object"></param>
+        /// <param name="String sql query"></param>
+        /// <param name="String textField"></param>
+        /// <param name="String ValueField"></param>
+        /// <param name="Dictionary object"></param>
+        /// <returns>Void</returns>
+        public void Bind_CheckBoxList_Generic(CheckBoxList checkBoxListID, string sql, string textField, string valueField, Dictionary<string, object> parameters = null)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionClass.connection_String_Local))
+            {
+                try
+                {
+                    connection.Open();
+
+                    using (SqlCommand cmd = new SqlCommand(sql, connection))
+                    {
+                        if (parameters != null)
+                        {
+                            foreach (var parameter in parameters)
+                            {
+                                cmd.Parameters.AddWithValue(parameter.Key, parameter.Value);
+                            }
+                        }
+
+                        SqlDataAdapter ad = new SqlDataAdapter(cmd);
+                        DataTable dt = new DataTable();
+                        ad.Fill(dt);
+
+                        if (dt != null && dt.Rows.Count > 0)
+                        {
+                            checkBoxListID.DataSource = dt;
+                            checkBoxListID.DataTextField = textField;
+                            checkBoxListID.DataValueField = valueField;
+                            checkBoxListID.DataBind();
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Handle the error (e.g., log it)
+                }
+            }
+        }
+
+
+
 
         /// <summary>
         /// Executing SQL Command 
