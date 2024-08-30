@@ -31,7 +31,6 @@ namespace CommonClassLibrary
         }
 
 
-
         /// <summary>
         /// Get DataTable
         /// </summary>
@@ -78,7 +77,6 @@ namespace CommonClassLibrary
         }
 
 
-
         /// <summary>
         /// Get Flipped DataTable
         /// </summary>
@@ -113,7 +111,6 @@ namespace CommonClassLibrary
         }
 
 
-        
         /// <summary>
         /// Get Next Primary Key From The Given Table 
         /// </summary>
@@ -142,7 +139,6 @@ namespace CommonClassLibrary
 
             return dt.Rows.Count > 0 ? dt.Rows[0]["Next_ID"].ToString() : "1";
         }
-
 
 
         /// <summary>
@@ -255,8 +251,6 @@ namespace CommonClassLibrary
                 }
             }
         }
-
-
 
 
         /// <summary>

@@ -206,98 +206,153 @@
                 <asp:Literal ID="Literal9" Text="Work Area Details" runat="server"></asp:Literal>
             </div>
 
+            <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+                <ContentTemplate>
 
+                    <!-- Row 1 Starts -->
+                    <div class="row mb-2" style="border-style: solid none none none; border-width: 1px; border-color: #d6d5d5; padding-top: 10px; padding-bottom: 10px; margin-top: 10px; margin-bottom: 10px;">
 
-            <!-- Row 1 Starts -->
-            <div class="row mb-2" style="border-style: solid none none none; border-width: 1px; border-color: #d6d5d5; padding-top: 10px; padding-bottom: 10px; margin-top: 10px; margin-bottom: 10px;">
-
-                <!-- DropDown: Hierarchy -->
-                <div class="col-md-4 mb-3 align-self-end">
-                    <div class="mb-1 fw-normal fs-6">
-                        <asp:Literal ID="Literal10" runat="server" Text="">Hierarchy
+                        <!-- DropDown: Hierarchy -->
+                        <div class="col-md-4 mb-3 align-self-end">
+                            <div class="mb-1 fw-normal fs-6">
+                                <asp:Literal ID="Literal10" runat="server" Text="">Hierarchy
                             <em style="color: red">*</em>
-                        </asp:Literal>
-                        <div>
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator11" runat="server" CssClass="invalid-feedback" SetFocusOnError="True" Display="Dynamic" ToolTip="Required"
-                                ControlToValidate="DD_Hierarchy" InitialValue="" ValidationGroup="finalSubmit" ErrorMessage="required field">
-                            </asp:RequiredFieldValidator>
-                        </div>
-                    </div>
-                    <asp:DropDownList ID="DD_Hierarchy" runat="server" Width="100%" CssClass="form-control chosen-dropdown"
-                        OnSelectedIndexChanged="DD_Hierarchy_SelectedIndexChanged" AutoPostBack="true">
-                    </asp:DropDownList>
-                </div>
-
-                <!-- ListBox: Role -->
-                <div class="col-md-4 mb-3 align-self-end">
-                    <div class="mb-1 fw-normal fs-6">
-                        <asp:Literal ID="Literal11" runat="server" Text="">Role
-                            <em style="color: red">*</em>
-                        </asp:Literal>
-                        <div>
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator12" runat="server" CssClass="invalid-feedback" SetFocusOnError="True" Display="Dynamic" ToolTip="Required"
-                                ControlToValidate="MCDD_Role" InitialValue="" ValidationGroup="finalSubmit" ErrorMessage="required field">
-                            </asp:RequiredFieldValidator>
-                        </div>
-                    </div>
-                    <asp:ListBox ID="MCDD_Role" runat="server" SelectionMode="Multiple" Width="100%" CssClass="form-control listbox"
-                        AutoPostBack="false"></asp:ListBox>
-                </div>
-
-                <!-- DropDown: Status -->
-                <div class="col-md-4 mb-3 align-self-end">
-                    <div class="mb-1 fw-normal fs-6">
-                        <asp:Literal ID="Literal12" runat="server" Text="">Status
-                            <em style="color: red">*</em>
-                        </asp:Literal>
-                        <div>
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator13" runat="server" CssClass="invalid-feedback" SetFocusOnError="True" Display="Dynamic" ToolTip="Required"
-                                ControlToValidate="DD_Status" InitialValue="-1" ValidationGroup="finalSubmit" ErrorMessage="required field">
-                            </asp:RequiredFieldValidator>
-                        </div>
-                    </div>
-                    <asp:DropDownList ID="DD_Status" runat="server" Width="100%" CssClass="form-control chosen-dropdown"
-                        AutoPostBack="false">
-                        <asp:ListItem Text="" Value="-1"></asp:ListItem>
-                        <asp:ListItem Text="Active" Value="1"></asp:ListItem>
-                        <asp:ListItem Text="In-Active" Value="0"></asp:ListItem>
-                    </asp:DropDownList>
-                </div>
-
-            </div>
-            <!-- Row 1 Ends -->
-
-
-
-            <!-- Row 2 Starts -->
-            <div class="row mb-3">
-
-                <!-- CheckList: Division -->
-                <div id="Div_Division" runat="server" visible="false" class="form-group col-md-4 m-0 shadow">
-                    <div class="mb-1 fw-normal fs-6">
-                        <asp:Literal ID="Literal13" runat="server" Text="">Division
-                            <em style="color: red">*</em>
-                        </asp:Literal>
-                    </div>
-                    <div class="col-md-12 bg-light mb-2" style="height: 290px; overflow: auto">
-                        <div class="row">
-                            <div class="col-md-6 form-group">
-                                <asp:TextBox ID="Txt_CheckBoxList_Division" placeholder="Search..." CssClass="form-control" runat="server"></asp:TextBox>
+                                </asp:Literal>
+                                <div>
+                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator11" runat="server" CssClass="invalid-feedback" SetFocusOnError="True" Display="Dynamic" ToolTip="Required"
+                                        ControlToValidate="DD_Hierarchy" InitialValue="" ValidationGroup="finalSubmit" ErrorMessage="required field">
+                                    </asp:RequiredFieldValidator>
+                                </div>
                             </div>
-                            <div class="col-md-6 form-group">
-                                <asp:CheckBox ID="Check_All_Division" CssClass="form-control" Text="Select All" runat="server" AutoPostBack="True" OnCheckedChanged="Check_All_Division_CheckedChanged" />
-                            </div>
+                            <asp:DropDownList ID="DD_Hierarchy" runat="server" Width="100%" CssClass="form-control chosen-dropdown"
+                                OnSelectedIndexChanged="DD_Hierarchy_SelectedIndexChanged" AutoPostBack="true">
+                            </asp:DropDownList>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group col-12 m-0">
-                                <asp:CheckBoxList ID="CheckBoxList_Division" runat="server" OnSelectedIndexChanged="CheckBoxList_Division_SelectedIndexChanged1" AutoPostBack="true"></asp:CheckBoxList>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-            </div>
-            <!-- Row 2 Ends -->
+                        <!-- ListBox: Role -->
+                        <div class="col-md-4 mb-3 align-self-end">
+                            <div class="mb-1 fw-normal fs-6">
+                                <asp:Literal ID="Literal11" runat="server" Text="">Role
+                            <em style="color: red">*</em>
+                                </asp:Literal>
+                                <div>
+                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator12" runat="server" CssClass="invalid-feedback" SetFocusOnError="True" Display="Dynamic" ToolTip="Required"
+                                        ControlToValidate="MCDD_Role" InitialValue="" ValidationGroup="finalSubmit" ErrorMessage="required field">
+                                    </asp:RequiredFieldValidator>
+                                </div>
+                            </div>
+                            <asp:ListBox ID="MCDD_Role" runat="server" SelectionMode="Multiple" Width="100%" CssClass="form-control listbox"
+                                AutoPostBack="false"></asp:ListBox>
+                        </div>
+
+                        <!-- DropDown: Status -->
+                        <div class="col-md-4 mb-3 align-self-end">
+                            <div class="mb-1 fw-normal fs-6">
+                                <asp:Literal ID="Literal12" runat="server" Text="">Status
+                            <em style="color: red">*</em>
+                                </asp:Literal>
+                                <div>
+                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator13" runat="server" CssClass="invalid-feedback" SetFocusOnError="True" Display="Dynamic" ToolTip="Required"
+                                        ControlToValidate="DD_Status" InitialValue="-1" ValidationGroup="finalSubmit" ErrorMessage="required field">
+                                    </asp:RequiredFieldValidator>
+                                </div>
+                            </div>
+                            <asp:DropDownList ID="DD_Status" runat="server" Width="100%" CssClass="form-control chosen-dropdown"
+                                AutoPostBack="false">
+                                <asp:ListItem Text="" Value="-1"></asp:ListItem>
+                                <asp:ListItem Text="Active" Value="1"></asp:ListItem>
+                                <asp:ListItem Text="In-Active" Value="0"></asp:ListItem>
+                            </asp:DropDownList>
+                        </div>
+
+                    </div>
+                    <!-- Row 1 Ends -->
+
+
+
+                    <!-- Row 2 Starts -->
+                    <div class="row mb-3">
+
+                        <!-- CheckBoxList: Division -->
+                        <div id="Div_Division" runat="server" visible="false" class="form-group col-md-4 m-0 shadow">
+                            <div class="mb-1 fw-normal fs-6">
+                                <asp:Literal ID="Literal13" runat="server" Text="">Division
+                            <em style="color: red">*</em>
+                                </asp:Literal>
+                            </div>
+                            <div class="col-md-12 bg-light mb-2" style="height: 300px; overflow-x: hidden; overflow-y: auto;">
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <asp:TextBox ID="Txt_CheckBoxList_Division" placeholder="Search..." CssClass="form-control" runat="server"></asp:TextBox>
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <asp:CheckBox ID="Check_All_Division" CssClass="form-control" Text="Select All" runat="server" AutoPostBack="True" 
+                                            OnCheckedChanged="Check_All_Division_CheckedChanged" />
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-12 m-0">
+                                        <asp:CheckBoxList ID="CheckBoxList_Division" runat="server" OnSelectedIndexChanged="CheckBoxList_Division_SelectedIndexChanged" AutoPostBack="true"></asp:CheckBoxList>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CheckBoxList: District -->
+                        <div id="Div_District" runat="server" visible="false" class="form-group col-md-4 m-0 shadow">
+                            <div class="mb-1 fw-normal fs-6">
+                                <asp:Literal ID="Literal14" runat="server" Text="">District
+                                    <em style="color: red">*</em>
+                                </asp:Literal>
+                            </div>
+                            <div class="col-md-12 bg-light mb-2" style="height: 300px; overflow-x: hidden; overflow-y: auto;">
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <asp:TextBox ID="Txt_CheckBoxList_District" placeholder="Search..." CssClass="form-control" runat="server"></asp:TextBox>
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <asp:CheckBox ID="Check_All_District" CssClass="form-control" Text="Select All" runat="server" AutoPostBack="True" 
+                                            OnCheckedChanged="Check_All_District_CheckedChanged" />
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-12 m-0">
+                                        <asp:CheckBoxList ID="CheckBoxList_District" runat="server" OnSelectedIndexChanged="CheckBoxList_District_SelectedIndexChanged" AutoPostBack="true"></asp:CheckBoxList>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CheckBoxList: Taluka -->
+                        <div id="Div_Taluka" runat="server" visible="false" class="form-group col-md-4 m-0 shadow">
+                            <div class="mb-1 fw-normal fs-6">
+                                <asp:Literal ID="Literal15" runat="server" Text="">Taluka
+                                    <em style="color: red">*</em>
+                                </asp:Literal>
+                            </div>
+                            <div class="col-md-12 bg-light mb-2" style="height: 300px; overflow-x: hidden; overflow-y: auto;">
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <asp:TextBox ID="Txt_CheckBoxList_Taluka" placeholder="Search..." CssClass="form-control" runat="server"></asp:TextBox>
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <asp:CheckBox ID="Check_All_Taluka" CssClass="form-control" Text="Select All" runat="server" AutoPostBack="True" 
+                                            OnCheckedChanged="Check_All_Taluka_CheckedChanged" />
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-12 m-0">
+                                        <asp:CheckBoxList ID="CheckBoxList_Taluka" runat="server" AutoPostBack="false"></asp:CheckBoxList>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- Row 2 Ends -->
+
+                </ContentTemplate>
+            </asp:UpdatePanel>
 
         </div>
     </div>

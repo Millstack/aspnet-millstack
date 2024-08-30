@@ -92,28 +92,47 @@ public partial class Master_Pages_UserCreation : System.Web.UI.Page
                 }
                 else if (selected_Designation == "District")
                 {
+                    //Div_Division.Visible = true;
+                    //Div_District.Visible = true;
 
+                    CheckBoxList_Division.AutoPostBack = true;
+                    CheckBoxList_District.AutoPostBack = false;
                 }
                 else if (selected_Designation == "Taluka")
                 {
+                    //Div_Division.Visible = true;
+                    //Div_District.Visible = true;
+                    //Div_Taluka.Visible = true;
 
+                    CheckBoxList_Division.AutoPostBack = true;
+                    CheckBoxList_District.AutoPostBack = true;
                 }
                 else
                 {
                     // if code comes here, means its logical error
+                    Div_Division.Visible = false;
+                    Div_District.Visible = false;
+                    Div_Taluka.Visible = false;
+
+                    CheckBoxList_Division.AutoPostBack = false;
+                    CheckBoxList_District.AutoPostBack = false;
                 }
             }
             else
             {
                 Div_Division.Visible = false;
-                Div_Division.Visible = false;
-                Div_Division.Visible = false;
+                Div_District.Visible = false;
+                Div_Taluka.Visible = false;
 
                 CheckBoxList_Division.ClearSelection();
-                CheckBoxList_Division.ClearSelection();
-                CheckBoxList_Division.ClearSelection();
+                CheckBoxList_District.ClearSelection();
+                CheckBoxList_Taluka.ClearSelection();
 
-                //CheckList_Division.Items.Clear();
+                CheckBoxList_District.Items.Clear();
+                CheckBoxList_Taluka.Items.Clear();
+
+                CheckBoxList_Division.AutoPostBack = false;
+                CheckBoxList_District.AutoPostBack = false;
             }
         }
         catch (Exception ex)
@@ -125,7 +144,7 @@ public partial class Master_Pages_UserCreation : System.Web.UI.Page
 
 
 
-    //-------------------------- Check List Event --------------------------
+    //-------------------------- Check Box List Bind --------------------------
 
     private void Bind_CheckBoxList()
     {
@@ -153,17 +172,61 @@ public partial class Master_Pages_UserCreation : System.Web.UI.Page
 
     protected void Check_All_Division_CheckedChanged(object sender, EventArgs e)
     {
-        CheckBoxList_Division.Items.Cast<ListItem>().ToList().ForEach(item => item.Selected = Check_All_Division.Checked);
-
-        string selected_Designation = DD_Hierarchy.SelectedItem.Text.Split(new[] { "_" }, StringSplitOptions.None)[1]
-                                      .Split(new[] { " Level" }, StringSplitOptions.None)[0]
-                                      .Trim();
-
-        if (selected_Designation == "District" || selected_Designation == "Taluka")
+        try
         {
-            CheckBoxList_Division_SelectedIndexChanged(null, null);
+            CheckBoxList_Division.Items.Cast<ListItem>().ToList().ForEach(item => item.Selected = Check_All_Division.Checked);
+
+            string selected_Designation = DD_Hierarchy.SelectedItem.Text.Split(new[] { "_" }, StringSplitOptions.None)[1]
+                                          .Split(new[] { " Level" }, StringSplitOptions.None)[0]
+                                          .Trim();
+
+            if (selected_Designation == "District" || selected_Designation == "Taluka")
+            {
+                CheckBoxList_Division_SelectedIndexChanged(null, null);
+                CheckBoxList_District_SelectedIndexChanged(null, null);
+            }
+        }
+        catch (Exception ex)
+        {
+            SweetAlert.GetSweet(this.Page, "error", "", $"{ex.Message}");
         }
     }
+
+    protected void Check_All_District_CheckedChanged(object sender, EventArgs e)
+    {
+        try
+        {
+            CheckBoxList_District.Items.Cast<ListItem>().ToList().ForEach(item => item.Selected = Check_All_District.Checked);
+
+            string selected_Designation = DD_Hierarchy.SelectedItem.Text.Split(new[] { "_" }, StringSplitOptions.None)[1]
+                                          .Split(new[] { " Level" }, StringSplitOptions.None)[0]
+                                          .Trim();
+
+            if (selected_Designation == "Taluka")
+            {
+                CheckBoxList_District_SelectedIndexChanged(null, null);
+            }
+        }
+        catch (Exception ex)
+        {
+            SweetAlert.GetSweet(this.Page, "error", "", $"{ex.Message}");
+        }
+    }
+
+    protected void Check_All_Taluka_CheckedChanged(object sender, EventArgs e)
+    {
+        try
+        {
+            CheckBoxList_Taluka.Items.Cast<ListItem>().ToList().ForEach(item => item.Selected = Check_All_Taluka.Checked);
+        }
+        catch (Exception ex)
+        {
+            SweetAlert.GetSweet(this.Page, "error", "", $"{ex.Message}");
+        }
+    }
+
+
+
 
 
 
@@ -171,10 +234,73 @@ public partial class Master_Pages_UserCreation : System.Web.UI.Page
 
     protected void CheckBoxList_Division_SelectedIndexChanged(object sender, EventArgs e)
     {
-        
+        try
+        {
+            string sql = string.Empty;
+
+            var selected_Divisions = CheckBoxList_Division.Items.Cast<ListItem>()
+                               .Where(item => item.Selected)
+                               .Select(item => item.Value.Trim())
+                               .ToList();
+
+            if (selected_Divisions.Any())
+            {
+                string division_IDs = string.Join(", ", selected_Divisions);
+
+                sql = $@"Select District_ID, State_ID, Division_ID, DistrictName, DistrictNameMr, DistrictCode, SavedBy, IsDeleted
+                         From M_District Where Division_ID IN ({division_IDs})";
+                parameters = new Dictionary<string, object> { /*{ "@Bank_ID", DD_Bank_Master.SelectedValue },*/ };
+                executeClass.Bind_CheckBoxList_Generic(CheckBoxList_District, sql, "DistrictName", "District_ID", parameters);
+
+                Div_District.Visible = true;
+            }
+            else
+            {
+                Div_District.Visible = false;
+                CheckBoxList_District.Items.Clear();
+            }
+        }
+        catch (Exception ex)
+        {
+            SweetAlert.GetSweet(this.Page, "error", "", $"{ex.Message}");
+        }
     }
 
+    protected void CheckBoxList_District_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        try
+        {
+            string sql = string.Empty;
 
+            var selected_Districts = CheckBoxList_District.Items.Cast<ListItem>()
+                                    .Where(item => item.Selected)
+                                    .Select(item => item.Value.Trim())
+                                    .ToList();
+
+            if (selected_Districts.Any())
+            {
+                string district_IDs = string.Join(", ", selected_Districts);
+
+                sql = $@"Select Taluka_ID, State_ID, Division_ID, District_ID, TalukaName, TalukaNameMr, TalukaCode, SavedBy, IsDeleted
+                         From M_Taluka Where District_ID IN ({district_IDs})";
+                parameters = new Dictionary<string, object> { /*{ "@Bank_ID", DD_Bank_Master.SelectedValue },*/ };
+                executeClass.Bind_CheckBoxList_Generic(CheckBoxList_Taluka, sql, "TalukaName", "Taluka_ID", parameters);
+
+                Div_Taluka.Visible = true;
+            }
+            else
+            {
+                Div_Taluka.Visible = false;
+                CheckBoxList_Taluka.Items.Clear();
+            }
+        }
+        catch (Exception ex)
+        {
+            SweetAlert.GetSweet(this.Page, "error", "", $"{ex.Message}");
+        }
+    }
+
+    
 
 
 
@@ -198,21 +324,7 @@ public partial class Master_Pages_UserCreation : System.Web.UI.Page
 
 
 
-    protected void CheckBoxList_Division_SelectedIndexChanged1(object sender, EventArgs e)
-    {
-        var selected_Divisions = CheckBoxList_Division.Items.Cast<ListItem>()
-                                .Where(item => item.Selected)
-                                .Select(item => item.Value.Trim())
-                                .ToList();
 
-        if (selected_Divisions.Any())
-        {
 
-        }
-        else
-        {
-            //Div_District.Visible = false;
-            //CheckList_District.Items.Clear();
-        }
-    }
+   
 }
