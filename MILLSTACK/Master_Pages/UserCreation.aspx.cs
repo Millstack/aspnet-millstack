@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity.Infrastructure;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -313,7 +314,80 @@ public partial class Master_Pages_UserCreation : System.Web.UI.Page
 
     protected void Btn_Submit_Click(object sender, EventArgs e)
     {
+        using (SqlConnection connection = new SqlConnection(ConnectionClass.connection_String_Local))
+        {
+            connection.Open();
+            SqlCommand command = connection.CreateCommand();
+            SqlTransaction transaction = connection.BeginTransaction(IsolationLevel.Serializable, "Transaction_");
+            command.Connection = connection;
+            command.Transaction = transaction;
 
+            try
+            {
+                // user inputs
+                string first_Name = Txt_First_Name.Text.Trim();
+                string middle_Name = Txt_Middle_Name.Text.Trim();
+                string last_Name = Txt_Laste_Name.Text.Trim();
+                string gender = DD_Gender.SelectedValue.Trim();
+                string phone_No = Txt_Phone_Number.Text.Trim();
+                string email = Txt_Email.Text.Trim();
+                string address = TA_Address.Value.Trim();
+                string user_Name = Txt_User_Name.Text.Trim();
+
+                string password = Txt_Password.Text.Trim();
+                string confirm_Password = Txt_Confirm_Password.Text.Trim();
+
+                // password confirmation on server side
+                if (password != confirm_Password)
+                {
+                    Txt_Confirm_Password.Focus();
+                    SweetAlert.GetSweet(this.Page, "warning", "", $"Password did not <b>Match</b>, kindly check !!");
+                    return;
+                }
+
+                // work area allocation
+                string hierarchy = DD_Hierarchy.SelectedValue;
+                string role_IDs = masterClass.Get_Selected_Items_From_DropDown(MCDD_Role);
+                string status = DD_Status.SelectedValue.Trim();
+
+                string division_IDs = masterClass.Get_CheckboxList_Checked_Values(CheckBoxList_Division);
+                string district_IDs = masterClass.Get_CheckboxList_Checked_Values(CheckBoxList_District);
+                string taluka_IDs = masterClass.Get_CheckboxList_Checked_Values(CheckBoxList_Taluka);
+
+                string sqlQuery = string.Empty;
+                string OperationStatus = string.IsNullOrEmpty(ViewState["Operation"]?.ToString()) ? string.Empty : ViewState["Operation"].ToString();
+                if (OperationStatus == "UPDATE" && Btn_Submit.Text == "Update")
+                {
+
+                }
+                else if (OperationStatus == "INSERT" && Btn_Submit.Text == "Save")
+                {
+
+                }
+                else
+                {
+                    // logical error
+                }
+
+                if (transaction.Connection != null)
+                {
+                    transaction.Commit();
+
+                    // clearing user inputs
+                    Btn_Submit.Text = "Save";
+                }
+            }
+            catch (Exception ex)
+            {
+                SweetAlert.GetSweet(this.Page, "error", "", $"An error occured: {ex.Message}");
+                transaction.Rollback();
+            }
+            finally
+            {
+                connection.Close();
+                transaction.Dispose();
+            }
+        }
     }
 
 

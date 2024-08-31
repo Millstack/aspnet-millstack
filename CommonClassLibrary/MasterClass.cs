@@ -103,26 +103,49 @@ namespace CommonClassLibrary
         /// <param name="dropdown Value"></param>
         /// <param name="Boolean check optional"></param>
         /// <returns>String Value</returns>
-        public string Get_Selected_Items_From_DropDown(ListControl dropdownID, bool ForSQL = false)
+        public string Get_Selected_Items_From_DropDown(ListControl dropdownID)
         {
             try
             {
-                List<string> selectedValues = new List<string>();
-                foreach (ListItem item in dropdownID.Items)
-                {
-                    if (item.Selected)
-                    {
-                        if (ForSQL) selectedValues.Add($"'{item.Value}'");
-                        else selectedValues.Add(item.Value);
-                    }
-                }
-                return string.Join(",", selectedValues);
+                // returning only selected items in comma seperated format
+                return string.Join(",", dropdownID.Items.Cast<ListItem>().Where(item => item.Selected).Select(item => item.Value));
             }
             catch (Exception ex)
             {
                 return string.Empty;
             }
         }
+
+
+        /// <summary>
+        /// Get checked item from CheckBox List
+        /// </summary>
+        /// <param name="CheckBoxList object"></param>
+        /// <returns>String Value</returns>
+        public string Get_CheckboxList_Checked_Values(CheckBoxList checkBoxList)
+        {
+            try
+            {
+                // returning only checked items in a comma seperated string format
+                return string.Join(",", checkBoxList.Items.Cast<ListItem>().Where(item => item.Selected).Select(item => item.Value));
+            }
+            catch (Exception ex)
+            {
+                return string.Empty;
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         /// <summary>
