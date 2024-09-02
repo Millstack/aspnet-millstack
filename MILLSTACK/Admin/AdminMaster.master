@@ -165,13 +165,13 @@
             /* Style the OK and Cancel buttons in SumoSelect */
             .SumoSelect .optWrapper .btnOk,
             .SumoSelect .optWrapper .btnCancel {
-                background-color: green !important; /* OK button background color */
+                background-color: #53c351 !important; /* OK button background color */
                 color: white !important; /* OK button text color */
                 border-color: green !important; /* OK button border color */
             }
 
             .SumoSelect .optWrapper .btnCancel {
-                background-color: red !important; /* Cancel button background color */
+                background-color: #ff4444 !important; /* Cancel button background color */
                 border-color: red !important; /* Cancel button border color */
             }
 

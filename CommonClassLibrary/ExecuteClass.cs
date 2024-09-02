@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using System.Web.UI.WebControls;
+using System.Runtime.CompilerServices;
+using System.Web.UI;
 
 namespace CommonClassLibrary
 {
@@ -281,6 +283,53 @@ namespace CommonClassLibrary
         }
 
 
+        /// <summary>
+        /// Executing SQL Command 
+        /// </summary>
+        /// <param name="Page Control Onject"></param>
+        /// <param name="Stored Procedure Name"></param>
+        /// <param name="Dictionary Object"></param>
+        /// <returns>Void</returns>
+        public void ExecuteStoredProcedure(Page page, string storedProcedureName, Dictionary<string, object> parameters, DataTable TVP_Role_ID_DT = null)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionClass.connection_String_Local))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(storedProcedureName, connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    // Add parameters to the command
+                    foreach (var param in parameters)
+                    {
+                        command.Parameters.AddWithValue(param.Key, param.Value ?? DBNull.Value);
+                    }
+
+                    // Add the TVP parameter if it exists
+                    if (TVP_Role_ID_DT != null)
+                    {
+                        SqlParameter tvpParam = command.Parameters.AddWithValue("@RoleIDTVP", TVP_Role_ID_DT);
+                        tvpParam.SqlDbType = SqlDbType.Structured;
+                        tvpParam.TypeName = "dbo.RoleIDTableType";
+                    }
+
+                    using (SqlTransaction transaction = connection.BeginTransaction())
+                    {
+                        command.Transaction = transaction;
+                        try
+                        {
+                            command.ExecuteNonQuery();
+                            transaction.Commit();
+                        }
+                        catch (Exception ex)
+                        {
+                            transaction.Rollback();
+                            SweetAlert.GetSweet(page, "error", "An error occurred during transaction", $"{ex.Message}");
+                        }
+                    }
+                }
+            }
+        }
 
 
     }

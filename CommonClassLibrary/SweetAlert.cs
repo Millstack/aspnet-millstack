@@ -1,30 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 using System.Web.UI;
 
-/// <summary>
-/// class for calling sweet alert modal
-/// </summary>
-public class SweetAlert
+namespace CommonClassLibrary
 {
-    public SweetAlert()
+    public static class SweetAlert
     {
-        // constructor
-    }
-
-    public static void GetSweet(Page page, string icontype, string title, string message, string redirectUrl = null)
-    {
-        string confirmButtonText = "OK";
-        string allowOutsideClick = "false";
-
-        string sweetAlertScript;
-
-        if (string.IsNullOrEmpty(redirectUrl))
+        public static void GetSweet(Page page, string icontype, string title, string message, string redirectUrl = null)
         {
-            sweetAlertScript = $@"
+            string confirmButtonText = "OK";
+            string allowOutsideClick = "false";
+
+            string sweetAlertScript;
+
+            if (string.IsNullOrEmpty(redirectUrl))
+            {
+                sweetAlertScript = $@"
                 <script>
                     Swal.fire({{
                         title: '{title}',
@@ -34,12 +28,12 @@ public class SweetAlert
                         allowOutsideClick: {allowOutsideClick}
                     }});
                 </script>";
-        }
-        else
-        {
-            string resolvedUrl = page.ResolveUrl(redirectUrl);
+            }
+            else
+            {
+                string resolvedUrl = page.ResolveUrl(redirectUrl);
 
-            sweetAlertScript = $@"
+                sweetAlertScript = $@"
                 <script>
                     Swal.fire({{
                         title: '{title}',
@@ -53,10 +47,9 @@ public class SweetAlert
                         }}
                     }});
                 </script>";
+            }
+
+            ScriptManager.RegisterStartupScript(page, page.GetType(), "sweetAlert", sweetAlertScript, false);
         }
-
-        ScriptManager.RegisterStartupScript(page, page.GetType(), "sweetAlert", sweetAlertScript, false);
     }
-
-
 }

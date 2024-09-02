@@ -301,7 +301,7 @@ public partial class Master_Pages_UserCreation : System.Web.UI.Page
         }
     }
 
-    
+
 
 
 
@@ -314,80 +314,85 @@ public partial class Master_Pages_UserCreation : System.Web.UI.Page
 
     protected void Btn_Submit_Click(object sender, EventArgs e)
     {
-        using (SqlConnection connection = new SqlConnection(ConnectionClass.connection_String_Local))
+        // user inputs
+        string first_Name = Txt_First_Name.Text.Trim();
+        string middle_Name = Txt_Middle_Name.Text.Trim();
+        string last_Name = Txt_Laste_Name.Text.Trim();
+        string gender = DD_Gender.SelectedValue.Trim();
+        string phone_No = Txt_Phone_Number.Text.Trim();
+        string email = Txt_Email.Text.Trim();
+        string address = TA_Address.Value.Trim();
+        string user_Name = Txt_User_Name.Text.Trim();
+
+        string password = Txt_Password.Text.Trim();
+        string confirm_Password = Txt_Confirm_Password.Text.Trim();
+
+        // password confirmation on server side
+        if (password != confirm_Password)
         {
-            connection.Open();
-            SqlCommand command = connection.CreateCommand();
-            SqlTransaction transaction = connection.BeginTransaction(IsolationLevel.Serializable, "Transaction_");
-            command.Connection = connection;
-            command.Transaction = transaction;
-
-            try
-            {
-                // user inputs
-                string first_Name = Txt_First_Name.Text.Trim();
-                string middle_Name = Txt_Middle_Name.Text.Trim();
-                string last_Name = Txt_Laste_Name.Text.Trim();
-                string gender = DD_Gender.SelectedValue.Trim();
-                string phone_No = Txt_Phone_Number.Text.Trim();
-                string email = Txt_Email.Text.Trim();
-                string address = TA_Address.Value.Trim();
-                string user_Name = Txt_User_Name.Text.Trim();
-
-                string password = Txt_Password.Text.Trim();
-                string confirm_Password = Txt_Confirm_Password.Text.Trim();
-
-                // password confirmation on server side
-                if (password != confirm_Password)
-                {
-                    Txt_Confirm_Password.Focus();
-                    SweetAlert.GetSweet(this.Page, "warning", "", $"Password did not <b>Match</b>, kindly check !!");
-                    return;
-                }
-
-                // work area allocation
-                string hierarchy = DD_Hierarchy.SelectedValue;
-                string role_IDs = masterClass.Get_Selected_Items_From_DropDown(MCDD_Role);
-                string status = DD_Status.SelectedValue.Trim();
-
-                string division_IDs = masterClass.Get_CheckboxList_Checked_Values(CheckBoxList_Division);
-                string district_IDs = masterClass.Get_CheckboxList_Checked_Values(CheckBoxList_District);
-                string taluka_IDs = masterClass.Get_CheckboxList_Checked_Values(CheckBoxList_Taluka);
-
-                string sqlQuery = string.Empty;
-                string OperationStatus = string.IsNullOrEmpty(ViewState["Operation"]?.ToString()) ? string.Empty : ViewState["Operation"].ToString();
-                if (OperationStatus == "UPDATE" && Btn_Submit.Text == "Update")
-                {
-
-                }
-                else if (OperationStatus == "INSERT" && Btn_Submit.Text == "Save")
-                {
-
-                }
-                else
-                {
-                    // logical error
-                }
-
-                if (transaction.Connection != null)
-                {
-                    transaction.Commit();
-
-                    // clearing user inputs
-                    Btn_Submit.Text = "Save";
-                }
-            }
-            catch (Exception ex)
-            {
-                SweetAlert.GetSweet(this.Page, "error", "", $"An error occured: {ex.Message}");
-                transaction.Rollback();
-            }
-            finally
-            {
-                connection.Close();
-                transaction.Dispose();
-            }
+            Txt_Confirm_Password.Focus();
+            SweetAlert.GetSweet(this.Page, "warning", "", $"Password did not <b>Match</b>, kindly check !!");
+            return;
         }
+
+        // converting hashed password and salt
+        string salt = HashHelper.GenerateSalt();
+        string hashed_Password = HashHelper.Hash(password, salt);
+
+
+        // work area allocation
+        string hierarchy = DD_Hierarchy.SelectedValue;
+
+        string status = DD_Status.SelectedValue.Trim();
+
+        string division_IDs = masterClass.Get_CheckboxList_Checked_Values(CheckBoxList_Division);
+        string district_IDs = masterClass.Get_CheckboxList_Checked_Values(CheckBoxList_District);
+        string taluka_IDs = masterClass.Get_CheckboxList_Checked_Values(CheckBoxList_Taluka);
+
+        Session["User_ID"] = 1;
+        string User_ID = Session["User_ID"].ToString();
+
+        ViewState["Operation"] = "INSERT";
+
+        string OperationStatus = string.IsNullOrEmpty(ViewState["Operation"]?.ToString()) ? string.Empty : ViewState["Operation"].ToString();
+
+        Dictionary<string, object> parameters = new Dictionary<string, object>
+        {
+            { "@Operation", OperationStatus },
+            { "@User_ID", DBNull.Value },
+            { "@Designation_ID", hierarchy },
+            { "@FirstName", first_Name },
+            { "@MiddleName", middle_Name },
+            { "@LastName", last_Name },
+            { "@Gender", gender },
+            { "@UserPhoneNo", phone_No },
+            { "@UserEmail", email },
+            { "@UserAddress", address },
+            { "@UserName", user_Name },
+            { "@UserPassword", hashed_Password },
+            { "@Salt", salt },
+            { "@Division_ID", division_IDs },
+            { "@District_ID", district_IDs },
+            { "@Taluka_ID", taluka_IDs },
+            { "@IsActive", status },
+            { "@SavedBy", User_ID },
+        };
+
+        // Table-Value Parameter (TVP)
+        DataTable Role_ID_DT = new DataTable();
+        Role_ID_DT.Columns.Add("Role_ID", typeof(Int64));
+        Role_ID_DT.Columns.Add("SavedBy", typeof(string));
+
+        string role_IDs = masterClass.Get_Selected_Items_From_DropDown(MCDD_Role);
+        List<Int64> selectedRoleIDs = masterClass.Get_Selected_Items_From_DropDown(MCDD_Role).Split(',').Select(Int64.Parse).ToList();
+        foreach (Int64 roleID in selectedRoleIDs)
+        {
+            Role_ID_DT.Rows.Add(roleID, User_ID);
+        }
+
+        executeClass.ExecuteStoredProcedure(this.Page, "USP_User_Creation", parameters, Role_ID_DT);
+
+
     }
 
 
@@ -400,5 +405,5 @@ public partial class Master_Pages_UserCreation : System.Web.UI.Page
 
 
 
-   
+
 }

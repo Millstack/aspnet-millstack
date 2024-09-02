@@ -128,7 +128,7 @@
                 <div class="col-md-12 mb-3 align-self-end">
                     <div class="mb-1 fw-normal fs-6">
                         <asp:Literal ID="Literal5" runat="server" Text="">Address
-                            <em style="color: red">*</em>
+                            <em style="color: red"></em>
                         </asp:Literal>
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator7" runat="server" CssClass="invalid-feedback" SetFocusOnError="True" Display="Dynamic" ToolTip="Required"
                             ControlToValidate="TA_Address" InitialValue="" ValidationGroup="finalSubmit" ErrorMessage="required field">
