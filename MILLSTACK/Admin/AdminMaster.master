@@ -310,6 +310,44 @@
         }
     </style>
 
+
+
+    <script type="text/javascript">
+
+        /* toggle theme js */
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggleSwitch = document.querySelector('.theme-switch__checkbox');
+            const currentTheme = localStorage.getItem('theme');
+
+            const elementsToTheme = [
+                document.body,
+                document.querySelector('.navbar'),
+                document.getElementById('nav_Image'),
+                document.getElementById('HomeBtn'),
+                ...document.querySelectorAll('.card'),
+                ...document.querySelectorAll('.text-dark-emphasis'),
+                ...document.querySelectorAll('.btn'),
+                ...document.querySelectorAll('.darktheme'),
+                // Add other selectors for elements that need theme classes
+            ];
+
+            if (currentTheme) {
+                elementsToTheme.forEach(element => element.classList.add(currentTheme));
+                if (currentTheme === 'dark-theme') {
+                    toggleSwitch.checked = true;
+                }
+            }
+
+            toggleSwitch.addEventListener('change', function () {
+                const theme = this.checked ? 'dark-theme' : 'light-theme';
+                elementsToTheme.forEach(element => element.classList.remove('dark-theme', 'light-theme'));
+                elementsToTheme.forEach(element => element.classList.add(theme));
+                localStorage.setItem('theme', theme);
+            });
+        });
+
+    </script>
+
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 </head>

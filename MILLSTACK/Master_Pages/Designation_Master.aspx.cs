@@ -224,7 +224,7 @@ public partial class Master_Pages_Designation_Master : System.Web.UI.Page
 
     protected void Btn_Reset_Click(object sender, EventArgs e)
     {
-        Response.Redirect("Hierarchy_Master.aspx");
+        Response.Redirect(GetRouteUrl("Designation_Route", null));
     }
 
     protected void Btn_Submit_Click(object sender, EventArgs e)

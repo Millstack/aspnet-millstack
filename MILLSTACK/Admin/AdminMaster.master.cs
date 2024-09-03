@@ -21,6 +21,8 @@ public partial class Admin_AdminMaster : System.Web.UI.MasterPage
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        Session["UserId"] = 1;
+
         if (Session["UserId"] != null)
         {
             if (!IsPostBack)
@@ -30,15 +32,17 @@ public partial class Admin_AdminMaster : System.Web.UI.MasterPage
 
                 Clear_All_ViewStates();
 
+                Session["Menu_Form_Structure"] = null;
+
                 if (Session["Menu_Form_Structure"] == null) Create_Sidebar_Menus();
                 else LiteralMenu.Text = Session["Menu_Form_Structure"].ToString().Trim();
             }
         }
         else
         {
-            //main.Visible = false; // hiding child page content
-            //Response.Redirect("~/Account/Login.aspx");
-            //Response.Redirect(GetRouteUrl("UserCreation_Route", null));
+            main.Visible = false; // hiding child page content
+            Response.Redirect("~/Account/Login.aspx");
+            Response.Redirect(GetRouteUrl("UserCreation_Route", null));
         }
     }
 
@@ -93,23 +97,23 @@ public partial class Admin_AdminMaster : System.Web.UI.MasterPage
 
             menu_query = $@"
                     SELECT distinct 
-	                    MF.ID, MF.MenuName, MF.MenuOrder, MF.MenuURL, MF.MenuIcon
-                    FROM M_MenuForm AS MF
-                    INNER JOIN Map_UserRole_MenuForm AS MAP ON MAP.MenuForm_ID = MF.ID
-                    INNER JOIN UserRoles AS UR ON UR.UserID = MAP.UserRole_ID
+                        MF.Menu_ID, MF.MenuName, MF.MenuOrder, MF.MenuURL, MF.MenuIcon
+                    FROM Tbl_M_MenuForm AS MF
+                    INNER JOIN Tbl_MAP_UserRole_MenuForm AS MAP ON MAP.Menu_ID = MF.Menu_ID
+                    INNER JOIN Tbl_MAP_UserRole AS UR ON UR.User_ID = MAP.UserRole_ID
                     WHERE 
-	                    MF.IsDeleted IS NULL AND MAP.IsDeleted IS NULL
-	                    AND MF.Parent_ID = 0
-	                    AND UR.UserID = '{userId}'
+                        MF.IsDeleted IS NULL AND MAP.IsDeleted IS NULL
+                        AND MF.Parent_ID = 0
+                        AND UR.User_ID = @User_ID
                     ORDER BY MF.MenuOrder";
-            parameters = new Dictionary<string, object> { /*{ "@Bank_ID", DD_Bank_Master.SelectedValue },*/ };
+            parameters = new Dictionary<string, object> { { "@User_ID", userId }, };
             Main_Menu_DT = executeClass.Get_Datatable(menu_query, parameters);
-            if (Main_Menu_DT.Rows.Count > 0)
+            if (Main_Menu_DT != null && Main_Menu_DT.Rows.Count > 0)
             {
                 foreach (DataRow mainRow in Main_Menu_DT.Rows)
                 {
                     string mainMenuName = mainRow["MenuName"].ToString().Trim();
-                    string mainMenuId = mainRow["ID"].ToString().Trim();
+                    string mainMenuId = mainRow["Menu_ID"].ToString().Trim();
                     string mainMenuNavigateUrl = mainRow["MenuURL"].ToString().Trim();
                     string mainMenuIcon = mainRow["MenuIcon"].ToString().Trim();
 
@@ -119,24 +123,24 @@ public partial class Admin_AdminMaster : System.Web.UI.MasterPage
                     menuBuilder.AppendLine($"<img src='{mainMenuIcon}' class='white-svg p-3' />");
                     menuBuilder.AppendLine($"<span class='link_name ps-2'>{mainMenuName}</span>");
                     menuBuilder.AppendLine("</a>");
-                    menuBuilder.AppendLine("<img src='/assests/box-icons/bx-chevron-down.svg' class='white-svg arrow px-3 py-3' style='cursor: pointer;' />");
+                    menuBuilder.AppendLine("<img src='/assets/icons/box-icons/bx-chevron-down.svg' class='white-svg arrow px-3 py-3' style='cursor: pointer;' />");
                     menuBuilder.AppendLine("</div>");
 
 
                     menu_query = $@"
-                             SELECT distinct 
-	                             MF.ID, MF.MenuName, MF.MenuOrder, MF.MenuURL, MF.MenuIcon
-                             FROM M_MenuForm AS MF
-                             INNER JOIN Map_UserRole_MenuForm AS MAP ON MAP.MenuForm_ID = MF.ID
-                             INNER JOIN UserRoles AS UR ON UR.UserID = MAP.UserRole_ID
-                             WHERE 
-	                             MF.IsDeleted IS NULL AND MAP.IsDeleted IS NULL
-	                             AND MF.Parent_ID = '{mainMenuId}'
-	                             AND UR.UserID = '{userId}'
-                             ORDER BY MF.MenuOrder";
-                    parameters = new Dictionary<string, object> { /*{ "@Bank_ID", DD_Bank_Master.SelectedValue },*/ };
-                    Main_Menu_DT = executeClass.Get_Datatable(menu_query, parameters);
-                    if (Child_Menu_DT.Rows.Count > 0)
+                                SELECT distinct 
+                                    MF.Menu_ID, MF.MenuName, MF.MenuOrder, MF.MenuURL, MF.MenuIcon
+                                FROM Tbl_M_MenuForm AS MF
+                                INNER JOIN Tbl_MAP_UserRole_MenuForm AS MAP ON MAP.Menu_ID = MF.Menu_ID
+                                INNER JOIN Tbl_MAP_UserRole AS UR ON UR.User_ID = MAP.UserRole_ID
+                                WHERE 
+                                    MF.IsDeleted IS NULL AND MAP.IsDeleted IS NULL
+                                    AND MF.Parent_ID = @Parent_ID
+                                    AND UR.User_ID = @User_ID
+                                ORDER BY MF.MenuOrder";
+                    parameters = new Dictionary<string, object> { { "@User_ID", userId }, { "@Parent_ID", mainMenuId }, };
+                    Child_Menu_DT = executeClass.Get_Datatable(menu_query, parameters);
+                    if (Child_Menu_DT != null && Child_Menu_DT.Rows.Count > 0)
                     {
                         menuBuilder.AppendLine("<ul class='sub-menu ps-2' >");
                         menuBuilder.AppendLine($"<li class='fw-lighter fs-6 px-2 border-bottom border-dark-subtle bg-gradient mb-2'>");
@@ -146,7 +150,7 @@ public partial class Admin_AdminMaster : System.Web.UI.MasterPage
                         foreach (DataRow childRow in Child_Menu_DT.Rows)
                         {
                             string childMenuName = childRow["MenuName"].ToString().Trim();
-                            string childMenuId = childRow["ID"].ToString().Trim();
+                            string childMenuId = childRow["Menu_ID"].ToString().Trim();
                             string childMenuNavigateUrl = childRow["MenuURL"].ToString().Trim();
 
                             menuBuilder.AppendLine($"<li id='{childMenuId}' class='my-1 w-100' style='border-left: 3px solid red; border-bottom: 1px solid #313131;'>");

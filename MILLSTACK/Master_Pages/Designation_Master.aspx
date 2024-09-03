@@ -24,7 +24,7 @@
             </div>
 
             <!-- Row 1 Starts -->
-            <div class="row mb-2" style="border-style: solid none none none; border-width: 1px; border-color: #d6d5d5; padding-top: 10px; padding-bottom: 10px; margin-top: 10px; margin-bottom: 10px;">
+            <div class="row mb-2 text-dark-emphasis" style="border-style: solid none none none; border-width: 1px; border-color: #d6d5d5; padding-top: 10px; padding-bottom: 10px; margin-top: 10px; margin-bottom: 10px;">
 
                 <!-- DropDown: Parent Designation -->
                 <div class="col-md-12 mb-3 align-self-end">
@@ -117,7 +117,7 @@
 
 
             <!-- Hierarchy TreeView Starts -->
-            <div class="mt-3">
+            <div class="mt-3 darktheme">
                 <div class="col-md-11 border border-secondary-subtle mx-auto bg-white mt-2 p-4 fw-bold fs-5 py-2 ps-2 text-secondary rounded-top-3">
                     <asp:Literal ID="Literal3" runat="server" Text="">Designation (Hierarchy) Levels</asp:Literal>
                 </div>

@@ -15,7 +15,7 @@
     </div>
 
     <!-- Control Starts -->
-    <div id="Div_Control" runat="server" class="card col-md-11 mx-auto mt-1 py-2 shadow rounded-3">
+    <div id="Div_Control" runat="server" class="card col-md-11 mx-auto mt-1 py-2 shadow rounded-3 text-dark-emphasis">
         <div class="card-body">
 
             <!-- Heading - BG -->
