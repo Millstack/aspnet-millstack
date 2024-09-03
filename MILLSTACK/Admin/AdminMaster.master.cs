@@ -25,8 +25,8 @@ public partial class Admin_AdminMaster : System.Web.UI.MasterPage
         {
             if (!IsPostBack)
             {
-                Literal_Navbar_UserName.Text = Session["UserName"].ToString();
-                Literal_Navbar_UserRole.Text = Session["UserRole"].ToString();
+                //Literal_Navbar_UserName.Text = Session["UserName"].ToString();
+                //Literal_Navbar_UserRole.Text = Session["UserRole"].ToString();
 
                 Clear_All_ViewStates();
 

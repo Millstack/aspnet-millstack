@@ -106,7 +106,7 @@ CREATE TABLE Tbl_M_UserMaster (
 ```
 
 
-# User Role Master
+# MAP: User Role Master
 ```
 CREATE TABLE Tbl_MAP_UserRole (
 	UserRole_ID BIGINT IDENTITY(1,1) PRIMARY KEY,
@@ -135,6 +135,22 @@ CREATE TABLE Tbl_M_MenuForm (
 	IsDeleted BIT NULL
 );
 ```
+
+
+
+# MAP: UserRole Menu Forms
+```
+CREATE TABLE Tbl_MAP_UserRole_MenuForm (
+	URFM_ID BIGINT IDENTITY(1,1) PRIMARY KEY,
+	UserRole_ID BIGINT NOT NULL,
+	Menu_ID BIGINT NOT NULL,
+    SavedBy VARCHAR(1000) NULL,
+    SavedOn DATETIME DEFAULT GETDATE() NOT NULL,
+	IsDeleted BIT NULL
+);
+```
+
+
 
 
 

@@ -8,12 +8,76 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="main" runat="Server">
 
     <style type="text/css">
-        .btn-custom {
-            background-color: #4f64cc;
-            color: white;
-            font-size: 14px;
-            font-family: Arial, sans-serif;
-            font-weight: normal;
+        .checkbox-apple-wrapper {
+            display: flex;
+            align-items: center;
+            margin: 20px;
+        }
+
+        .checkbox-text {
+            font-size: 16px;
+            color: #333;
+            margin-right: 10px; /* Adjust the spacing between text and checkbox as needed */
+        }
+
+        .checkbox-apple {
+            position: relative;
+            width: 50px;
+            height: 25px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+            .checkbox-apple label {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 50px;
+                height: 25px;
+                border-radius: 50px;
+                background: linear-gradient(to bottom, #b3b3b3, #e6e6e6);
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+                .checkbox-apple label:after {
+                    content: '';
+                    position: absolute;
+                    top: 1px;
+                    left: 1px;
+                    width: 23px;
+                    height: 23px;
+                    border-radius: 50%;
+                    background-color: #fff;
+                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+                    transition: all 0.3s ease;
+                }
+
+            .checkbox-apple input[type="checkbox"]:checked + label {
+                background: linear-gradient(to bottom, #4cd964, #5de24e);
+            }
+
+                .checkbox-apple input[type="checkbox"]:checked + label:after {
+                    transform: translateX(25px);
+                }
+
+            .checkbox-apple label:hover {
+                background: linear-gradient(to bottom, #b3b3b3, #e6e6e6);
+            }
+
+                .checkbox-apple label:hover:after {
+                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+                }
+
+        .yep {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50px;
+            height: 25px;
+            opacity: 0; /* Hide the default checkbox */
         }
     </style>
 
@@ -68,7 +132,9 @@
                     <div class="mb-1  fw-semibold fs-6">
                         <asp:Literal ID="Literal15" Text="Role" runat="server"></asp:Literal>
                     </div>
-                    <asp:DropDownList ID="DD_User_Roles" Width="100%" OnSelectedIndexChanged="DD_User_Roles_SelectedIndexChanged" AutoPostBack="true" runat="server"></asp:DropDownList>
+                    <asp:DropDownList ID="DD_User_Roles" Width="100%" CssClass="form-control chosen-dropdown"
+                        OnSelectedIndexChanged="DD_User_Roles_SelectedIndexChanged" AutoPostBack="true" runat="server">
+                    </asp:DropDownList>
                 </div>
 
             </div>
@@ -101,10 +167,10 @@
             <!-- Save & Reset Buttons -->
             <div class="row mt-5 mb-2">
                 <div class="col-md-6 text-start">
-                    <asp:Button ID="btnReset" runat="server" Text="Reset" OnClick="btnEventClick_btnReset" CssClass="btn btn-custom text-white shadow mb-5" />
+                    <asp:Button ID="btnReset" runat="server" Text="Reset" OnClick="btnEventClick_btnReset" CssClass="col-md-2 btn btn-dark rounded-0 shadow mb-5" />
                 </div>
                 <div class="col-md-6 text-end">
-                    <asp:Button ID="btnSubmit" runat="server" Text="Submit" OnClick="btnSubmit_Click" ValidationGroup="finalSubmit" CssClass="btn btn-custom text-white shadow mb-5" />
+                    <asp:Button ID="btnSubmit" runat="server" Text="Submit" OnClick="btnSubmit_Click" ValidationGroup="finalSubmit" CssClass="col-md-2 btn btn-dark rounded-0 shadow mb-5" />
                 </div>
             </div>
 
