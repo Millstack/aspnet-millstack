@@ -47,10 +47,16 @@ namespace MILLSTACK
                "~/Master_Pages/CommonMaster.aspx"
            );
 
-           routes.MapPageRoute(
-             "Role_Responsibility_Route",
-             "RoleAndResponsibility",
-             "~/Master_Pages/RoleAndResponsibility.aspx"
+            routes.MapPageRoute(
+              "Role_Responsibility_Route",
+              "RoleAndResponsibility",
+              "~/Master_Pages/RoleAndResponsibility.aspx"
+            );
+
+            routes.MapPageRoute(
+             "UserMaster_Route",
+             "UserMaster",
+             "~/Master_Pages/UserCreation_Update.aspx"
            );
         }
     }

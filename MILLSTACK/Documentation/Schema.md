@@ -67,6 +67,29 @@ CREATE TABLE M_RoleMaster (
 ```
 
 
+
+
+## Table-Valued Parameter (TVP) : needed for iterating over multiple records in single execution
+ *example: inserting user assigned roles after the user insertion**
+```
+-- Drop the existing TVP if it exists
+IF EXISTS (SELECT * FROM sys.types WHERE is_table_type = 1 AND name = 'RoleIDTableType')
+BEGIN
+    DROP TYPE dbo.RoleIDTableType;
+END
+GO
+
+-- Create the updated TVP with an additional SavedBy column
+CREATE TYPE dbo.RoleIDTableType AS TABLE
+(
+    Role_ID BIGINT,
+    SavedBy NVARCHAR(1000)
+);
+GO
+```
+
+
+
 ## User Mater
 ```
 CREATE TABLE Tbl_M_UserMaster (
