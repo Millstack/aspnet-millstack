@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -20,6 +21,7 @@ public partial class Master_Pages_UserCreation_Update : System.Web.UI.Page
         if (!IsPostBack)
         {
             Bind_Dropdown();
+            Bind_Grid();
         }
     }
 
@@ -49,6 +51,39 @@ public partial class Master_Pages_UserCreation_Update : System.Web.UI.Page
                     Where um.IsDeleted IS NULL AND d.IsDeleted IS NULL";
             parameters = new Dictionary<string, object> { /*{ "@Bank_ID", DD_Bank_Master.SelectedValue },*/ };
             executeClass.Bind_Dropdown_Generic(DD_Designation, sql, "DesignationName", "Designation_ID", parameters);
+        }
+        catch (Exception ex)
+        {
+            SweetAlert.GetSweet(this.Page, "error", "", $"{ex.Message}");
+        }
+    }
+
+
+
+
+
+
+
+
+    //-----------------------------] Grid Bind [-----------------------------
+
+    private void Bind_Grid()
+    {
+        string sql = string.Empty;
+
+        try
+        {
+            sql = $@"";
+            parameters = new Dictionary<string, object>() { /*{ "@Value", Value },*/ };
+            DataTable dt = executeClass.Get_Datatable(sql);
+            if (dt != null && dt.Rows.Count > 0)
+            {
+
+            }
+            else
+            {
+
+            }
         }
         catch (Exception ex)
         {
