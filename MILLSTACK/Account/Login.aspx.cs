@@ -13,108 +13,67 @@ using System.Web.UI.WebControls;
 
 public partial class Login_Login : System.Web.UI.Page
 {
-    #region [GLobal Declaration]
+    #region [ GLobal Declaration ]
     ExecuteClass executeClass = new ExecuteClass();
     MasterClass masterClass = new MasterClass();
     Dictionary<string, object> parameters = new Dictionary<string, object>();
     #endregion
+
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
         {
-            // setting session timeout in minutes
-            //Session.Timeout = 30;
-
-            // destroying the sessions
-            DestroyingExisitingSessions();
+            Destroy_Existing_Sessions();
+            Clear_All_ViewStates();
         }
     }
 
-    private void DestroyingExisitingSessions()
+
+
+
+
+    //-----------------------------] Clearing Sessions & ViewState [-----------------------------
+    private void Destroy_Existing_Sessions()
     {
-        // clearing existing sessions
         Session.Clear();
         Session.RemoveAll();
         Session.Abandon();
     }
 
-
-    //------------==================( Login )==================------------
-
-    protected void btnLogin_Click(object sender, EventArgs e)
+    private void Clear_All_ViewStates()
     {
-        string email = LoginEmail.Text;
-        string password = LoginPassword.Text;
-
-        using (SqlConnection con = new SqlConnection(ConnectionClass.connection_String_Local))
+        foreach (var key in ViewState.Keys.Cast<string>().ToList())
         {
-            con.Open();
-            SqlTransaction transaction = con.BeginTransaction();
-
-            try
-            {
-                AuthenticateUser(con, transaction, email, password);
-
-                if(transaction.Connection != null)
-                {
-                    //transaction.Commit();
-
-                    // deliberate process delay
-                    System.Threading.Thread.Sleep(1000);
-
-                    Response.Redirect("~/View/HomePage/HomePage.aspx");
-                }
-            }
-            catch (Exception ex)
-            {
-                //getSweetHTML("error", "Oops!", $"{ex.Message}", "");
-                SweetAlert.GetSweet(this.Page, "error", "Oops!", $"{ex.Message}");
-                transaction.Rollback();
-            }
-            finally
-            {
-                con.Close();
-                transaction.Dispose();
-            }
+            ViewState[key] = null;
         }
     }
 
-    private void AuthenticateUser(SqlConnection con, SqlTransaction transaction, string email, string password)
+
+
+
+
+    //-----------------------------] Login Event [-----------------------------
+
+    protected void btn_Login_Click(object sender, EventArgs e)
     {
-        string sql = $@"SELECT um.*, rm.RoleName
-                        FROM UserMaster as um 
-                        inner join UserRoles as ur on ur.UserID = um.ID
-                        inner join RoleMaster as rm on rm.ID = ur.RoleID
-                        WHERE um.UserEmail = @UserEmail AND um.UserPassword = @UserPassword AND um.IsActive = 1";
+        // user input
+        string userName = Txt_UserName.Text;
+        string password = Txt_Passowrd.Text;
 
-        SqlCommand cmd = new SqlCommand(sql, con, transaction);
-        cmd.Parameters.AddWithValue("@UserEmail", email);
-        cmd.Parameters.AddWithValue("@UserPassword", password);
-        cmd.ExecuteNonQuery();
-
-        SqlDataAdapter ad = new SqlDataAdapter(cmd);
-        DataTable dt = new DataTable();
-        ad.Fill(dt);
-
-        if (dt.Rows.Count > 0)
+        string sql = $@"Select Menu_ID, Parent_ID, MenuName, MenuOrder, MenuURL, MenuIcon From Tbl_M_MenuForm Where IsDeleted IS NULL";
+        var parameters = new Dictionary<string, object> { { "@ID", userName }, };
+        DataTable dt = executeClass.Get_Datatable(sql, parameters);
+        if(dt != null && dt.Rows.Count > 0)
         {
-            // fetching user details
-            string userID = dt.Rows[0]["ID"].ToString();
-            string userName = dt.Rows[0]["UserName"].ToString();
-            string userRole = dt.Rows[0]["RoleName"].ToString();
+            // performing hashing with user name fetched salt and enterd password, to compare with has stored in database
 
-            // creating session
-            Session["UserID"] = userID;
-            Session["UserRole"] = userRole;
-            Session["UserName"] = userName;
-
-            LoginFailedLiteral.Text = "";
         }
         else
         {
-            LoginFailedLiteral.Text = "User email or password wrong, please check";
+
         }
     }
+
 
 
 

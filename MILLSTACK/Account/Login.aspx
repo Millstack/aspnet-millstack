@@ -1,4 +1,7 @@
-﻿<%@ Page Language="C#" UnobtrusiveValidationMode="None" MaintainScrollPositionOnPostback="true" AutoEventWireup="true" CodeFile="Login.aspx.cs" Inherits="Login_Login" %>
+﻿<%@ Page Language="C#" Async="true" UnobtrusiveValidationMode="None" MaintainScrollPositionOnPostback="true" AutoEventWireup="true" CodeFile="Login.aspx.cs" Inherits="Login_Login" %>
+
+<%@ Register Namespace="AjaxControlToolkit" Assembly="AjaxControlToolkit" TagPrefix="ajax" %>
+<%@ Register Namespace="Telerik.Web.UI" Assembly="Telerik.Web.UI" TagPrefix="telerik" %>
 
 <!DOCTYPE html>
 
@@ -38,94 +41,196 @@
     <script src="<%= ResolveUrl("../assets/components/datatables/Buttons-2.4.2/js/buttons.print.min.js") %>"></script>
 
     <script src="login.js"></script>
-    <link rel="stylesheet" href="login.css" />
-
+    <%--<link rel="stylesheet" href="login.css" />--%>
 </head>
-<body>
-    <form id="form1" runat="server" class="bg-light">
+<body class="bg-light">
+    <form id="form1" runat="server">
 
         <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePartialRendering="true"></asp:ScriptManager>
 
+        <div class="login-html login-wrap col-md-5 mx-auto mt-5 py-5 shadow-lg rounded-3">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active bg-dark border border-dark-subtle" id="tab-1" data-bs-toggle="tab" href="#sign-in-tab">Sign In</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="tab-2" data-bs-toggle="tab" href="#sign-up-tab">Sign Up</a>
+                </li>
+            </ul>
 
-        <!-- top div Starts -->
-        <div id="divTopSearch" runat="server" visible="true" class="vh-100">
-            <div class="col-md-12 mx-auto">
-
-                <!-- Heading -->
-                <div class="col-md-12 mx-auto fw-normal fs-3 fw-bold ps-0 pb-2 text-dark-emphasis pt-4 mb-4 text-center">
-                    <asp:Literal Text="Welcome to Honey badger ~ CMS" runat="server"></asp:Literal>
-                </div>
-
-                <!-- Header UI Starts -->
-                <div class="card col-md-6 mx-auto mt-1 py-1 shadow-lg rounded-1 border-light-subtle">
-                    <div class="card-body">
-
-
-                        <!-- Heading 1 -->
-                        <div class="fs-5 fw-semibold text-body-tertiary border-bottom pb-2 mb-4">
-                            <asp:Literal Text="User Login" runat="server"></asp:Literal>
-                        </div>
-
-                        <!-- 1st row Starts -->
-                        <div class="row mb-2">
-
-                            <!-- User Email -->
-                            <div class="col-md-12 align-self-end">
-                                <div class="mb-1 text-body-tertiary fw-semibold fs-6">
-                                    <asp:Literal ID="Literal5" Text="" runat="server">Email ID:</asp:Literal>
-                                    <div>
-                                        <asp:RequiredFieldValidator ID="rr1" ControlToValidate="LoginEmail" ValidationGroup="finalSubmit" CssClass="invalid-feedback" InitialValue="" runat="server" ErrorMessage="kindly enter email id" SetFocusOnError="True" Display="Dynamic" ToolTip="Required"></asp:RequiredFieldValidator>
-                                    </div>
-                                </div>
-                                <asp:TextBox ID="LoginEmail" type="email" placeholder="eg: xyz@gmail.com" CssClass="form-control border border-secondary-subtle bg-light rounded-1 fs-6 fw-light py-1" runat="server"></asp:TextBox>
-                            </div>
-
-                        </div>
-                        <!-- 1st row Ends -->
-
-                        <!-- 2nd row Starts -->
-                        <div class="row mb-2">
-
-                            <!-- User Email -->
-                            <div class="col-md-12 align-self-end">
-                                <div class="mb-1 text-body-tertiary fw-semibold fs-6">
-                                    <asp:Literal ID="Literal1" Text="" runat="server">Password:</asp:Literal>
-                                    <div>
-                                        <asp:RequiredFieldValidator ID="rr2" ControlToValidate="LoginPassword" ValidationGroup="finalSubmit" CssClass="invalid-feedback" InitialValue="" runat="server" ErrorMessage="kindly enter password" SetFocusOnError="True" Display="Dynamic" ToolTip="Required"></asp:RequiredFieldValidator>
-                                    </div>
-                                </div>
-                                <asp:TextBox ID="LoginPassword" type="password" steps="0.01" CssClass="form-control border border-secondary-subtle bg-light rounded-1 fs-6 fw-light py-1" runat="server"></asp:TextBox>
-                            </div>
-
-                        </div>
-                        <!-- 2nd row Ends -->
-
-                        <div class="fw-lighter fs-6 text-danger font-italic">
-                            <asp:Literal ID="LoginFailedLiteral" Text="" runat="server"></asp:Literal>
-                        </div>
-
-                        <!-- Submit Button UI Starts -->
-                        <div class="">
-                            <div class="row mt-4 mb-0">
-                                <div class="col-md-6 text-start">
-                                </div>
-                                <div class="col-md-6 text-end">
-                                    <asp:Button ID="btnLogin" runat="server" Text="Login" OnClick="btnLogin_Click" ValidationGroup="finalSubmit" CssClass="btn btn-custom text-white shadow " />
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Submit Button UI Ends -->
-
-
+            <div class="tab-content pt-4">
+                <!-- Sign In Section -->
+                <div class="tab-pane fade show active fw-bold text-white" id="sign-in-tab">
+                    <div class="mb-3">
+                        <label for="txtUsername" class="form-label">Username</label>
+                        <asp:TextBox ID="Txt_UserName" runat="server" CssClass="form-control rounded-0 bg-light border border-light-subtle" />
+                        <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" CssClass="invalid-feedback text-warning" SetFocusOnError="True" Display="Dynamic" ToolTip="Required"
+                            ControlToValidate="Txt_UserName" InitialValue="" ValidationGroup="LoginClick" ErrorMessage="enter username">
+                        </asp:RequiredFieldValidator>
+                        <ajax:FilteredTextBoxExtender ID="FilteredTextBoxExtender1" runat="server" TargetControlID="Txt_UserName"
+                            FilterType="Numbers, LowercaseLetters, Custom" ValidChars="." />
+                    </div>
+                    <div class="mb-3">
+                        <label for="txtPassword" class="form-label">Password</label>
+                        <asp:TextBox ID="Txt_Passowrd" runat="server" CssClass="form-control rounded-0 bg-light" TextMode="Password" />
+                        <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" CssClass="invalid-feedback text-warning" SetFocusOnError="True" Display="Dynamic" ToolTip="Required"
+                            ControlToValidate="Txt_Passowrd" InitialValue="" ValidationGroup="LoginClick" ErrorMessage="enter password">
+                        </asp:RequiredFieldValidator>
+                        <ajax:FilteredTextBoxExtender ID="FilteredTextBoxExtender2" runat="server" TargetControlID="Txt_Passowrd"
+                            FilterType="Numbers, UppercaseLetters, LowercaseLetters, Custom" ValidChars=".$#@_ " />
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" value="" id="keepSignedIn" checked>
+                        <label class="form-check-label" for="keepSignedIn">
+                            Keep me Signed in
+                        </label>
+                    </div>
+                    <div class="d-grid col-md-3 mx-auto">
+                        <asp:Button ID="btn_Login" runat="server" Text="Log In" OnClick="btn_Login_Click"
+                            CssClass="btn btn-dark shadow-lg rounded-0 border border-light" ValidationGroup="LoginClick" />
+                    </div>
+                    <div class="text-center mt-4">
+                        <a class="text-decoration-none" href="#forgot">Forgot Password?</a>
                     </div>
                 </div>
-                <!-- Header UI Ends -->
 
+                <!-- Sign Up Section -->
+                <div class="tab-pane fade" id="sign-up-tab">
+                    <div class="mb-3">
+                        <label for="txtNewUsername" class="form-label">Username</label>
+                        <asp:TextBox ID="txtNewUsername" runat="server" CssClass="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="txtNewPassword" class="form-label">Password</label>
+                        <asp:TextBox ID="txtNewPassword" runat="server" CssClass="form-control" TextMode="Password" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="txtConfirmPassword" class="form-label">Repeat Password</label>
+                        <asp:TextBox ID="txtConfirmPassword" runat="server" CssClass="form-control" TextMode="Password" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="txtEmail" class="form-label">Email Address</label>
+                        <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" TextMode="Email" />
+                    </div>
+                    <div class="d-grid">
+                        <asp:Button ID="btnSignUp" runat="server" Text="Sign Up" CssClass="btn btn-primary" />
+                    </div>
+                    <div class="text-center mt-4">
+                        <a href="#tab-1" data-bs-toggle="tab">Already Member?</a>
+                    </div>
+                </div>
             </div>
         </div>
-        <!-- top div Ends -->
+
+        <!-- Custom CSS -->
+        <style>
+            .login-wrap {
+                position: relative;
+                /*background: url('/Account/programming_1.jpg') no-repeat center;*/
+                /*background: url('/Account/computer_1.jpg') no-repeat center;*/
+                background: url('/Account/computer_2.jpg') no-repeat center;
+                background-size: cover;
+                padding: 3rem;
+                border-radius: 8px;
+                box-shadow: 0 12px 15px 0 rgba(0, 0, 0, .24), 0 17px 50px 0 rgba(0, 0, 0, .19);
+                color: #fff;
+                z-index: 1;
+                overflow: hidden; /* Ensure pseudo-element is contained */
+            }
+
+                .login-wrap::before {
+                    content: "";
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.4); /* Adjust opacity as needed */
+                    z-index: -1;
+                    transition: background 0.5s ease-in-out; /* Fading effect */
+                }
+
+                .login-wrap:hover::before {
+                    background: rgba(0, 0, 0, 0.6); /* Increased fade on hover */
+                }
 
 
+            .login-html {
+                background-color: rgba(40, 57, 101, .9);
+                padding: 30px;
+                border-radius: 8px;
+            }
+
+            .nav-tabs .nav-link.active {
+                background-color: #1161ee;
+                color: white;
+            }
+
+            .nav-tabs .nav-link {
+                color: white;
+            }
+
+            .form-label {
+                color: #aaa;
+            }
+        </style>
+
+
+        <%-- <div class="login-wrap col-md-5 mx-auto">
+            <div class="login-html">
+                <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Sign In</label>
+                <input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab">Sign Up</label>
+                <div class="login-form">
+                    <div class="sign-in-htm">
+                        <div class="group">
+                            <label for="user" class="label">Username</label>
+                            <input id="user" type="text" class="input">
+                        </div>
+                        <div class="group">
+                            <label for="pass" class="label">Password</label>
+                            <input id="pass" type="password" class="input" data-type="password">
+                        </div>
+                        <div class="group">
+                            <input id="check" type="checkbox" class="check" checked>
+                            <label for="check"><span class="icon"></span>Keep me Signed in</label>
+                        </div>
+                        <div class="group">
+                            <input type="submit" class="button" value="Sign In">
+                        </div>
+                        <div class="hr"></div>
+                        <div class="foot-lnk">
+                            <a href="#forgot">Forgot Password?</a>
+                        </div>
+                    </div>
+                    <div class="sign-up-htm">
+                        <div class="group">
+                            <label for="user" class="label">Username</label>
+                            <input id="user" type="text" class="input">
+                        </div>
+                        <div class="group">
+                            <label for="pass" class="label">Password</label>
+                            <input id="pass" type="password" class="input" data-type="password">
+                        </div>
+                        <div class="group">
+                            <label for="pass" class="label">Repeat Password</label>
+                            <input id="pass" type="password" class="input" data-type="password">
+                        </div>
+                        <div class="group">
+                            <label for="pass" class="label">Email Address</label>
+                            <input id="pass" type="text" class="input">
+                        </div>
+                        <div class="group">
+                            <input type="submit" class="button" value="Sign Up">
+                        </div>
+                        <div class="hr"></div>
+                        <div class="foot-lnk">
+                            <label for="tab-1">
+                            Already Member?</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>--%>
     </form>
 </body>
 </html>

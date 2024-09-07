@@ -14,6 +14,8 @@ namespace MILLSTACK
             settings.AutoRedirectMode = RedirectMode.Permanent;
             routes.EnableFriendlyUrls(settings);
 
+            routes.MapPageRoute("LoginRoute", "", "~/Account/Login.aspx");
+
             routes.MapPageRoute(
                 "HomePageRoute", // Route name
                 "HomePage", // URL pattern
