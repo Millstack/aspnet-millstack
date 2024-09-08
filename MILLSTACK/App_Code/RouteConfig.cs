@@ -17,9 +17,9 @@ namespace MILLSTACK
             routes.MapPageRoute("LoginRoute", "", "~/Account/Login.aspx");
 
             routes.MapPageRoute(
-                "HomePageRoute", // Route name
+                "HomePage_Route", // Route name
                 "HomePage", // URL pattern
-                "~/View/HomePage/HomePage.aspx" // Physical file
+               "~/Master_Pages/HomePage.aspx" // Physical file
             );
 
             routes.MapPageRoute(

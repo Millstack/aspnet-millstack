@@ -23,8 +23,6 @@ public partial class Master_Pages_RoleAndResponsibility : System.Web.UI.Page
     {
         if (!IsPostBack)
         {
-            Session["User_ID"] = 1;
-
             Bind_Dropdown();
             BindTreeView();
         }
@@ -65,7 +63,7 @@ public partial class Master_Pages_RoleAndResponsibility : System.Web.UI.Page
         string sql = $@"Select URFM_ID, UserRole_ID, Menu_ID, IsDeleted
                         From Tbl_MAP_UserRole_MenuForm 
                         Where UserRole_ID IN (Select Distinct UserRole_ID From Tbl_MAP_UserRole Where User_ID = @User_ID AND IsDeleted IS NULL)";
-        var parameters = new Dictionary<string, object> { { "@User_ID", Session["UserID"] }, };
+        var parameters = new Dictionary<string, object> { { "@User_ID", Session["User_ID"] }, };
         DataTable dt = executeClass.Get_Datatable(sql, parameters);
         if (dt != null && dt.Rows.Count > 0)
         {
@@ -234,7 +232,7 @@ public partial class Master_Pages_RoleAndResponsibility : System.Web.UI.Page
                     {
                         new SqlParameter("@UserRole_ID", user_Role_ID),
                         new SqlParameter("@Menu_ID", menu_Form_ID), // This is to set dynamically in each iteration
-                        new SqlParameter("@SavedBy", Session["UserID"])
+                        new SqlParameter("@SavedBy", Session["User_ID"])
                     };
 
                     executeClass.ExecuteCommand(insertQuery, command, parameters);

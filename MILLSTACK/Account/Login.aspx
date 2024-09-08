@@ -43,7 +43,7 @@
     <script src="login.js"></script>
     <%--<link rel="stylesheet" href="login.css" />--%>
 </head>
-<body class="bg-light">
+<body class="" style="background-color: #E4E9F7;">
     <form id="form1" runat="server">
 
         <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePartialRendering="true"></asp:ScriptManager>
@@ -91,6 +91,10 @@
                     </div>
                     <div class="text-center mt-4">
                         <a class="text-decoration-none" href="#forgot">Forgot Password?</a>
+                    </div>
+                    <div id="Div_Wrong" runat="server" visible="false" style="font-style: italic;" 
+                        class="col-md-12 p-3 mt-3 border border-danger bg-light rounded-2 shadow-lg shadow-danger text-danger fs-6 fw-bold" >
+                        <asp:Literal ID="wrong" runat="server"></asp:Literal>
                     </div>
                 </div>
 

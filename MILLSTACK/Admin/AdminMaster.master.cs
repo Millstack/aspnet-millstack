@@ -21,13 +21,11 @@ public partial class Admin_AdminMaster : System.Web.UI.MasterPage
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        Session["UserId"] = 1;
-
-        if (Session["UserId"] != null)
+        if (Session["User_ID"] != null)
         {
             if (!IsPostBack)
             {
-                //Literal_Navbar_UserName.Text = Session["UserName"].ToString();
+                Literal_Navbar_UserName.Text = Session["User_FullName"].ToString();
                 //Literal_Navbar_UserRole.Text = Session["UserRole"].ToString();
 
                 Clear_All_ViewStates();
@@ -41,8 +39,10 @@ public partial class Admin_AdminMaster : System.Web.UI.MasterPage
         else
         {
             main.Visible = false; // hiding child page content
-            Response.Redirect("~/Account/Login.aspx");
-            Response.Redirect(GetRouteUrl("UserCreation_Route", null));
+            Session.Clear();
+            Session.RemoveAll();
+            Session.Abandon();
+            Response.Redirect(GetRouteUrl("LoginRoute", null));
         }
     }
 
@@ -65,18 +65,19 @@ public partial class Admin_AdminMaster : System.Web.UI.MasterPage
     //------------============( Navbar Redirect )============------------
     protected void HomeBtn_Click(object sender, EventArgs e)
     {
-        Response.Redirect("~/View/HomePage/HomePage.aspx");
+        Response.Redirect(GetRouteUrl("HomePage_Route", null));
     }
 
     protected void LogoutBtn_Click(object sender, EventArgs e)
     {
-        //System.Threading.Thread.Sleep(1000);
+        System.Threading.Thread.Sleep(1000);
 
         Session.Clear();
         Session.RemoveAll();
         Session.Abandon();
 
-        Response.Redirect("~/Account/Login.aspx");
+        main.Visible = false; // hiding child page content
+        Response.Redirect(GetRouteUrl("LoginRoute", null));
     }
 
 
@@ -89,7 +90,7 @@ public partial class Admin_AdminMaster : System.Web.UI.MasterPage
         try
         {
             StringBuilder menuBuilder = new StringBuilder();
-            string userId = Session["UserId"].ToString();
+            string userId = Session["User_ID"].ToString();
             string menu_query;
 
             DataTable Main_Menu_DT = new DataTable();

@@ -60,17 +60,42 @@ public partial class Login_Login : System.Web.UI.Page
         string userName = Txt_UserName.Text;
         string password = Txt_Passowrd.Text;
 
-        string sql = $@"Select Menu_ID, Parent_ID, MenuName, MenuOrder, MenuURL, MenuIcon From Tbl_M_MenuForm Where IsDeleted IS NULL";
-        var parameters = new Dictionary<string, object> { { "@ID", userName }, };
+        string sql = $@"Select Distinct um.User_ID, UserName,  Concat(um.FirstName, ' ' ,um.LastName) as User_FullName, Salt, UserPassword
+                        From Tbl_M_UserMaster as um 
+                        Where um.IsDeleted IS NULL AND UserName = @UserName";
+        var parameters = new Dictionary<string, object> { { "@UserName", userName }, };
         DataTable dt = executeClass.Get_Datatable(sql, parameters);
         if(dt != null && dt.Rows.Count > 0)
         {
             // performing hashing with user name fetched salt and enterd password, to compare with has stored in database
+            Div_Wrong.Visible = false;
 
+            // hashing user enterd password to check with database hashed password
+            string user_Salt = dt.Rows[0]["Salt"].ToString();
+            string user_Password_Hash = dt.Rows[0]["UserPassword"].ToString();
+            string login_Password_Hash = HashHelper.Hash(password, user_Salt);
+
+            if (user_Password_Hash == login_Password_Hash)
+            {
+                // assigning sessions
+                Session["User_ID"] = dt.Rows[0]["User_ID"].ToString();
+                Session["UserName"] = dt.Rows[0]["UserName"].ToString();
+                Session["User_FullName"] = dt.Rows[0]["User_FullName"].ToString();
+
+                System.Threading.Thread.Sleep(2000);
+
+                Response.Redirect(GetRouteUrl("HomePage_Route", null));
+            }
+            else
+            {
+                Div_Wrong.Visible = true;
+                wrong.Text = "Password did not match, please check";
+            }
         }
         else
         {
-
+            Div_Wrong.Visible = true;
+            wrong.Text = "Username does not exists, please check !";
         }
     }
 

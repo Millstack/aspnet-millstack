@@ -349,7 +349,6 @@ public partial class Master_Pages_UserCreation : System.Web.UI.Page
         string district_IDs = masterClass.Get_CheckboxList_Checked_Values(CheckBoxList_District);
         string taluka_IDs = masterClass.Get_CheckboxList_Checked_Values(CheckBoxList_Taluka);
 
-        Session["User_ID"] = 1;
         string User_ID = Session["User_ID"].ToString();
 
         ViewState["Operation"] = "INSERT";
@@ -394,14 +393,6 @@ public partial class Master_Pages_UserCreation : System.Web.UI.Page
 
 
     }
-
-
-
-
-
-
-
-
 
 
 

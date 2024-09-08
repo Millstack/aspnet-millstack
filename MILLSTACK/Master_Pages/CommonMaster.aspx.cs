@@ -1139,11 +1139,6 @@ public partial class Master_Pages_CommonMaster : System.Web.UI.Page
                             {(Is_Foreign_column_3_needed ? $",{Foreign_Table_3_Key_Column} = {foriegn_Column_Value_3} " : "")}
                     WHERE {Primary_Key_Column} = {ViewState["ID"].ToString()}";
 
-                    //sqlQuery = sqlQuery.TrimEnd(' ', ',');
-
-                    //sqlQuery = sqlQuery.Replace(", WHERE", " WHERE");
-                    //sqlQuery += $" WHERE {Primary_Key_Column} = {ViewState["ID"].ToString()}";
-
                     List<SqlParameter> parameters = new List<SqlParameter>
                     {
                         //new SqlParameter("@SavedBy", savedBy)
@@ -1157,7 +1152,6 @@ public partial class Master_Pages_CommonMaster : System.Web.UI.Page
                 {
                     string Primary_Key = executeClass.Get_Next_RefID(Main_Table_Name, Primary_Key_Column);
 
-                    Session["User_ID"] = 1;
                     string User_ID = Session["User_ID"].ToString();
 
                     sqlQuery = $@"
