@@ -4,9 +4,3 @@ C:\Users\DELL\source\repos\MILLSTACK\CommonClassLibrary\obj\Debug\CommonClassLib
 C:\Users\DELL\source\repos\MILLSTACK\CommonClassLibrary\obj\Debug\CommonClassLibrary.csproj.CoreCompileInputs.cache
 C:\Users\DELL\source\repos\MILLSTACK\CommonClassLibrary\obj\Debug\CommonClassLibrary.dll
 C:\Users\DELL\source\repos\MILLSTACK\CommonClassLibrary\obj\Debug\CommonClassLibrary.pdb
-D:\Mill Stack\MillStack\CommonClassLibrary\bin\Debug\CommonClassLibrary.dll
-D:\Mill Stack\MillStack\CommonClassLibrary\bin\Debug\CommonClassLibrary.pdb
-D:\Mill Stack\MillStack\CommonClassLibrary\obj\Debug\CommonClassLibrary.csproj.AssemblyReference.cache
-D:\Mill Stack\MillStack\CommonClassLibrary\obj\Debug\CommonClassLibrary.csproj.CoreCompileInputs.cache
-D:\Mill Stack\MillStack\CommonClassLibrary\obj\Debug\CommonClassLibrary.dll
-D:\Mill Stack\MillStack\CommonClassLibrary\obj\Debug\CommonClassLibrary.pdb
