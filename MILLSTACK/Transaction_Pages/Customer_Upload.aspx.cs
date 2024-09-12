@@ -11,6 +11,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using OfficeOpenXml;
 using System.Collections;
+using System.Text;
 
 public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
 {
@@ -27,13 +28,13 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
             if (!IsPostBack)
             {
                 // deciding expected excel column names
-                Dictionary<string, Type> Customer_Columns = new Dictionary<string, Type>()
+                Dictionary<string, Type> table_Columns = new Dictionary<string, Type>()
                 {
                     { "SchemeName", typeof(string) },
                 };
 
-                ViewState["Customer_Columns"] = string.Empty;
-                ViewState["Customer_Columns"] = Customer_Columns;
+                ViewState["Table_Columns"] = string.Empty;
+                ViewState["Table_Columns"] = table_Columns;
             }
         }
         catch (Exception ex)
@@ -67,11 +68,11 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
                     using (ExcelPackage package = new ExcelPackage(new FileInfo(fullPath)))
                     {
                         // Licence for Non-Commercial applications
-                        ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+                        ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
                         ExcelWorksheet worksheet = null;
 
-                        string sheetName = SheetName.Text.Trim();
+                        string sheetName = Txt_Sheet_Name.Text.Trim();
 
                         if (!string.IsNullOrEmpty(sheetName))
                         {
@@ -86,61 +87,139 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
 
                             DataTable dt = new DataTable();
 
-                            // Assuming the first row contains column headers
+                            bool columnsValid = true;
+                            StringBuilder errorMessages = new StringBuilder();
+
+                            // getting expected columns
+                            //var tableColumns = CNDSClass.Scheme_Master;
+                            var tableColumns = ViewState["Table_Columns"] as Dictionary<string, Type>;
+
+                            // loop tp check if the column is expected
                             for (int col = 1; col <= colCount; col++)
                             {
-                                dt.Columns.Add(worksheet.Cells[1, col].Text);
-                            }
+                                string columnName = worksheet.Cells[1, col].Text.Trim();
 
-                            // Starting from the second row to skip headers
-                            for (int row = 2; row <= rowCount; row++)
-                            {
-                                DataRow dataRow = dt.NewRow();
-
-                                for (int col = 1; col <= colCount; col++)
+                                // Check if the column is expected
+                                if (tableColumns.ContainsKey(columnName))
                                 {
-                                    dataRow[col - 1] = worksheet.Cells[row, col].Text;
-                                }
-
-                                dt.Rows.Add(dataRow);
-                            }
-
-                            if (dt.Rows.Count > 0)
-                            {
-                                // Checking column names present in excel sheet or not
-                                if (dt.Columns[0].ColumnName.Trim() == "CustomerName" && dt.Columns[1].ColumnName.Trim() == "MobileNo" &&
-                                dt.Columns[2].ColumnName.Trim() == "Gender" && dt.Columns[3].ColumnName.Trim() == "CustomerNo" && dt.Columns[4].ColumnName.Trim() == "WardNo"
-                                && dt.Columns[5].ColumnName.Trim() == "Society" && dt.Columns[6].ColumnName.Trim() == "SectorArea")
-                                {
-
-                                    // Method 1: delete data from Temp Table
-                                    // Method 2: inserting data into temp table if needed
-
-                                    InsertToGridView(dt);
-
-                                    // Method 3: To display the inserted data from Temp or Main Table
+                                    dt.Columns.Add(columnName);
                                 }
                                 else
                                 {
-                                    SweetAlert.GetSweet(this.Page, "warning", "Wrong Excel Columns!", $"The Excel Format Has Not Matched, <br/> Please Download The Correct Excel File Format");
+                                    errorMessages.Append($"Unexpected column '{columnName}' found in Excel. ");
+                                    columnsValid = false;
                                 }
+                            }
+
+                            // If all columns are valid, proceed
+                            if (columnsValid)
+                            {
+                                // Adding an "Error" column to store error messages for each row
+                                dt.Columns.Add("Error", typeof(string));
+
+                                try
+                                {
+                                    for (int row = 2; row <= rowCount; row++)
+                                    {
+                                        DataRow dataRow = dt.NewRow();
+
+                                        for (int col = 1; col <= colCount; col++)
+                                        {
+                                            string cellValue = worksheet.Cells[row, col].Text.Trim();
+                                            string columnName = dt.Columns[col - 1].ColumnName;
+
+                                            // Check if the cell value is empty or has whitespace
+                                            if (string.IsNullOrWhiteSpace(cellValue))
+                                            {
+                                                // Assign default or DBNull.Value based on the column type
+                                                var columnType = tableColumns[columnName];
+
+                                                if (columnType == typeof(decimal) || columnType == typeof(int) || columnType == typeof(Int64))
+                                                {
+                                                    dataRow[col - 1] = 0; // Default value for numeric columns
+                                                }
+                                                else if (columnType == typeof(DateTime))
+                                                {
+                                                    dataRow[col - 1] = DBNull.Value; // Default value for DateTime
+                                                }
+                                                else
+                                                {
+                                                    dataRow[col - 1] = DBNull.Value; // Default for other types
+                                                }
+                                            }
+                                            else
+                                            {
+                                                // Convert data if the cell is not empty
+                                                var columnType = tableColumns[columnName];
+
+                                                if (columnType == typeof(decimal) || columnType == typeof(int) || columnType == typeof(Int64))
+                                                {
+                                                    dataRow[col - 1] = masterClass.Get_Safe_Decimal(cellValue);
+                                                }
+                                                else if (columnType == typeof(DateTime))
+                                                {
+                                                    dataRow[col - 1] = masterClass.Get_Safe_Date(cellValue);
+                                                }
+                                                else
+                                                {
+                                                    // Convert other data types
+                                                    object converted_Value = Convert.ChangeType(cellValue, columnType);
+                                                    dataRow[col - 1] = converted_Value;
+                                                }
+                                            }
+                                        }
+
+                                        dt.Rows.Add(dataRow);
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    SweetAlert.GetSweet(this.Page, "error", "", $"{ex.Message}");
+                                }
+
+                                Bind_GridView(dt);
+                            }
+                            else
+                            {
+                                SweetAlert.GetSweet(this.Page, "info", "Invalid Excel Format!", errorMessages.ToString());
                             }
                         }
                         else
                         {
-                            SweetAlert.GetSweet(this.Page, "warning", "Invalid Worksheet Name!", $"The worksheet name: <strong>{sheetName}</strong> is not present in excel file. Please check excel file properly");
+                            SweetAlert.GetSweet(this.Page, "info", "Invalid Worksheet Name!", $"The worksheet name {sheetName}was not found in the excel file. <br/> Please check the excel file properly.");
                         }
                     }
+                }
+                else
+                {
+                    SweetAlert.GetSweet(this.Page, "warning", "", $"The Excel format <b>{FileExtension}</b> is not supported <br/> please check the allowed formats: <b>.xlsx</b> & <b>.xls</b>");
                 }
             }
         }
         catch (Exception ex)
         {
-            SweetAlert.GetSweet(this.Page, "warning", "Oops!", $"{ex.Message}");
+            SweetAlert.GetSweet(this.Page, "error", "", $"{ex.Message}");
         }
     }
 
-    public void InsertToGridView(DataTable dtCustomer)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public void Bind_GridView(DataTable Customer_DT)
     {
         DataTable dt = ViewState["CustomerData"] as DataTable ?? createItemDatatable();
 
@@ -153,7 +232,7 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
         // hash set for storing unique customer mobile no only
         HashSet<string> customerMobileNumbers = new HashSet<string>();
 
-        foreach (DataRow row in dtCustomer.Rows)
+        foreach (DataRow row in Customer_DT.Rows)
         {
             //int rowIndex = dt.Rows.IndexOf(row);
             //dt.Rows.RemoveAt(rowIndex);
@@ -229,7 +308,7 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
                 AddRowToErrorDataTable(dtErrors, customerNumber, customerName, customerMobileNo, errorReason);
             }
 
-            // still adding all records to original grdiview for the user to check it himself or herself
+            // still adding all records to original grdiview for the user to check it
             AddRowToItemDataTable(dt, customerName, customerMobileNo, customerGender, customerNumber, wardNumber, society, sectorOrArea, customerType, "EXCEL");
         }
 
@@ -243,7 +322,7 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
 
             ViewState["CustomerData"] = dt;
 
-            SheetName.Text = string.Empty;
+            Txt_Sheet_Name.Text = string.Empty;
         }
         else
         {
@@ -251,7 +330,7 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
 
             ViewState["CustomerData"] = null;
 
-            SheetName.Text = string.Empty;
+            Txt_Sheet_Name.Text = string.Empty;
         }
 
         // populating error grdivew if there are errors

@@ -36,7 +36,7 @@
 
                                     </div>
                                 </div>
-                                <asp:TextBox runat="server" ID="SheetName" type="text" step="any" min="-Infinity" max="Infinity" CssClass="form-control border border-secondary-subtle bg-light rounded-1 fs-6 fw-light py-1"></asp:TextBox>
+                                <asp:TextBox runat="server" ID="Txt_Sheet_Name" type="text" step="any" min="-Infinity" max="Infinity" CssClass="form-control border border-secondary-subtle bg-light rounded-1 fs-6 fw-light py-1"></asp:TextBox>
                             </div>
 
                             <!-- Excel Upload UI Starts -->

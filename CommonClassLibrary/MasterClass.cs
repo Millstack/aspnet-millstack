@@ -292,5 +292,101 @@ namespace CommonClassLibrary
         }
 
 
+
+
+
+
+
+
+
+
+
+
+        /// <summary>
+        /// Get safe value like decimal, int, date
+        /// </summary>
+        /// <param name="Value"></param>
+        /// <param name="valueType"></param>
+        /// <returns>Respective Value</returns>
+        public object Get_Safe_Value(object value, Type columnType)
+        {
+            if (value == DBNull.Value || string.IsNullOrWhiteSpace(value.ToString()))
+                return DBNull.Value;
+
+            if (columnType == typeof(decimal))
+                return Get_Safe_Decimal(value);
+            if (columnType == typeof(long)) // BigInt in SQL
+                return Convert.ToInt64(value);
+            if (columnType == typeof(int))
+                return Convert.ToInt32(value);
+            if (columnType == typeof(DateTime))
+                return Get_Safe_Date(value);
+            if (columnType == typeof(string))
+                return value.ToString();
+            if (columnType == typeof(bool))
+                return Convert.ToBoolean(value);
+
+            // Add more types as needed
+            return value.ToString(); // Default to string if no matching type is found
+        }
+
+
+        /// <summary>
+        /// Get safe decimal value
+        /// </summary>
+        /// <param name="Value"></param>
+        /// <returns>Decimal</returns>
+        public decimal Get_Safe_Decimal(object value)
+        {
+            if (value == DBNull.Value || string.IsNullOrWhiteSpace(value.ToString())) return 0;
+            decimal result;
+            if (decimal.TryParse(value.ToString(), out result)) return result;
+            return 0;
+        }
+
+
+        /// <summary>
+        /// Get safe date value format
+        /// </summary>
+        /// <param name="Value"></param>
+        /// <returns>Date Format</returns>
+        public object Get_Safe_Date(object value)
+        {
+            DateTime parsedDate;
+            if (value == DBNull.Value || string.IsNullOrWhiteSpace(value.ToString())) return DBNull.Value;
+            bool isDateValid = DateTime.TryParseExact(value.ToString(), "yyyy/MM/dd", null, System.Globalization.DateTimeStyles.None, out parsedDate);
+            if (isDateValid && parsedDate >= new DateTime(1753, 1, 1) && parsedDate <= new DateTime(9999, 12, 31)) return parsedDate;
+            return DBNull.Value;
+        }
+
+
+        /// <summary>
+        /// Get DataTable with data types using Dictionary
+        /// </summary>
+        /// <param name="Dictionary Object"></param>
+        /// <returns>DataTable</returns>
+        public DataTable Get_DataTable_From_Dictionary(Dictionary<string, Type> table_Columns)
+        {
+            DataTable dt = new DataTable();
+
+            // Iterate over the dictionary and add columns with the specified types
+            foreach (var column in table_Columns)
+            {
+                dt.Columns.Add(column.Key, column.Value);
+            }
+
+            return dt;
+
+            // In .NET Framework, typeof() returns the correct Type object for a given data type :
+            // typeof(Int64) maps to System.Int64 (alias: long)
+            // typeof(Int32) maps to System.Int32 (alias: int)
+            // typeof(DateTime) maps to System.DateTime
+            // typeof(Decimal) maps to System.Decimal
+            // typeof(String) maps to System.String
+        }
+
+
+
+
     }
 }
