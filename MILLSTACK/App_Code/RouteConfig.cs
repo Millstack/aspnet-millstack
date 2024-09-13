@@ -60,6 +60,12 @@ namespace MILLSTACK
              "UserMaster",
              "~/Master_Pages/UserCreation_Update.aspx"
            );
+
+            routes.MapPageRoute(
+             "Customer_Upload_Route",
+             "CustomerUpload",
+             "~/Transaction_Pages/Customer_Upload.aspx"
+           );
         }
     }
 }

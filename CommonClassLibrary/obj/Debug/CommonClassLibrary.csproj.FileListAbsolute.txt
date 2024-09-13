@@ -4,3 +4,25 @@ C:\Users\DELL\source\repos\MILLSTACK\CommonClassLibrary\obj\Debug\CommonClassLib
 C:\Users\DELL\source\repos\MILLSTACK\CommonClassLibrary\obj\Debug\CommonClassLibrary.csproj.CoreCompileInputs.cache
 C:\Users\DELL\source\repos\MILLSTACK\CommonClassLibrary\obj\Debug\CommonClassLibrary.dll
 C:\Users\DELL\source\repos\MILLSTACK\CommonClassLibrary\obj\Debug\CommonClassLibrary.pdb
+D:\Mill Stack\MillStack\CommonClassLibrary\bin\Debug\CommonClassLibrary.dll
+D:\Mill Stack\MillStack\CommonClassLibrary\bin\Debug\CommonClassLibrary.pdb
+D:\Mill Stack\MillStack\CommonClassLibrary\bin\Debug\EPPlus.dll
+D:\Mill Stack\MillStack\CommonClassLibrary\bin\Debug\EPPlus.Interfaces.dll
+D:\Mill Stack\MillStack\CommonClassLibrary\bin\Debug\EPPlus.System.Drawing.dll
+D:\Mill Stack\MillStack\CommonClassLibrary\bin\Debug\Microsoft.IO.RecyclableMemoryStream.dll
+D:\Mill Stack\MillStack\CommonClassLibrary\bin\Debug\System.Buffers.dll
+D:\Mill Stack\MillStack\CommonClassLibrary\bin\Debug\System.ComponentModel.Annotations.dll
+D:\Mill Stack\MillStack\CommonClassLibrary\bin\Debug\System.Memory.dll
+D:\Mill Stack\MillStack\CommonClassLibrary\bin\Debug\System.Numerics.Vectors.dll
+D:\Mill Stack\MillStack\CommonClassLibrary\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+D:\Mill Stack\MillStack\CommonClassLibrary\bin\Debug\EPPlus.xml
+D:\Mill Stack\MillStack\CommonClassLibrary\bin\Debug\Microsoft.IO.RecyclableMemoryStream.xml
+D:\Mill Stack\MillStack\CommonClassLibrary\bin\Debug\System.Buffers.xml
+D:\Mill Stack\MillStack\CommonClassLibrary\bin\Debug\System.Memory.xml
+D:\Mill Stack\MillStack\CommonClassLibrary\bin\Debug\System.Numerics.Vectors.xml
+D:\Mill Stack\MillStack\CommonClassLibrary\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+D:\Mill Stack\MillStack\CommonClassLibrary\obj\Debug\CommonClassLibrary.csproj.AssemblyReference.cache
+D:\Mill Stack\MillStack\CommonClassLibrary\obj\Debug\CommonClassLibrary.csproj.CoreCompileInputs.cache
+D:\Mill Stack\MillStack\CommonClassLibrary\obj\Debug\CommonClassLibrary.csproj.CopyComplete
+D:\Mill Stack\MillStack\CommonClassLibrary\obj\Debug\CommonClassLibrary.dll
+D:\Mill Stack\MillStack\CommonClassLibrary\obj\Debug\CommonClassLibrary.pdb

@@ -181,7 +181,7 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
                             }
                             else
                             {
-                                SweetAlert.GetSweet(this.Page, "info", "Invalid Excel Format!", errorMessages.ToString());
+                                SweetAlert.GetSweet(this.Page, "info", "Invalid Excel Format!", $"Excel columns were not matched, please check");
                             }
                         }
                         else
@@ -221,15 +221,19 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
 
     public void Bind_GridView(DataTable Customer_DT)
     {
-        DataTable dt = ViewState["CustomerData"] as DataTable ?? createItemDatatable();
+        DataTable dt = ViewState["Customer_DT"] as DataTable ?? masterClass.Get_DataTable_From_Dictionary(ViewState["Table_Columns"] as Dictionary<string, Type>);
 
         // creating new empty datatable for displaying errors
-        DataTable dtErrors = createErrorDatatable();
+        DataTable dtErrors = new DataTable();
+        dtErrors.Columns.Add("CustomerNo", typeof(string));
+        dtErrors.Columns.Add("CustomerName", typeof(string));
+        dtErrors.Columns.Add("MobileNo", typeof(string));
+        dtErrors.Columns.Add("ErrorReason", typeof(string));
 
         // hash set for storing unique customer numbers only
         HashSet<string> customerNumbers = new HashSet<string>();
 
-        // hash set for storing unique customer mobile no only
+        // hash set for storing unique customer mobile number only
         HashSet<string> customerMobileNumbers = new HashSet<string>();
 
         foreach (DataRow row in Customer_DT.Rows)
@@ -250,6 +254,8 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
             string yellow = row["Yellow"].ToString();
             string black = row["Black"].ToString();
             string orange = row["Orange"].ToString();
+
+            // NOTE: yellow --> neutral, black --> against and orange --> kattar supporter
 
             // deciding the color selected
             string customerType = string.Empty;
@@ -320,7 +326,7 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
             GridCustomer.DataSource = dt;
             GridCustomer.DataBind();
 
-            ViewState["CustomerData"] = dt;
+            ViewState["Customer_DT"] = dt;
 
             Txt_Sheet_Name.Text = string.Empty;
         }
@@ -328,7 +334,7 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
         {
             CustomerDiv.Visible = false;
 
-            ViewState["CustomerData"] = null;
+            ViewState["Customer_DT"] = null;
 
             Txt_Sheet_Name.Text = string.Empty;
         }
@@ -560,7 +566,7 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
 
     private async Task<DataTable> CheckForExistingCustomerRecords(SqlConnection con, SqlTransaction transaction)
     {
-        DataTable custDT = ViewState["CustomerData"] as DataTable;
+        DataTable custDT = ViewState["Customer_DT"] as DataTable;
 
         // creating error records datatable
         DataTable dtErrors = new DataTable();
@@ -614,7 +620,7 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
     {
         string userID = Session["UserId"].ToString();
 
-        DataTable custDT = ViewState["CustomerData"] as DataTable;
+        DataTable custDT = ViewState["Customer_DT"] as DataTable;
 
         if (custDT.Rows.Count > 0)
         {

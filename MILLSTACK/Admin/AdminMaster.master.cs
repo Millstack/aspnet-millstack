@@ -122,6 +122,7 @@ public partial class Admin_AdminMaster : System.Web.UI.MasterPage
                     menuBuilder.AppendLine($"<div class='iocn-link py-1' style='cursor: pointer;' >");
                     menuBuilder.AppendLine($"<a href='{mainMenuNavigateUrl}'>");
                     menuBuilder.AppendLine($"<img src='{mainMenuIcon}' class='white-svg p-3' />");
+                    //menuBuilder.AppendLine($"<i class='bi bi-person-vcard-fill p-3 white-svg p-3'></i>");
                     menuBuilder.AppendLine($"<span class='link_name ps-2'>{mainMenuName}</span>");
                     menuBuilder.AppendLine("</a>");
                     menuBuilder.AppendLine("<img src='/assets/icons/box-icons/bx-chevron-down.svg' class='white-svg arrow px-3 py-3' style='cursor: pointer;' />");
