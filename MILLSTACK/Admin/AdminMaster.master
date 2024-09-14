@@ -359,6 +359,7 @@
         <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePartialRendering="true"></asp:ScriptManager>
 
         <!-- Side bar UI Starts -->
+        <!-- sidebar close -->
         <div class="sidebar ">
             <div class="logo-details">
                 <asp:Image runat="server" ImageUrl="~/assets/image/logo/millstack.png" AlternateText="na" Style="height: 66px; width: 66px;" CssClass="px-2 py-3" />
@@ -725,8 +726,10 @@
 
                 // Initialize DataTable
                 $this.DataTable({
-                    scrollX: false,
-                    sScrollXInner: "100%",
+                    scrollX: true,  // Enable horizontal scrolling
+                    sScrollXInner: "100%", // Set inner width
+                    scrollCollapse: false, // Collapse the table to avoid empty space
+                    autoWidth: false, // Disable auto width to prevent it from shrinking
                     bFilter: true,
                     bSort: true,
                     bPaginate: true,

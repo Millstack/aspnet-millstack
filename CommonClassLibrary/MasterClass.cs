@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace CommonClassLibrary
@@ -387,6 +389,60 @@ namespace CommonClassLibrary
 
 
 
+        /// <summary>
+        /// Bind GridView dynamically with DataTanle's columns
+        /// </summary>
+        /// <param name="GridView object"></param>
+        /// <param name="DataTable object"></param>
+        /// <param name="ViewState Object"></param>
+        /// <param name="ViewState Key"></param>
+        /// <returns>DataTable</returns>
+        public void Bind_GridView_Dynamic(GridView gridView, DataTable dt, StateBag viewState, string viewStateKey)
+        {
+            try
+            {
+                if (dt.Rows.Count > 0)
+                {
+                    // Turn ON column auto generation
+                    gridView.AutoGenerateColumns = true;
+
+                    gridView.DataSource = dt;
+                    gridView.DataBind();
+
+                    // Save DataTable in ViewState
+                    viewState[viewStateKey] = dt;
+
+                    // Clear existing columns
+                    gridView.Columns.Clear();
+
+                    // Dynamically creating BoundFields or Columns from the data source
+                    foreach (DataColumn col in dt.Columns)
+                    {
+                        BoundField boundField = new BoundField
+                        {
+                            DataField = col.ColumnName,
+                            HeaderText = col.ColumnName
+                        };
+                        gridView.Columns.Add(boundField);
+                    }
+
+                    // Turn OFF column auto generation
+                    gridView.AutoGenerateColumns = false;
+                }
+                else
+                {
+                    gridView.DataSource = null;
+                    gridView.DataBind();
+
+                    // Clear ViewState if there's no data
+                    viewState[viewStateKey] = null;
+                }
+            }
+            catch(Exception ex)
+            {
+                //SweetAlert.GetSweet();
+            }
+        }
 
     }
 }

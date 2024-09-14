@@ -30,7 +30,14 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
                 // deciding expected excel column names
                 Dictionary<string, Type> table_Columns = new Dictionary<string, Type>()
                 {
-                    { "SchemeName", typeof(string) },
+                    { "Customer_Name", typeof(string) },
+                    { "Customer_Mobile", typeof(Int64) },
+                    { "Gender", typeof(string) },
+                    { "Customer_No", typeof(string) },
+                    { "Ward_No", typeof(Int64) },
+                    { "Customer_Society", typeof(string) },
+                    { "Customer_Sector_Area", typeof(string) },
+                    { "Customer_Type", typeof(string) },
                 };
 
                 ViewState["Table_Columns"] = string.Empty;
@@ -115,7 +122,7 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
                             if (columnsValid)
                             {
                                 // Adding an "Error" column to store error messages for each row
-                                dt.Columns.Add("Error", typeof(string));
+                                //dt.Columns.Add("Error", typeof(string));
 
                                 try
                                 {
@@ -203,229 +210,179 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public void Bind_GridView(DataTable Customer_DT)
     {
-        DataTable dt = ViewState["Customer_DT"] as DataTable ?? masterClass.Get_DataTable_From_Dictionary(ViewState["Table_Columns"] as Dictionary<string, Type>);
-
-        // creating new empty datatable for displaying errors
-        DataTable dtErrors = new DataTable();
-        dtErrors.Columns.Add("CustomerNo", typeof(string));
-        dtErrors.Columns.Add("CustomerName", typeof(string));
-        dtErrors.Columns.Add("MobileNo", typeof(string));
-        dtErrors.Columns.Add("ErrorReason", typeof(string));
-
-        // hash set for storing unique customer numbers only
-        HashSet<string> customerNumbers = new HashSet<string>();
-
-        // hash set for storing unique customer mobile number only
-        HashSet<string> customerMobileNumbers = new HashSet<string>();
-
-        foreach (DataRow row in Customer_DT.Rows)
+        try
         {
-            //int rowIndex = dt.Rows.IndexOf(row);
-            //dt.Rows.RemoveAt(rowIndex);
+            DataTable dt = ViewState["Customer_DT"] as DataTable ?? masterClass.Get_DataTable_From_Dictionary(ViewState["Table_Columns"] as Dictionary<string, Type>);
 
-            // fetching the row data
-            string customerName = row["CustomerName"].ToString();
-            string customerMobileNo = row["MobileNo"].ToString();
-            string customerGender = row["Gender"].ToString();
-            string customerNumber = row["CustomerNo"].ToString();
-            string wardNumber = row["WardNo"].ToString();
-            string society = row["Society"].ToString();
-            string sectorOrArea = row["SectorArea"].ToString();
+            // creating new empty datatable for displaying errors
+            DataTable dtErrors = new DataTable();
+            dtErrors.Columns.Add("Customer_Name", typeof(string));
+            dtErrors.Columns.Add("Customer_No", typeof(string));
+            dtErrors.Columns.Add("Customer_Mobile", typeof(string));
+            dtErrors.Columns.Add("ErrorReason", typeof(string));
 
-            // color columns
-            string yellow = row["Yellow"].ToString();
-            string black = row["Black"].ToString();
-            string orange = row["Orange"].ToString();
+            // hash set for storing unique customer numbers only
+            HashSet<string> customerNumbers = new HashSet<string>();
 
-            // NOTE: yellow --> neutral, black --> against and orange --> kattar supporter
+            // hash set for storing unique customer mobile number only
+            HashSet<string> customerMobileNumbers = new HashSet<string>();
 
-            // deciding the color selected
-            string customerType = string.Empty;
-            if (yellow == "1") customerType = "Yellow";
-            if (black == "1") customerType = "Black";
-            if (orange == "1") customerType = "Orange";
-
-            bool hasError = false;
-            string errorReason = string.Empty;
-
-            // checking if all columns in the row have data inside DataTable
-            //if (row.ItemArray.All(field => !string.IsNullOrEmpty(field.ToString()))) // condition to check all column data in DataTale
-            if (row.ItemArray.All(field => !string.IsNullOrEmpty(field.ToString())))
+            foreach (DataRow row in Customer_DT.Rows)
             {
-                // checking for duplicate customer numbers
-                if (customerNumbers.Contains(customerNumber))
+                //int rowIndex = dt.Rows.IndexOf(row);
+                //dt.Rows.RemoveAt(rowIndex);
+
+                // fetching the row data
+                string customerName = row["Customer_Name"].ToString();
+                string customerMobileNo = row["Customer_Mobile"].ToString();
+                string customerGender = row["Gender"].ToString();
+                string customerNumber = row["Customer_No"].ToString();
+                string wardNumber = row["Ward_No"].ToString();
+                string society = row["Customer_Society"].ToString();
+                string sectorOrArea = row["Customer_Sector_Area"].ToString();
+
+                // color columns
+                string Customer_Type = row["Customer_Type"].ToString();
+
+                // NOTE: yellow --> neutral, black --> against and orange --> kattar supporter
+
+                // deciding the color selected
+                //string customerType = string.Empty;
+                //if (yellow == "1") customerType = "Yellow";
+                //if (black == "1") customerType = "Black";
+                //if (orange == "1") customerType = "Orange";
+
+                bool hasError = false;
+                string errorReason = string.Empty;
+
+                // checking if all columns in the row have data inside DataTable
+                //if (row.ItemArray.All(field => !string.IsNullOrEmpty(field.ToString()))) // condition to check all column data in DataTale
+                if (row.ItemArray.All(field => !string.IsNullOrEmpty(field.ToString())))
                 {
-                    hasError = true;
-                    errorReason = "Duplicate Customer No";
+                    // checking for duplicate customer numbers
+                    if (customerNumbers.Contains(customerNumber))
+                    {
+                        hasError = true;
+                        errorReason = "Duplicate Customer No";
+                    }
+                    else
+                    {
+                        // adding unque customer no into HashSet
+                        customerNumbers.Add(customerNumber);
+                    }
+
+                    // checking for duplicate mobile number
+                    if (customerMobileNumbers.Contains(customerMobileNo))
+                    {
+                        hasError = true;
+                        errorReason = string.IsNullOrEmpty(errorReason) ? "Duplicate Mobile Number" : $"{errorReason}, Duplicate Mobile Number";
+                    }
+                    else
+                    {
+                        // Add unique mobile number into HashSet
+                        customerMobileNumbers.Add(customerMobileNo);
+                    }
+
+                    // checking for invalid mobile no and all digits only
+                    if (customerMobileNo.Length != 10 || !customerMobileNo.All(char.IsDigit))
+                    {
+                        hasError = true;
+                        errorReason = string.IsNullOrEmpty(errorReason) ? "Invalid Mobile Number" : $"{errorReason}, Invalid Mobile Number";
+                    }
+
+                    if (hasError)
+                    {
+                        AddRowToErrorDataTable(dtErrors, customerNumber, customerName, customerMobileNo, errorReason);
+                    }
                 }
                 else
                 {
-                    // adding unque customer no into HashSet
-                    customerNumbers.Add(customerNumber);
-                }
+                    // if not all columns has data
+                    errorReason = string.IsNullOrEmpty(errorReason) ? "Missing column data" : $"{errorReason}, Missing column data";
 
-                // checking for duplicate mobile number
-                if (customerMobileNumbers.Contains(customerMobileNo))
-                {
-                    hasError = true;
-                    errorReason = string.IsNullOrEmpty(errorReason) ? "Duplicate Mobile Number" : $"{errorReason}, Duplicate Mobile Number";
-                }
-                else
-                {
-                    // Add unique mobile number into HashSet
-                    customerMobileNumbers.Add(customerMobileNo);
-                }
-
-                // checking for invalid mobile no and all digits only
-                if (customerMobileNo.Length != 10 || !customerMobileNo.All(char.IsDigit))
-                {
-                    hasError = true;
-                    errorReason = string.IsNullOrEmpty(errorReason) ? "Invalid Mobile Number" : $"{errorReason}, Invalid Mobile Number";
-                }
-
-                if (hasError)
-                {
                     AddRowToErrorDataTable(dtErrors, customerNumber, customerName, customerMobileNo, errorReason);
                 }
+
+                // still adding all records to original grdiview for the user to check it
+                AddRowToItemDataTable(dt, customerName, customerMobileNo, customerGender, customerNumber, wardNumber, society, sectorOrArea, Customer_Type, "EXCEL");
+            }
+
+            if (dt.Rows.Count > 0)
+            {
+                ExcelUploadDiv.Visible = false;
+                CustomerDiv.Visible = true;
+
+                masterClass.Bind_GridView_Dynamic(GridCustomer, dt, ViewState, "Customer_DT");
+
+                //GridCustomer.DataSource = dt;
+                //GridCustomer.DataBind();
+
+                //ViewState["Customer_DT"] = dt;
+
+                Txt_Sheet_Name.Text = string.Empty;
             }
             else
             {
-                // if not all columns has data
-                errorReason = string.IsNullOrEmpty(errorReason) ? "Missing column data" : $"{errorReason}, Missing column data";
+                CustomerDiv.Visible = false;
 
-                AddRowToErrorDataTable(dtErrors, customerNumber, customerName, customerMobileNo, errorReason);
+                ViewState["Customer_DT"] = null;
+
+                Txt_Sheet_Name.Text = string.Empty;
             }
 
-            // still adding all records to original grdiview for the user to check it
-            AddRowToItemDataTable(dt, customerName, customerMobileNo, customerGender, customerNumber, wardNumber, society, sectorOrArea, customerType, "EXCEL");
-        }
+            // populating error grdivew if there are errors
+            if (dtErrors.Rows.Count > 0)
+            {
+                SubmitCancelButtonDiv.Visible = true;
+                btnSubmit.Visible = false;
 
-        if (dt.Rows.Count > 0)
+                masterClass.Bind_GridView_Dynamic(GridErrors, dtErrors, ViewState, "ErrorRecords");
+
+                //ErrorGridDiv.Visible = true;
+
+                //ViewState["ErrorRecords"] = dtErrors;
+
+                //GridErrors.DataSource = dtErrors;
+                //GridErrors.DataBind();
+
+                SweetAlert.GetSweet(this.Page, "warning", "Excel Errors!", $"Excel Errors Detected, From The Uploaded Excel File. Please Check The Data Carefully");
+            }
+            else
+            {
+                SubmitCancelButtonDiv.Visible = true;
+                btnSubmit.Visible = true;
+
+                ErrorGridDiv.Visible = false;
+
+                ViewState["ErrorRecords"] = null;
+
+                GridErrors.DataSource = null;
+                GridErrors.DataBind();
+            }
+        }
+        catch (Exception ex)
         {
-            ExcelUploadDiv.Visible = false;
-            CustomerDiv.Visible = true;
-
-            GridCustomer.DataSource = dt;
-            GridCustomer.DataBind();
-
-            ViewState["Customer_DT"] = dt;
-
-            Txt_Sheet_Name.Text = string.Empty;
+            SweetAlert.GetSweet(this.Page, "error", "", $"{ex.Message}");
         }
-        else
-        {
-            CustomerDiv.Visible = false;
-
-            ViewState["Customer_DT"] = null;
-
-            Txt_Sheet_Name.Text = string.Empty;
-        }
-
-        // populating error grdivew if there are errors
-        if (dtErrors.Rows.Count > 0)
-        {
-            SubmitCancelButtonDiv.Visible = true;
-            btnSubmit.Visible = false;
-
-            ErrorGridDiv.Visible = true;
-
-            ViewState["ErrorRecords"] = dtErrors;
-
-            GridErrors.DataSource = dtErrors;
-            GridErrors.DataBind();
-
-            SweetAlert.GetSweet(this.Page, "warning", "Excel Errors!", $"Excel Errors Detected, From The Uploaded Excel File. Please Check The Data Carefully");
-        }
-        else
-        {
-            SubmitCancelButtonDiv.Visible = true;
-            btnSubmit.Visible = true;
-
-            ErrorGridDiv.Visible = false;
-
-            ViewState["ErrorRecords"] = null;
-
-            GridErrors.DataSource = null;
-            GridErrors.DataBind();
-        }
-    }
-
-
-    // customer records
-    private DataTable createItemDatatable()
-    {
-        DataTable dt = new DataTable();
-
-
-        // customer name
-        DataColumn CustomerName = new DataColumn("CustomerName", typeof(string));
-        dt.Columns.Add(CustomerName);
-
-        // customer phone no
-        DataColumn PhoneNo = new DataColumn("MobileNo", typeof(string));
-        dt.Columns.Add(PhoneNo);
-
-        // customer gender
-        DataColumn Gender = new DataColumn("Gender", typeof(string));
-        dt.Columns.Add(Gender);
-
-        // customer number
-        DataColumn CustomerNumber = new DataColumn("CustomerNo", typeof(string));
-        dt.Columns.Add(CustomerNumber);
-
-        // customer ward no
-        DataColumn WardNo = new DataColumn("WardNo", typeof(string));
-        dt.Columns.Add(WardNo);
-
-        // customer society
-        DataColumn Society = new DataColumn("Society", typeof(string));
-        dt.Columns.Add(Society);
-
-        // customer sector / area
-        DataColumn SectorOrArea = new DataColumn("SectorArea", typeof(string));
-        dt.Columns.Add(SectorOrArea);
-
-        // data entry mode
-        DataColumn DataEntryMode = new DataColumn("DataEntryMode", typeof(string));
-        dt.Columns.Add(DataEntryMode);
-
-        dt.Columns.Add("CustomerType", typeof(string));
-
-        return dt;
     }
 
     private void AddRowToItemDataTable(DataTable dt, string customerName, string customerMobileNo, string customerGender, string customerNumber, string wardNumber, string society, string sectorOrArea, string customerType, string enteryMode)
     {
         DataRow row = dt.NewRow();
 
-        row["CustomerName"] = customerName;
-        row["MobileNo"] = customerMobileNo;
-        row["Gender"] = customerGender;
-        row["CustomerNo"] = customerNumber;
-        row["WardNo"] = wardNumber;
-        row["Society"] = society;
-        row["SectorArea"] = sectorOrArea;
-        row["CustomerType"] = customerType;
-        row["DataEntryMode"] = enteryMode;
+        if (!dt.Columns.Contains("DataEntryMode")) dt.Columns.Add("DataEntryMode", typeof(string));
 
+        row["Customer_Name"] = customerName;
+        row["Customer_Mobile"] = customerMobileNo;
+        row["Gender"] = customerGender;
+        row["Customer_No"] = customerNumber;
+        row["Ward_No"] = wardNumber;
+        row["Customer_Society"] = society;
+        row["Customer_Sector_Area"] = sectorOrArea;
+        row["Customer_Type"] = customerType;
+        row["DataEntryMode"] = enteryMode;
         dt.Rows.Add(row);
     }
 
@@ -444,13 +401,12 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
     private void AddRowToErrorDataTable(DataTable dtErrors, string customerNumber, string customerName, string customerMobileNo, string errorReason)
     {
         DataRow errorRow = dtErrors.NewRow();
-        errorRow["CustomerNo"] = customerNumber;
-        errorRow["CustomerName"] = customerName;
-        errorRow["MobileNo"] = customerMobileNo;
+        errorRow["Customer_Name"] = customerName;
+        errorRow["Customer_No"] = customerNumber;
+        errorRow["Customer_Mobile"] = customerMobileNo;
         errorRow["ErrorReason"] = errorReason;
         dtErrors.Rows.Add(errorRow);
     }
-
 
 
 
@@ -461,11 +417,33 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
     {
         if (e.Row.RowType == DataControlRowType.DataRow)
         {
+            // Find the index of the column by name, e.g. "Customer_Type"
+            int columnIndex = -1;
+            foreach (DataControlField column in GridCustomer.Columns)
+            {
+                if (column.HeaderText == "Customer_Type") // Match by header text or DataField name
+                {
+                    columnIndex = GridCustomer.Columns.IndexOf(column);
+                    break;
+                }
+            }
+
+            // If the column is found
+            if (columnIndex >= 0)
+            {
+                // needed explicit column names to work
+            }
+
+
+
+
+
+
             // index based fetching the CustomerType column
-            TableCell customerTypeCell = e.Row.Cells[8];
+            TableCell customerTypeCell = e.Row.Cells[9];
 
             // getting the cell value i.e. mentioned color
-            string customerType = DataBinder.Eval(e.Row.DataItem, "CustomerType").ToString();
+            string customerType = DataBinder.Eval(e.Row.DataItem, "Customer_Type").ToString();
 
             string backgroundColor = GetColor(customerType);
             string textColor = "black";

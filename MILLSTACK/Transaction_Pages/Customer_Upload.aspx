@@ -74,45 +74,45 @@
                     <asp:Literal ID="literalCustomer" runat="server" Text="Uploaded Customer Records"></asp:Literal>
                 </div>
 
-                <asp:GridView ShowHeaderWhenEmpty="true" ID="GridCustomer" runat="server" AutoGenerateColumns="false" OnRowDataBound="GridCustomer_RowDataBound"
-                    CssClass="datatables table table-bordered table-hover border border-1 border-dark-subtle text-center grid-custom mb-3">
-                    <HeaderStyle CssClass="align-middle" />
-                    <Columns>
+                <div class="col-md-12" style="overflow-x: auto; overflow-y: auto; max-height: 700px; width: 100%; position: relative;">
+                    <asp:GridView ShowHeaderWhenEmpty="true" ID="GridCustomer" runat="server" AutoGenerateColumns="false" OnRowDataBound="GridCustomer_RowDataBound"
+                        CssClass="datatables table table-bordered table-hover border border-1 border-dark-subtle text-center grid-custom mb-3">
+                        <HeaderStyle CssClass="align-middle" />
+                        <Columns>
 
-                        <asp:TemplateField ControlStyle-CssClass="col-md-1" HeaderText="Sr.No">
-                            <ItemTemplate>
-                                <asp:HiddenField ID="id" runat="server" Value="id" />
-                                <span>
-                                    <%# Container.DataItemIndex + 1 %>
-                                </span>
-                            </ItemTemplate>
-                            <ItemStyle CssClass="align-middle" Width="30px" />
-                        </asp:TemplateField>
+                            <asp:TemplateField ControlStyle-CssClass="col-md-1" HeaderText="Sr.No">
+                                <ItemTemplate>
+                                    <asp:HiddenField ID="id" runat="server" Value="id" />
+                                    <span>
+                                        <%# Container.DataItemIndex + 1 %>
+                                    </span>
+                                </ItemTemplate>
+                                <ItemStyle CssClass="align-middle" Width="30px" />
+                            </asp:TemplateField>
 
+                            <asp:TemplateField HeaderText="Remove">
+                                <ItemTemplate>
+                                    <asp:LinkButton ID="lnkDelete" runat="server" CommandName="Delete" CommandArgument='<%# Container.DataItemIndex %>'>
+                                        <asp:Image runat="server" ImageUrl="~/assets/image/delete-cut/delete.png" AlternateText="Edit" style="width: 28px; height: 28px;" />
+                                    </asp:LinkButton>
+                                </ItemTemplate>
+                                <ItemStyle HorizontalAlign="Center" CssClass="align-middle" Width="30px" />
+                            </asp:TemplateField>
 
-
-                        <asp:TemplateField HeaderText="Remove">
-                            <ItemTemplate>
-                                <asp:LinkButton ID="lnkDelete" runat="server" CommandName="Delete" CommandArgument='<%# Container.DataItemIndex %>'>
-                                <asp:Image runat="server" ImageUrl="~/assests/img/modern-cross-fill.svg" AlternateText="Edit" style="width: 28px; height: 28px;" />
-                                </asp:LinkButton>
-                            </ItemTemplate>
-                            <ItemStyle HorizontalAlign="Center" CssClass="align-middle" Width="30px" />
-                        </asp:TemplateField>
-
-                    </Columns>
-                    <EmptyDataTemplate>
-                        <tr>
-                            <td colspan="4" class="text-center">
-                                <div class="alert alert-info" role="alert">
-                                    No Data Available To Display.
-                                </div>
-                            </td>
-                        </tr>
-                    </EmptyDataTemplate>
-                    <FooterStyle CssClass="" />
-                    <PagerStyle CssClass="grid-pager" />
-                </asp:GridView>
+                        </Columns>
+                        <EmptyDataTemplate>
+                            <tr>
+                                <td colspan="4" class="text-center">
+                                    <div class="alert alert-info" role="alert">
+                                        No Data Available To Display.
+                                    </div>
+                                </td>
+                            </tr>
+                        </EmptyDataTemplate>
+                        <FooterStyle CssClass="" />
+                        <PagerStyle CssClass="grid-pager" />
+                    </asp:GridView>
+                </div>
 
             </div>
             <!-- Item GridView Ends -->
