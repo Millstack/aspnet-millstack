@@ -8,6 +8,14 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="main" runat="Server">
 
 
+    <style type="text/css">
+        .scrollable-grid-wrapper {
+            overflow-x: auto; /* Enables horizontal scrolling */
+            white-space: nowrap; /* Prevents inner content from wrapping */
+            width: 100%; /* Ensure full width is used */
+        }
+    </style>
+
     <!-- Heading -->
     <div class="col-md-11 mx-auto fw-normal fs-3 fw-bold ps-0 pb-2 text-dark-emphasis mt-1 mb-1 text-center">
         <asp:Literal ID="Page_Heading" Text="Customer Upload" runat="server"></asp:Literal>
@@ -74,8 +82,9 @@
                     <asp:Literal ID="literalCustomer" runat="server" Text="Uploaded Customer Records"></asp:Literal>
                 </div>
 
-                <div class="col-md-12" style="overflow-x: auto; overflow-y: auto; max-height: 700px; width: 100%; position: relative;">
-                    <asp:GridView ShowHeaderWhenEmpty="true" ID="GridCustomer" runat="server" AutoGenerateColumns="false" OnRowDataBound="GridCustomer_RowDataBound"
+                <div class="col-md-12">
+                    <asp:GridView ShowHeaderWhenEmpty="true" ID="GridCustomer" runat="server" AutoGenerateColumns="false"
+                        OnRowDataBound="GridCustomer_RowDataBound"
                         CssClass="datatables table table-bordered table-hover border border-1 border-dark-subtle text-center grid-custom mb-3">
                         <HeaderStyle CssClass="align-middle" />
                         <Columns>
@@ -90,7 +99,57 @@
                                 <ItemStyle CssClass="align-middle" Width="30px" />
                             </asp:TemplateField>
 
-                            <asp:TemplateField HeaderText="Remove">
+                            <asp:BoundField Visible="true" DataField="Customer_Name" HeaderText="Customer Name">
+                                <HeaderStyle Width="160px" />
+                                <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="fw-light" />
+                            </asp:BoundField>
+
+                            <asp:BoundField Visible="true" DataField="Customer_Mobile" HeaderText="Customer Mobile">
+                                <HeaderStyle Width="100px" />
+                                <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="fw-light" />
+                            </asp:BoundField>
+
+                            <asp:BoundField Visible="false" DataField="Gender" HeaderText="Gender">
+                                <HeaderStyle Width="100px" />
+                                <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="fw-light" />
+                            </asp:BoundField>
+
+                            <asp:BoundField Visible="true" DataField="Customer_No" HeaderText="Customer No">
+                                <HeaderStyle Width="100px" />
+                                <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="fw-light" />
+                            </asp:BoundField>
+
+                            <asp:BoundField Visible="true" DataField="Ward_No" HeaderText="Ward No">
+                                <HeaderStyle Width="80px" />
+                                <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="fw-light" />
+                            </asp:BoundField>
+
+                            <asp:BoundField Visible="true" DataField="Customer_Society" HeaderText="Customer Society">
+                                <HeaderStyle Width="160px" />
+                                <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="fw-light" />
+                            </asp:BoundField>
+
+                            <asp:BoundField Visible="true" DataField="Customer_Sector_Area" HeaderText="Sector/Area">
+                                <HeaderStyle Width="90px" />
+                                <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="fw-light" />
+                            </asp:BoundField>
+
+                            <asp:BoundField Visible="true" DataField="Customer_Type" HeaderText="Customer Type">
+                                <HeaderStyle Width="90px" />
+                                <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="fw-light" />
+                            </asp:BoundField>
+
+                            <asp:TemplateField HeaderText="Customer Type">
+                                <ItemTemplate>
+                                    <asp:DropDownList ID="DD_Customer_Type" runat="server" Width="100%" 
+                                        CssClass="form-control chosen-dropdown" AutoPostBack="false">
+                                    </asp:DropDownList>
+                                </ItemTemplate>
+                                <ItemStyle HorizontalAlign="Center" CssClass="align-middle" Width="30px" />
+                            </asp:TemplateField>
+
+
+                            <asp:TemplateField HeaderText="Delete">
                                 <ItemTemplate>
                                     <asp:LinkButton ID="lnkDelete" runat="server" CommandName="Delete" CommandArgument='<%# Container.DataItemIndex %>'>
                                         <asp:Image runat="server" ImageUrl="~/assets/image/delete-cut/delete.png" AlternateText="Edit" style="width: 28px; height: 28px;" />

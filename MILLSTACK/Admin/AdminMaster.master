@@ -470,21 +470,7 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    <!-- JS: Live Day Date Time -->
     <script type="text/javascript">
 
         // function to set live day, date and time
@@ -548,6 +534,8 @@
         });
     </script>
 
+
+    <!-- JS: jQuery Plugin Initilization -->
     <script type="text/javascript">
 
         function Bind_Dropdown_By_ID(dropdownID) {
@@ -682,27 +670,27 @@
                         //'copy', 'csv', 'excel', 'pdf', 'print' // Add export buttons
                         {
                             extend: 'copy',
-                            title: 'Customer Data',
-                            filename: 'Customer_Data_Copy'
+                            title: 'Data',
+                            filename: 'Data_Copy'
                         },
                         {
                             extend: 'csv',
-                            title: 'Customer Data',
-                            filename: 'Customer Data'
+                            title: 'CSV Data',
+                            filename: 'CSV_Data'
                         },
                         {
                             extend: 'excel',
-                            title: 'Customer Data',
-                            filename: 'Customer Data'
+                            title: 'Excel Data',
+                            filename: 'Excel_Data'
                         },
                         {
                             extend: 'pdf',
-                            title: 'Customer Data',
-                            filename: 'Customer Data'
+                            title: 'PDF Data',
+                            filename: 'PDF_Data'
                         },
                         {
                             extend: 'print',
-                            title: 'Customer Data'
+                            title: 'Print_Data'
                         }
                     ]
                 });
@@ -726,10 +714,8 @@
 
                 // Initialize DataTable
                 $this.DataTable({
-                    scrollX: true,  // Enable horizontal scrolling
-                    sScrollXInner: "100%", // Set inner width
-                    scrollCollapse: false, // Collapse the table to avoid empty space
-                    autoWidth: false, // Disable auto width to prevent it from shrinking
+                    scrollX: false,
+                    sScrollXInner: "100%",
                     bFilter: true,
                     bSort: true,
                     bPaginate: true,
@@ -740,6 +726,10 @@
                     info: true,
                     lengthChange: true,
                     responsive: true,
+                    //columnDefs: [
+                    //    { width: "150px", targets: 0 },  // Example for specific columns
+                    //    { width: "100px", targets: 1 }, // Ensure that the column widths are flexible
+                    //],
                     pagingType: 'full_numbers',
                     lengthMenu: [
                         [10, 20, 25, 50, -1],
@@ -760,27 +750,27 @@
                     buttons: [
                         {
                             extend: 'copy',
-                            title: 'Customer Data',
-                            filename: 'Customer_Data_Copy'
+                            title: 'Data',
+                            filename: 'Data_Copy'
                         },
                         {
                             extend: 'csv',
-                            title: 'Customer Data',
-                            filename: 'Customer Data'
+                            title: 'CSV Data',
+                            filename: 'CSV_Data'
                         },
                         {
                             extend: 'excel',
-                            title: 'Customer Data',
-                            filename: 'Customer Data'
+                            title: 'Excel Data',
+                            filename: 'Excel_Data'
                         },
                         {
                             extend: 'pdf',
-                            title: 'Customer Data',
-                            filename: 'Customer Data'
+                            title: 'PDF Data',
+                            filename: 'PDF_Data'
                         },
                         {
                             extend: 'print',
-                            title: 'Customer Data'
+                            title: 'Print_Data'
                         }
                     ]
                 });

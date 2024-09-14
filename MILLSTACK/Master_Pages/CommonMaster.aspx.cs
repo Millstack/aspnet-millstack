@@ -72,7 +72,67 @@ public partial class Master_Pages_CommonMaster : System.Web.UI.Page
     {
         try
         {
-            if (Page.RouteData.Values["Page"].ToString().Trim() == "Level")
+            if (Page.RouteData.Values["Page"].ToString().Trim() == "CustomerType")
+            {
+                Page_Heading.Text = "Customer Type Master";
+                Main_Heading_1.Text = "Customer Type Details";
+                Main_Heading_2.Text = "Customer Type Code";
+
+                // Serial Number
+                Grid_Search.Columns[0].HeaderText = "Ser.No.";
+                Grid_Search.Columns[0].Visible = true;
+
+                // Main Table
+                Grid_Search.Columns[1].HeaderText = "Customer Type ID";
+                Grid_Search.Columns[1].Visible = true;
+                Main_Table_Name = "Tbl_M_CustomerType";
+                Primary_Key_Column = "CustomerType_ID";
+
+                // Main Table Column 1
+                Grid_Search.Columns[2].HeaderText = "Customer Type";
+                Is_Main_column_1_needed = true;
+                Main_Column_1_Text.Text = "Customer Type";
+                Main_Column_1_Name = "CustomerName";
+
+                // Main Table Column 2
+                Grid_Search.Columns[3].HeaderText = "Customer Type (Marathi)";
+                Is_Main_column_2_needed = false;
+                Main_Column_2_Text.Text = "Customer Type (Marathi)";
+                Main_Column_2_Name = "CustomerNameMr";
+
+                // Main Table Column 3
+                Grid_Search.Columns[4].HeaderText = "Customer Type Code";
+                Is_Main_column_3_needed = true;
+                Main_Column_3_Text.Text = "Customer Type Code";
+                Main_Column_3_Name = "CustomerCode";
+
+                // Foreign Table 1
+                Grid_Search.Columns[5].HeaderText = "State";
+                Is_Foreign_column_1_needed = false;
+                Foreign_Table_1_Name = "M_State";
+                Foreign_Table_1_Key_Text.Text = "State Name";
+                Foreign_Table_1_Column_Name = "StateName";
+                Foreign_Table_1_Key_Column = "State_ID";
+
+                // Foreign Table 2
+                Grid_Search.Columns[6].HeaderText = "Division";
+                Is_Foreign_column_2_needed = false;
+                Is_Foreign_Dropdown_2_Is_Dependant_On_1 = false;
+                Foreign_Table_2_Name = "M_Division";
+                Foreign_Table_2_Key_Text.Text = "Division Name";
+                Foreign_Table_2_Column_Name = "DivisionName";
+                Foreign_Table_2_Key_Column = "Division_ID";
+
+                // Foreign Table 3
+                Grid_Search.Columns[7].HeaderText = "Division";
+                Is_Foreign_column_3_needed = false;
+                Is_Foreign_Dropdown_3_Is_Dependant_On_2 = false;
+                Foreign_Table_3_Name = "M_Division";
+                Foreign_Table_3_Key_Text.Text = "Division Name";
+                Foreign_Table_3_Column_Name = "DivisionName";
+                Foreign_Table_3_Key_Column = "Division_ID";
+            }
+            else if (Page.RouteData.Values["Page"].ToString().Trim() == "Level")
             {
                 Page_Heading.Text = "Level Master";
                 Main_Heading_1.Text = "Level Details";

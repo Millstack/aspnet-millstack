@@ -314,12 +314,12 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
                 ExcelUploadDiv.Visible = false;
                 CustomerDiv.Visible = true;
 
-                masterClass.Bind_GridView_Dynamic(GridCustomer, dt, ViewState, "Customer_DT");
+                //masterClass.Bind_GridView_Dynamic(GridCustomer, dt, ViewState, "Customer_DT");
 
-                //GridCustomer.DataSource = dt;
-                //GridCustomer.DataBind();
+                GridCustomer.DataSource = dt;
+                GridCustomer.DataBind();
 
-                //ViewState["Customer_DT"] = dt;
+                ViewState["Customer_DT"] = dt;
 
                 Txt_Sheet_Name.Text = string.Empty;
             }
@@ -338,14 +338,14 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
                 SubmitCancelButtonDiv.Visible = true;
                 btnSubmit.Visible = false;
 
-                masterClass.Bind_GridView_Dynamic(GridErrors, dtErrors, ViewState, "ErrorRecords");
+                //masterClass.Bind_GridView_Dynamic(GridErrors, dtErrors, ViewState, "ErrorRecords");
 
-                //ErrorGridDiv.Visible = true;
+                ErrorGridDiv.Visible = true;
 
-                //ViewState["ErrorRecords"] = dtErrors;
+                ViewState["ErrorRecords"] = dtErrors;
 
-                //GridErrors.DataSource = dtErrors;
-                //GridErrors.DataBind();
+                GridErrors.DataSource = dtErrors;
+                GridErrors.DataBind();
 
                 SweetAlert.GetSweet(this.Page, "warning", "Excel Errors!", $"Excel Errors Detected, From The Uploaded Excel File. Please Check The Data Carefully");
             }
@@ -421,7 +421,8 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
             int columnIndex = -1;
             foreach (DataControlField column in GridCustomer.Columns)
             {
-                if (column.HeaderText == "Customer_Type") // Match by header text or DataField name
+                // Match by header text or DataField name
+                if (column.HeaderText == "Customer_Type") 
                 {
                     columnIndex = GridCustomer.Columns.IndexOf(column);
                     break;
@@ -432,15 +433,15 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
             if (columnIndex >= 0)
             {
                 // needed explicit column names to work
+                //TableCell customerTypeCell = e.Row.Cells[columnIndex];
             }
 
 
 
 
 
-
             // index based fetching the CustomerType column
-            TableCell customerTypeCell = e.Row.Cells[9];
+            TableCell customerTypeCell = e.Row.Cells[8];
 
             // getting the cell value i.e. mentioned color
             string customerType = DataBinder.Eval(e.Row.DataItem, "Customer_Type").ToString();

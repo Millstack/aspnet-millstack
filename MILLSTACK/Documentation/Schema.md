@@ -268,6 +268,26 @@ CREATE TABLE M_Taluka (
 
 
 
+### Customer Masters
+----------------------
+
+# Customer Type Master
+```
+CREATE TABLE Tbl_M_CustomerType (
+    CustomerType_ID BIGINT PRIMARY KEY,
+	CustomerName NVARCHAR(1000) NOT NULL,
+	CustomerNameMr NVARCHAR(1000) NULL,
+	CustomerCode NVARCHAR(20) NOT NULL,
+    SavedBy VARCHAR(1000) NOT NULL,
+    SavedOn DATETIME DEFAULT GETDATE() NOT NULL,
+	IsDeleted BIT NULL
+);
+```
+
+
+
+
+
 
 
 
