@@ -23,6 +23,12 @@ namespace MILLSTACK
             );
 
             routes.MapPageRoute(
+             "Dashboard_Route",
+             "Dashboard",
+             "~/Master_Pages/Dashboard.aspx"
+           );
+
+            routes.MapPageRoute(
                 "ProductRoute",
                 "Product/{productId}",
                 "~/View/Product/Details.aspx"

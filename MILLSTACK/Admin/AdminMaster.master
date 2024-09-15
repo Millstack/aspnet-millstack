@@ -1,5 +1,7 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="AdminMaster.master.cs" Inherits="Admin_AdminMaster" %>
 
+<%@ Register TagPrefix="telerik" Namespace="Telerik.Web.UI" Assembly="Telerik.Web.UI" %>
+
 <!DOCTYPE html>
 
 <html>
@@ -7,40 +9,77 @@
     <title>MillStack</title>
 
     <!-- CSS -->
-    <link href="<%= ResolveUrl("../assets/components/bootstrap/css/bootstrap.min_v5.3.3.css") %>" rel="stylesheet" />
+    <%-- <link href="<%= ResolveUrl("../assets/components/bootstrap/css/bootstrap.min_v5.3.3.css") %>" rel="stylesheet" />
     <link href="<%= ResolveUrl("../assets/icons/bootstrap-icons/bootstrap-icons.min_v1.11.3.css") %>" rel="stylesheet" />
     <link href="<%= ResolveUrl("../assets/components/select2/select2.min_v4.0.13.css") %>" rel="stylesheet" />
     <link href="<%= ResolveUrl("../assets/components/sweet-alert/sweetalert2.min_v11.11.css") %>" rel="stylesheet" />
     <link href="<%= ResolveUrl("../assets/components/chosen_v1.8.7/chosen.min.css") %>" rel="stylesheet" />
-    <link href="<%= ResolveUrl("../assets/components/sumo-select/sumoselect.min_v3.0.3.css") %>" rel="stylesheet" />
+    <link href="<%= ResolveUrl("../assets/components/sumo-select/sumoselect.min_v3.0.3.css") %>" rel="stylesheet" />--%>
 
 
-    <!-- JavaScript -->
-    <script src="<%= ResolveUrl("../assets/components/bootstrap/js/bootstrap.bundle.min_v5.3.3.js") %>"></script>
-    <script src="<%= ResolveUrl("../assets/components/bootstrap/js/bootstrap.min_v5.3.3.js") %>"></script>
-    <script src="<%= ResolveUrl("../assets/components/bootstrap/js/popper.min_v2.11.8.js") %>"></script>
-    <script src="<%= ResolveUrl("../assets/components/jquery/jquery_3.7.1.js") %>"></script>
-    <script src="<%= ResolveUrl("../assets/components/jquery/jquery_3.7.1.min.js") %>"></script>
-    <script src="<%= ResolveUrl("../assets/components/sweet-alert/sweetalert2_v11.11.js") %>"></script>
-    <script src="<%= ResolveUrl("../assets/components/select2/select2.min_v4.0.13.js") %>"></script>
-    <script src="<%= ResolveUrl("../assets/components/chosen_v1.8.7/chosen.jquery.min.js") %>"></script>
-    <script src="<%= ResolveUrl("../assets/components/sumo-select/jquery.sumoselect.min_v3.0.3.js") %>"></script>
+    <link rel="stylesheet" href="../assets/components/bootstrap/css/bootstrap.min_v5.3.3.css" />
+    <link rel="stylesheet" href="../assets/icons/bootstrap-icons/bootstrap-icons.min_v1.11.3.css" />
+    <link rel="stylesheet" href="../assets/components/select2/select2.min_v4.0.13.css" />
+    <link rel="stylesheet" href="../assets/components/sweet-alert/sweetalert2.min_v11.11.css" />
+    <link rel="stylesheet" href="../assets/components/chosen_v1.8.7/chosen.min.css" />
+    <link rel="stylesheet" href="../assets/components/sumo-select/sumoselect.min_v3.0.3.css" />
 
-    <!-- DataTables CSS -->
-    <link href="<%= ResolveUrl("../assets/components/datatables/datatables.min.css") %>" rel="stylesheet" />
-    <!-- DataTables - Button Extension CSS -->
-    <link href="<%= ResolveUrl("../assets/components/datatables/Buttons-2.4.2/css/buttons.dataTables.min.css") %>" rel="stylesheet" />
-    <!-- DataTables JS -->
-    <script src="<%= ResolveUrl("../assets/components/datatables/datatables.min.js") %>"></script>
-    <!-- DataTables - Button Extension JS -->
-    <script src="<%= ResolveUrl("../assets/components/datatables/Buttons-2.4.2/js/dataTables.buttons.min.js") %>"></script>
-    <script src="<%= ResolveUrl("../assets/components/datatables/buttons.flash.min.js") %>"></script>
-    <script src="<%= ResolveUrl("../assets/components/datatables/JSZip-3.10.1/jszip.min.js") %>"></script>
-    <script src="<%= ResolveUrl("../assets/components/datatables/Buttons-2.4.2/js/buttons.html5.min.js") %>"></script>
-    <script src="<%= ResolveUrl("../assets/components/datatables/Buttons-2.4.2/js/buttons.print.min.js") %>"></script>
+    <telerik:RadCodeBlock ID="RadCodeBlock1" runat="server">
+        <!-- JavaScript -->
+        <script src="<%= ResolveUrl("../assets/components/bootstrap/js/bootstrap.bundle.min_v5.3.3.js") %>"></script>
+        <script src="<%= ResolveUrl("../assets/components/bootstrap/js/bootstrap.min_v5.3.3.js") %>"></script>
+        <script src="<%= ResolveUrl("../assets/components/bootstrap/js/popper.min_v2.11.8.js") %>"></script>
+        <script src="<%= ResolveUrl("../assets/components/jquery/jquery_3.7.1.js") %>"></script>
+        <script src="<%= ResolveUrl("../assets/components/jquery/jquery_3.7.1.min.js") %>"></script>
+        <script src="<%= ResolveUrl("../assets/components/sweet-alert/sweetalert2_v11.11.js") %>"></script>
+        <script src="<%= ResolveUrl("../assets/components/select2/select2.min_v4.0.13.js") %>"></script>
+        <script src="<%= ResolveUrl("../assets/components/chosen_v1.8.7/chosen.jquery.min.js") %>"></script>
+        <script src="<%= ResolveUrl("../assets/components/sumo-select/jquery.sumoselect.min_v3.0.3.js") %>"></script>
+        <script src="<%= ResolveUrl("../assets/components/apex-charts/apexcharts_v3.53.0.js") %>"></script>
+
+
+        <!-- DataTables CSS -->
+        <link href="<%= ResolveUrl("../assets/components/datatables/datatables.min.css") %>" rel="stylesheet" />
+        <!-- DataTables - Button Extension CSS -->
+        <link href="<%= ResolveUrl("../assets/components/datatables/Buttons-2.4.2/css/buttons.dataTables.min.css") %>" rel="stylesheet" />
+        <!-- DataTables JS -->
+        <script src="<%= ResolveUrl("../assets/components/datatables/datatables.min.js") %>"></script>
+        <!-- DataTables - Button Extension JS -->
+        <script src="<%= ResolveUrl("../assets/components/datatables/Buttons-2.4.2/js/dataTables.buttons.min.js") %>"></script>
+        <script src="<%= ResolveUrl("../assets/components/datatables/buttons.flash.min.js") %>"></script>
+        <script src="<%= ResolveUrl("../assets/components/datatables/JSZip-3.10.1/jszip.min.js") %>"></script>
+        <script src="<%= ResolveUrl("../assets/components/datatables/Buttons-2.4.2/js/buttons.html5.min.js") %>"></script>
+        <script src="<%= ResolveUrl("../assets/components/datatables/Buttons-2.4.2/js/buttons.print.min.js") %>"></script>
+    </telerik:RadCodeBlock>
 
     <script src="masterpage.js"></script>
     <link rel="stylesheet" href="masterpage.css" />
+
+
+    <style type="text/css">
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.2); /* Darker overlay */
+            z-index: 900; /* Ensure it's below the loading panel */
+        }
+
+        .loading-panel-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000; /* Ensure it's on top of other elements */
+        }
+
+        .loading-gif {
+            width: 150px; /* Adjust the size as needed */
+            height: 150px;
+        }
+    </style>
 
     <style type="text/css">
         /*--------------------------- General Overall CSS ---------------------------*/
@@ -451,12 +490,22 @@
 
 
             <!-- Home Page Starts -->
-            <div class="mt-5">
-                <main role="main" class="pb-3 px-2">
-                    <asp:ContentPlaceHolder ID="main" runat="server">
-                    </asp:ContentPlaceHolder>
-                </main>
-            </div>
+            <telerik:RadAjaxLoadingPanel ID="RadAjaxLoadingPanel1" runat="server" Transparency="70">
+                <div class="loading-overlay"></div>
+                <div class="loading-panel-container">
+                    <div class="">
+                        <img src="../assets/gif/dual-ball.gif" class="loading-gif" />
+                    </div>
+                </div>
+            </telerik:RadAjaxLoadingPanel>
+            <telerik:RadAjaxPanel ID="RadAjaxPanel1" runat="server" LoadingPanelID="RadAjaxLoadingPanel1" ClientEvents-OnRequestStart="requestStart">
+                <div class="mt-5">
+                    <main role="main" class="pb-3 px-2">
+                        <asp:ContentPlaceHolder ID="main" runat="server">
+                        </asp:ContentPlaceHolder>
+                    </main>
+                </div>
+            </telerik:RadAjaxPanel>
             <!-- Home Page Ends -->
 
         </section>
@@ -467,6 +516,23 @@
 
 
 
+
+    <script type="text/javascript">
+        function removePanel() {
+            $telerik.findControl(document, "RadAjaxLoadingPanel1").hide();
+        }
+
+        function requestStart(sender, args) {
+            // Disable the loading panel for specific export buttons
+            if (args.get_eventTarget().indexOf("ExportToExcelButton") >= 0 ||
+                args.get_eventTarget().indexOf("ExportToWordButton") >= 0 ||
+                args.get_eventTarget().indexOf("ExportToPdfButton") >= 0 ||
+                args.get_eventTarget().indexOf("ExportToCsvButton") >= 0) {
+                setTimeout(removePanel, 10);
+                args.set_enableAjax(false);
+            }
+        }
+    </script>
 
 
 

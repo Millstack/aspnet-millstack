@@ -84,7 +84,8 @@ public partial class Login_Login : System.Web.UI.Page
 
                 System.Threading.Thread.Sleep(2000);
 
-                Response.Redirect(GetRouteUrl("HomePage_Route", null));
+                //Response.Redirect(GetRouteUrl("HomePage_Route", null)); // home page
+                Response.Redirect(GetRouteUrl("Dashboard_Route", null)); // dashboard
             }
             else
             {

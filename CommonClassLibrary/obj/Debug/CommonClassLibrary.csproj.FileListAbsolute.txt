@@ -26,3 +26,5 @@ D:\Mill Stack\MillStack\CommonClassLibrary\obj\Debug\CommonClassLibrary.csproj.C
 D:\Mill Stack\MillStack\CommonClassLibrary\obj\Debug\CommonClassLibrary.csproj.CopyComplete
 D:\Mill Stack\MillStack\CommonClassLibrary\obj\Debug\CommonClassLibrary.dll
 D:\Mill Stack\MillStack\CommonClassLibrary\obj\Debug\CommonClassLibrary.pdb
+D:\Mill Stack\MillStack\CommonClassLibrary\bin\Debug\Newtonsoft.Json.dll
+D:\Mill Stack\MillStack\CommonClassLibrary\bin\Debug\Newtonsoft.Json.xml

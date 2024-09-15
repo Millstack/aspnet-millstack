@@ -134,16 +134,19 @@
                                 <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="fw-light" />
                             </asp:BoundField>
 
-                            <asp:BoundField Visible="true" DataField="Customer_Type" HeaderText="Customer Type">
+                            <asp:BoundField Visible="false" DataField="Customer_Type" HeaderText="Customer Type">
                                 <HeaderStyle Width="90px" />
                                 <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="fw-light" />
                             </asp:BoundField>
 
                             <asp:TemplateField HeaderText="Customer Type">
                                 <ItemTemplate>
-                                    <asp:DropDownList ID="DD_Customer_Type" runat="server" Width="100%" 
-                                        CssClass="form-control chosen-dropdown" AutoPostBack="false">
-                                    </asp:DropDownList>
+                                    <div id="DivWrapper" runat="server" class="">
+                                        <asp:DropDownList ID="DD_Customer_Type" runat="server" Width="100%"
+                                            CssClass="form-control chosen-dropdown" AutoPostBack="true"
+                                            OnSelectedIndexChanged="DD_Customer_Type_SelectedIndexChanged" >
+                                        </asp:DropDownList>
+                                    </div>
                                 </ItemTemplate>
                                 <ItemStyle HorizontalAlign="Center" CssClass="align-middle" Width="30px" />
                             </asp:TemplateField>

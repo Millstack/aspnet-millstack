@@ -12,6 +12,7 @@ using System.Web.UI.WebControls;
 using OfficeOpenXml;
 using System.Collections;
 using System.Text;
+using System.Web.UI.HtmlControls;
 
 public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
 {
@@ -49,6 +50,10 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
             SweetAlert.GetSweet(this.Page, "error", "", $"An error occured: {ex.Message}");
         }
     }
+
+
+
+
 
 
 
@@ -208,7 +213,6 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
             SweetAlert.GetSweet(this.Page, "error", "", $"{ex.Message}");
         }
     }
-
 
     public void Bind_GridView(DataTable Customer_DT)
     {
@@ -386,18 +390,6 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
         dt.Rows.Add(row);
     }
 
-
-    // error records
-    private DataTable createErrorDatatable()
-    {
-        DataTable dt = new DataTable();
-        dt.Columns.Add("CustomerNo");
-        dt.Columns.Add("CustomerName");
-        dt.Columns.Add("MobileNo");
-        dt.Columns.Add("ErrorReason");
-        return dt;
-    }
-
     private void AddRowToErrorDataTable(DataTable dtErrors, string customerNumber, string customerName, string customerMobileNo, string errorReason)
     {
         DataRow errorRow = dtErrors.NewRow();
@@ -411,51 +403,76 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
 
 
 
-    //--------------==============( Gridview OnRow Databound Event )==============--------------
+
+
+
+
+
+    //-------------------------------] GridView Event [-------------------------------
 
     protected void GridCustomer_RowDataBound(object sender, GridViewRowEventArgs e)
     {
         if (e.Row.RowType == DataControlRowType.DataRow)
         {
-            // Find the index of the column by name, e.g. "Customer_Type"
-            int columnIndex = -1;
-            foreach (DataControlField column in GridCustomer.Columns)
+            TableCell customerTypeCell = e.Row.Cells[9];
+            string customerType = DataBinder.Eval(e.Row.DataItem, "Customer_Type").ToString();
+            DropDownList DD_Customer_Type = (DropDownList)e.Row.FindControl("DD_Customer_Type");
+
+            if (DD_Customer_Type != null)
             {
-                // Match by header text or DataField name
-                if (column.HeaderText == "Customer_Type") 
+                // customer type
+                string sql = $@"Select CustomerType_ID, CustomerName, CustomerCode, IsDeleted
+                                From Tbl_M_CustomerType as ct
+                                Where IsDeleted IS NULL";
+                Dictionary<string, object> parameters = new Dictionary<string, object> { /*{ "@Bank_ID", DD_Bank_Master.SelectedValue },*/ };
+                executeClass.Bind_Dropdown_Generic(DD_Customer_Type, sql, "CustomerName", "CustomerType_ID", parameters);
+
+                ListItem selectedItem = DD_Customer_Type.Items.FindByText(customerType);
+                if (selectedItem != null)
                 {
-                    columnIndex = GridCustomer.Columns.IndexOf(column);
-                    break;
+                    DD_Customer_Type.SelectedIndex = DD_Customer_Type.Items.IndexOf(selectedItem);
                 }
             }
 
-            // If the column is found
-            if (columnIndex >= 0)
+            HtmlGenericControl div = (HtmlGenericControl)e.Row.FindControl("DivWrapper");
+            if (div != null)
             {
-                // needed explicit column names to work
-                //TableCell customerTypeCell = e.Row.Cells[columnIndex];
+                string borderColor = GetColor(customerType);
+                div.Attributes["style"] = $"border: 2px solid {borderColor};";
             }
 
+            //// code for setting BG color of the cell
+            //string selected_CustomerType = DD_Customer_Type.SelectedItem.Text;
+            //string backgroundColor = GetColor(selected_CustomerType);
+            //string textColor = backgroundColor == "black" ? "white" : "black";
 
+            //customerTypeCell.Attributes["style"] = $"background-color: {backgroundColor}; color: {textColor};";
+            //customerTypeCell.Text = customerType;
 
+        }
+    }
 
+    protected void DD_Customer_Type_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        // Get the DropDownList that triggered the event
+        DropDownList DD_Customer_Type = (DropDownList)sender;
 
-            // index based fetching the CustomerType column
-            TableCell customerTypeCell = e.Row.Cells[8];
+        // Find the GridViewRow that contains this dropdown
+        GridViewRow row = (GridViewRow)DD_Customer_Type.NamingContainer;
 
-            // getting the cell value i.e. mentioned color
-            string customerType = DataBinder.Eval(e.Row.DataItem, "Customer_Type").ToString();
+        // Get the selected customer type from the dropdown
+        string selectedCustomerType = DD_Customer_Type.SelectedItem.Text;
 
-            string backgroundColor = GetColor(customerType);
-            string textColor = "black";
+        // Find the div control in the same row
+        HtmlGenericControl div = (HtmlGenericControl)row.FindControl("DivWrapper");
 
-            if (backgroundColor == "black")
-            {
-                textColor = "white";
-            }
+        if (div != null)
+        {
+            // Get the corresponding color based on the selected customer type
+            string borderColor = GetColor(selectedCustomerType);
 
-            customerTypeCell.Attributes["style"] = $"background-color: {backgroundColor}; color: {textColor};";
-            customerTypeCell.Text = customerType;
+            // Update the div's border color
+            div.Attributes["style"] = $"border: 2px solid {borderColor};";
         }
     }
 
@@ -487,7 +504,7 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
 
 
 
-    //=========================={ Submit Button Click Event }==========================
+    //-------------------------------] Submit Button Event [-------------------------------
     protected void btnBack_Click(object sender, EventArgs e)
     {
         Response.Redirect("UploadCustomer.aspx");

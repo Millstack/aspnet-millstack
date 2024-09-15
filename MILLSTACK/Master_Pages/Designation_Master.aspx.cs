@@ -174,6 +174,8 @@ public partial class Master_Pages_Designation_Master : System.Web.UI.Page
     {
         try
         {
+            System.Threading.Thread.Sleep(10000);
+
             ViewState["Designation_ID"] = "";
             int Designation_ID = Convert.ToInt32(Hierarchy.SelectedNode.Value);
             ViewState["Designation_ID"] = Designation_ID.ToString();

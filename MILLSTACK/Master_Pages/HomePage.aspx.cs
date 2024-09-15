@@ -23,7 +23,7 @@ public partial class Master_Pages_HomePage : System.Web.UI.Page
         {
             if (!IsPostBack)
             {
-
+                //System.Threading.Thread.Sleep(10000);
             }
         }
         catch (Exception ex)

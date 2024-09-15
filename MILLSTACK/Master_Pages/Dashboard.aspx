@@ -7,32 +7,60 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="main" runat="Server">
 
+    <style>
+        body {
+            background-color: #333 !important;
+            color: #3D7EAE !important;
+        }
+
+        .navbar, .navbar a {
+            color: #D3D3D3 !important; /* Ensure the navbar text is gray */
+        }
+
+
+        /* .dark-theme .text-dark,
+        .dark-theme .text-dark-emphasis,
+        .dark-theme .text-body-secondary,
+        .dark-theme .text-body-tertiary {
+            background-color: #333 !important;
+            color: #D3D3D3 !important;
+        }*/
+    </style>
+
     <!-- Heading -->
     <div class="col-md-11 mx-auto fw-normal fs-3 fw-bold ps-0 pb-2 text-dark-emphasis mt-1 mb-1 text-center">
-        <asp:Literal ID="Page_Heading" Text="Dashbaord" runat="server"></asp:Literal>
+        <asp:Literal ID="Page_Heading" Text="Dashboard" runat="server"></asp:Literal>
     </div>
 
     <!-- UI Starts -->
-    <div id="Div_Control" runat="server" class="card col-md-11 mx-auto mt-1 py-2 shadow rounded-3">
+    <div class="card col-md-12 shadow rounded-3">
         <div class="card-body">
 
-            <!-- Row 1 Starts -->
-            <div class="row mb-2">
+            <%--<div class="row">
+                <asp:Repeater ID="Repeater_Dashboard" runat="server">
+                    <ItemTemplate>
 
-                <!-- User Master -->
-                <div class="col-md-4 mb-3 align-self-end rounded-3">
-                    <div class="mb-1 fw-normal fs-6">
-                        <p>Users Count</p>
-                        <h3 class="text-white1"><%#DataBinder.Eval(Container,"DataItem.TotalProject")%></h3>
-                        <hr class="bg-white" />
-                        <h3 class="text-white1">&#8377 : <%#DataBinder.Eval(Container,"DataItem.TotalProjectAmt")%></h3>
-                    </div>
-                </div>
-                <!-- Row 1 Ends -->
+                        <!-- KPI: Division -->
+                        <div class="col-md-4 mb-3 align-self-end rounded-3 bg-dark-subtle ">
+                            <div class="fw-normal fs-6">
+                                <p><%# Eval("DivisionName") %></p>
+                                <hr class="bg-white" />
+                                <h3 class="text-white1">District Count: <%# Eval("DistrictCount") %></h3>
+                            </div>
+                        </div>
 
+                    </ItemTemplate>
+                </asp:Repeater>
+            </div>--%>
+
+
+            <div class="row ">
             </div>
+
         </div>
     </div>
     <!-- UI Ends -->
+
+
 </asp:Content>
 
