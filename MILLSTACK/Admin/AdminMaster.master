@@ -56,46 +56,6 @@
     <link rel="stylesheet" href="masterpage.css" />
 
 
-
-    <style>
-        /* From Uiverse.io by polidahiya */
-        .loadingtext p {
-            color: white;
-            position: relative;
-        }
-
-            .loadingtext p::after {
-                position: absolute;
-                animation: b 3s infinite linear;
-                color: white;
-                content: "";
-                left: 105%;
-            }
-
-        @keyframes b {
-            0% {
-                content: "";
-            }
-
-            10% {
-                content: ".";
-            }
-
-            40% {
-                content: "..";
-            }
-
-            70% {
-                content: "...";
-            }
-
-            100% {
-                content: "";
-            }
-        }
-    </style>
-
-
     <style type="text/css">
         .loading-overlay {
             position: fixed;
@@ -103,7 +63,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.9); /* Darker overlay */
+            background-color: rgba(0, 0, 0, 0.2); /* Darker overlay */
             z-index: 900; /* Ensure it's below the loading panel */
         }
 
@@ -533,13 +493,9 @@
             <telerik:RadAjaxLoadingPanel ID="RadAjaxLoadingPanel1" runat="server" Transparency="70">
                 <div class="loading-overlay"></div>
                 <div class="loading-panel-container">
-                    <%--<div class="">
+                    <div class="">
                         <img src="../assets/gif/dual-ball.gif" class="loading-gif" />
-                    </div>--%>
-                    <div class="loadingtext">
-                        <p>Loading</p>
                     </div>
-
                 </div>
             </telerik:RadAjaxLoadingPanel>
             <telerik:RadAjaxPanel ID="RadAjaxPanel1" runat="server" LoadingPanelID="RadAjaxLoadingPanel1" ClientEvents-OnRequestStart="requestStart">

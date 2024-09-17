@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+
+    <style>
+        /* From Uiverse.io by Flowelife */
+        @keyframes load-loop {
+            0% {
+                background-position: 100%;
+            }
+
+            40% {
+                background-position: 50%;
+            }
+
+            50% {
+                background-position: 50%;
+            }
+
+            90% {
+                background-position: 0%;
+            }
+
+            100% {
+                background-position: 0%;
+            }
+        }
+
+        .loader {
+            position: relative;
+            font-family: sans-serif;
+            display: flex;
+            height: auto;
+            width: auto;
+            letter-spacing: 5px;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 12px;
+            font-size: 1.5em;
+            color: transparent;
+            background: linear-gradient(to right,rgba(0, 0, 0, 1) 33.3%,#ffffff 33.3%, #394d61 66.6%, #fff 66.6%) no-repeat;
+            background-size: 300%;
+            background-position: 100%;
+            background-clip: text;
+            -webkit-background-clip: text;
+            animation: infinite 1.4s load-loop ease;
+        }
+
+            .loader::after {
+                content: '';
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                display: block;
+                background: linear-gradient(to right,#fff 33.3%, transparent 33.3%, transparent 66.6%, rgba(0, 0, 0, 1) 66.6%) no-repeat;
+                background-size: 300%;
+                background-position: 100%;
+                top: 0;
+                left: 0;
+                z-index: -1;
+                animation: infinite 1.4s load-loop ease;
+            }
+    </style>
+
+
+</head>
+<body>
+
+    <!--https://uiverse.io/Flowelife/slippery-catfish-7-->
+
+    /* From Uiverse.io by Flowelife */
+    <div class="loader">Loading...</div>
+
+</body>
+</html>
