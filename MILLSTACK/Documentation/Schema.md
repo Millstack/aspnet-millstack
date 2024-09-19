@@ -263,6 +263,23 @@ CREATE TABLE M_Taluka (
 ```
 
 
+# Assembly
+```
+CREATE TABLE M_Taluka (
+	Taluka_ID BIGINT PRIMARY KEY,
+	State_ID BIGINT NOT NULL,
+    Division_ID BIGINT NOT NULL,
+	District_ID BIGINT NOT NULL,
+	TalukaName NVARCHAR(1000) NOT NULL,
+	TalukaNameMr NVARCHAR(1000) NOT NULL,
+	TalukaCode NVARCHAR(100) NOT NULL,
+    SavedBy VARCHAR(1000) NOT NULL,
+    SavedOn DATETIME DEFAULT GETDATE() NOT NULL,
+	IsDeleted BIT NULL
+);
+```
+
+
 
 
 

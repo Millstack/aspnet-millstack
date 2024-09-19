@@ -132,7 +132,7 @@
                     </div>
                     <div class="d-grid col-md-3 mx-auto">
                         <asp:Button ID="btn_Login" runat="server" Text="Log In" OnClick="btn_Login_Click"
-                            CssClass="btn btn-dark shadow-lg rounded-0 border border-light" ValidationGroup="LoginClick" />
+                            CssClass="custom-button" ValidationGroup="LoginClick" />
                     </div>
                     <div class="text-center mt-4">
                         <a class="text-decoration-none" href="#forgot">Forgot Password?</a>
