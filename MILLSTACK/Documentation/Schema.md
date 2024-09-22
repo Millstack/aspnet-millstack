@@ -263,7 +263,7 @@ CREATE TABLE M_Taluka (
 ```
 
 
-# Assembly
+# Assembly Master
 ```
 CREATE TABLE M_Taluka (
 	Taluka_ID BIGINT PRIMARY KEY,
