@@ -33,6 +33,63 @@ namespace CommonClassLibrary
         }
 
 
+
+        public bool Check_To_Allow_Delete(Page page, string foreignKeyName, string foreignKeyValue)
+        {
+            string sql = string.Empty;
+            bool canDelete = true;
+
+            try
+            {
+               // getting all tables that reference the foreign key
+                sql = @"SELECT OBJECT_NAME(FK.parent_object_id) AS ReferringTable
+                         FROM sys.foreign_keys AS FK
+                         INNER JOIN sys.foreign_key_columns AS FKC
+                         ON FKC.constraint_object_id = FK.OBJECT_ID
+                         WHERE COL_NAME(FK.referenced_object_id, FKC.referenced_column_id) = @ForeignKeyName
+                         ORDER BY OBJECT_NAME(FK.parent_object_id)";
+
+                Dictionary<string, object> parameters = new Dictionary<string, object>
+                {
+                    { "@ForeignKeyName", foreignKeyName }
+                };
+
+                DataTable Referring_Tables_DT = Get_Datatable(sql, parameters);
+
+                if (Referring_Tables_DT != null && Referring_Tables_DT.Rows.Count > 0)
+                {
+                    foreach (DataRow row in Referring_Tables_DT.Rows)
+                    {
+                        string tableName = row["ReferringTable"].ToString();
+
+                        sql = $"SELECT TOP 1 * FROM {tableName} WHERE IsDeleted IS NULL AND {foreignKeyName} = @ForeignKeyValue";
+
+                        Dictionary<string, object> checkParameters = new Dictionary<string, object>
+                        {
+                            { "@ForeignKeyValue", foreignKeyValue }
+                        };
+
+                        DataTable result = Get_Datatable(sql, checkParameters);
+
+                        if (result != null && result.Rows.Count > 0)
+                        {
+                            // if any records are found, the delete is not allowed
+                            canDelete = false;
+                            break;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                SweetAlert.GetSweet(page, "error", "", $"{ex.Message}");
+            }
+
+            return canDelete;
+        }
+
+
+
         /// <summary>
         /// Get DataTable
         /// </summary>

@@ -263,16 +263,22 @@ CREATE TABLE M_Taluka (
 ```
 
 
+
+
+
+
+
+
+
 # Assembly Master
 ```
-CREATE TABLE M_Taluka (
-	Taluka_ID BIGINT PRIMARY KEY,
+CREATE TABLE Tbl_M_Assembly (
+	Assembly_ID BIGINT PRIMARY KEY,
 	State_ID BIGINT NOT NULL,
-    Division_ID BIGINT NOT NULL,
 	District_ID BIGINT NOT NULL,
-	TalukaName NVARCHAR(1000) NOT NULL,
-	TalukaNameMr NVARCHAR(1000) NOT NULL,
-	TalukaCode NVARCHAR(100) NOT NULL,
+	AssemblyName NVARCHAR(1000) NOT NULL,
+	AssemblyNameMr NVARCHAR(1000) NOT NULL,
+	AssemblyCode NVARCHAR(100) NOT NULL,
     SavedBy VARCHAR(1000) NOT NULL,
     SavedOn DATETIME DEFAULT GETDATE() NOT NULL,
 	IsDeleted BIT NULL
@@ -280,6 +286,50 @@ CREATE TABLE M_Taluka (
 ```
 
 
+# Ward Master
+```
+CREATE TABLE Tbl_M_Ward (
+	Ward_ID BIGINT PRIMARY KEY,
+	Assembly_ID BIGINT NOT NULL,
+	WardName NVARCHAR(1000) NOT NULL,
+	WardNameMr NVARCHAR(1000) NULL,
+	WardCode NVARCHAR(100) NOT NULL,
+    SavedBy VARCHAR(1000) NOT NULL,
+    SavedOn DATETIME DEFAULT GETDATE() NOT NULL,
+	IsDeleted BIT NULL
+);
+```
+
+
+# Sector Master
+```
+CREATE TABLE Tbl_M_Sector (
+	Sector_ID BIGINT PRIMARY KEY,
+	Ward_ID BIGINT NOT NULL,
+	SectorName NVARCHAR(1000) NOT NULL,
+	SectorNameMr NVARCHAR(1000) NULL,
+	SectorCode NVARCHAR(100) NOT NULL,
+    SavedBy VARCHAR(1000) NOT NULL,
+    SavedOn DATETIME DEFAULT GETDATE() NOT NULL,
+	IsDeleted BIT NULL
+);
+```
+
+
+# Society Master
+```
+CREATE TABLE Tbl_M_Society (
+	Society_ID BIGINT PRIMARY KEY,
+	Sector_ID BIGINT NOT NULL,
+	SocietyName NVARCHAR(1000) NOT NULL,
+	SocietyNameMr NVARCHAR(1000) NULL,
+	SocietyCode NVARCHAR(100) NOT NULL,
+    SavedBy VARCHAR(1000) NOT NULL,
+    SavedOn DATETIME DEFAULT GETDATE() NOT NULL,
+	IsDeleted BIT NULL
+);
+
+```
 
 
 

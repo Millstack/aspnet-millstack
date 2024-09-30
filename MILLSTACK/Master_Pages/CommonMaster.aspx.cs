@@ -72,11 +72,251 @@ public partial class Master_Pages_CommonMaster : System.Web.UI.Page
     {
         try
         {
-            if (Page.RouteData.Values["Page"].ToString().Trim() == "CustomerType")
+            if (Page.RouteData.Values["Page"].ToString().Trim() == "Society")
+            {
+                Page_Heading.Text = "Society Master";
+                Main_Heading_1.Text = "Society Details";
+                Main_Heading_2.Text = "Society Records";
+
+                // Serial Number
+                Grid_Search.Columns[0].HeaderText = "Ser.No.";
+                Grid_Search.Columns[0].Visible = true;
+
+                // Main Table
+                Grid_Search.Columns[1].HeaderText = "Society ID";
+                Grid_Search.Columns[1].Visible = true;
+                Main_Table_Name = "Tbl_M_Society";
+                Primary_Key_Column = "Society_ID";
+
+                // Main Table Column 1
+                Grid_Search.Columns[2].HeaderText = "Society";
+                Is_Main_column_1_needed = true;
+                Main_Column_1_Text.Text = "Society Name";
+                Main_Column_1_Name = "SocietyName";
+
+                // Main Table Column 2
+                Grid_Search.Columns[3].HeaderText = "Society (Marathi)";
+                Is_Main_column_2_needed = false;
+                Main_Column_2_Text.Text = "Society Name (Marathi)";
+                Main_Column_2_Name = "SocietyNameMr";
+
+                // Main Table Column 3
+                Grid_Search.Columns[4].HeaderText = "Society Code";
+                Is_Main_column_3_needed = true;
+                Main_Column_3_Text.Text = "Society Code";
+                Main_Column_3_Name = "SocietyCode";
+
+                // Foreign Table 1
+                Grid_Search.Columns[5].HeaderText = "Sector";
+                Is_Foreign_column_1_needed = true;
+                Foreign_Table_1_Name = "Tbl_M_Sector";
+                Foreign_Table_1_Key_Text.Text = "Sector Name";
+                Foreign_Table_1_Column_Name = "SectorName";
+                Foreign_Table_1_Key_Column = "Sector_ID";
+
+                // Foreign Table 2
+                Grid_Search.Columns[6].HeaderText = "Division";
+                Is_Foreign_column_2_needed = false;
+                Is_Foreign_Dropdown_2_Is_Dependant_On_1 = false;
+                Foreign_Table_2_Name = "M_Division";
+                Foreign_Table_2_Key_Text.Text = "Division Name";
+                Foreign_Table_2_Column_Name = "DivisionName";
+                Foreign_Table_2_Key_Column = "Division_ID";
+
+                // Foreign Table 3
+                Grid_Search.Columns[7].HeaderText = "Division";
+                Is_Foreign_column_3_needed = false;
+                Is_Foreign_Dropdown_3_Is_Dependant_On_2 = false;
+                Foreign_Table_3_Name = "M_Division";
+                Foreign_Table_3_Key_Text.Text = "Division Name";
+                Foreign_Table_3_Column_Name = "DivisionName";
+                Foreign_Table_3_Key_Column = "Division_ID";
+            }
+            else if (Page.RouteData.Values["Page"].ToString().Trim() == "Sector")
+            {
+                Page_Heading.Text = "Sector Master";
+                Main_Heading_1.Text = "Sector Details";
+                Main_Heading_2.Text = "Sector Records";
+
+                // Serial Number
+                Grid_Search.Columns[0].HeaderText = "Ser.No.";
+                Grid_Search.Columns[0].Visible = true;
+
+                // Main Table
+                Grid_Search.Columns[1].HeaderText = "Sector ID";
+                Grid_Search.Columns[1].Visible = true;
+                Main_Table_Name = "Tbl_M_Sector";
+                Primary_Key_Column = "Sector_ID";
+
+                // Main Table Column 1
+                Grid_Search.Columns[2].HeaderText = "Sector / Area";
+                Is_Main_column_1_needed = true;
+                Main_Column_1_Text.Text = "Sector / Area Name";
+                Main_Column_1_Name = "SectorName";
+
+                // Main Table Column 2
+                Grid_Search.Columns[3].HeaderText = "Sector / Area (Marathi)";
+                Is_Main_column_2_needed = false;
+                Main_Column_2_Text.Text = "Sector / Area Name (Marathi)";
+                Main_Column_2_Name = "SectorNameMr";
+
+                // Main Table Column 3
+                Grid_Search.Columns[4].HeaderText = "Sector / Area Code";
+                Is_Main_column_3_needed = true;
+                Main_Column_3_Text.Text = "Sector / Area Code";
+                Main_Column_3_Name = "SectorCode";
+
+                // Foreign Table 1
+                Grid_Search.Columns[5].HeaderText = "Ward";
+                Is_Foreign_column_1_needed = true;
+                Foreign_Table_1_Name = "Tbl_M_Ward";
+                Foreign_Table_1_Key_Text.Text = "Ward Name";
+                Foreign_Table_1_Column_Name = "WardName";
+                Foreign_Table_1_Key_Column = "Ward_ID";
+
+                // Foreign Table 2
+                Grid_Search.Columns[6].HeaderText = "Division";
+                Is_Foreign_column_2_needed = false;
+                Is_Foreign_Dropdown_2_Is_Dependant_On_1 = false;
+                Foreign_Table_2_Name = "M_Division";
+                Foreign_Table_2_Key_Text.Text = "Division Name";
+                Foreign_Table_2_Column_Name = "DivisionName";
+                Foreign_Table_2_Key_Column = "Division_ID";
+
+                // Foreign Table 3
+                Grid_Search.Columns[7].HeaderText = "Division";
+                Is_Foreign_column_3_needed = false;
+                Is_Foreign_Dropdown_3_Is_Dependant_On_2 = false;
+                Foreign_Table_3_Name = "M_Division";
+                Foreign_Table_3_Key_Text.Text = "Division Name";
+                Foreign_Table_3_Column_Name = "DivisionName";
+                Foreign_Table_3_Key_Column = "Division_ID";
+            }
+            else if (Page.RouteData.Values["Page"].ToString().Trim() == "Ward")
+            {
+                Page_Heading.Text = "Ward Master";
+                Main_Heading_1.Text = "Ward Details";
+                Main_Heading_2.Text = "Ward Records";
+
+                // Serial Number
+                Grid_Search.Columns[0].HeaderText = "Ser.No.";
+                Grid_Search.Columns[0].Visible = true;
+
+                // Main Table
+                Grid_Search.Columns[1].HeaderText = "Ward ID";
+                Grid_Search.Columns[1].Visible = true;
+                Main_Table_Name = "Tbl_M_Ward";
+                Primary_Key_Column = "Ward_ID";
+
+                // Main Table Column 1
+                Grid_Search.Columns[2].HeaderText = "Ward";
+                Is_Main_column_1_needed = true;
+                Main_Column_1_Text.Text = "Ward Name";
+                Main_Column_1_Name = "WardName";
+
+                // Main Table Column 2
+                Grid_Search.Columns[3].HeaderText = "Ward (Marathi)";
+                Is_Main_column_2_needed = true;
+                Main_Column_2_Text.Text = "Ward Name (Marathi)";
+                Main_Column_2_Name = "WardNameMr";
+
+                // Main Table Column 3
+                Grid_Search.Columns[4].HeaderText = "Ward No";
+                Is_Main_column_3_needed = true;
+                Main_Column_3_Text.Text = "Ward No";
+                Main_Column_3_Name = "WardCode";
+
+                // Foreign Table 1
+                Grid_Search.Columns[5].HeaderText = "Assembly";
+                Is_Foreign_column_1_needed = true;
+                Foreign_Table_1_Name = "Tbl_M_Assembly";
+                Foreign_Table_1_Key_Text.Text = "Assembly Name";
+                Foreign_Table_1_Column_Name = "AssemblyName";
+                Foreign_Table_1_Key_Column = "Assembly_ID";
+
+                // Foreign Table 2
+                Grid_Search.Columns[6].HeaderText = "Division";
+                Is_Foreign_column_2_needed = false;
+                Is_Foreign_Dropdown_2_Is_Dependant_On_1 = false;
+                Foreign_Table_2_Name = "M_Division";
+                Foreign_Table_2_Key_Text.Text = "Division Name";
+                Foreign_Table_2_Column_Name = "DivisionName";
+                Foreign_Table_2_Key_Column = "Division_ID";
+
+                // Foreign Table 3
+                Grid_Search.Columns[7].HeaderText = "Division";
+                Is_Foreign_column_3_needed = false;
+                Is_Foreign_Dropdown_3_Is_Dependant_On_2 = false;
+                Foreign_Table_3_Name = "M_Division";
+                Foreign_Table_3_Key_Text.Text = "Division Name";
+                Foreign_Table_3_Column_Name = "DivisionName";
+                Foreign_Table_3_Key_Column = "Division_ID";
+            }
+            else if (Page.RouteData.Values["Page"].ToString().Trim() == "Assembly")
+            {
+                Page_Heading.Text = "Assembly Master";
+                Main_Heading_1.Text = "Assembly Details";
+                Main_Heading_2.Text = "Assembly Records";
+
+                // Serial Number
+                Grid_Search.Columns[0].HeaderText = "Ser.No.";
+                Grid_Search.Columns[0].Visible = true;
+
+                // Main Table
+                Grid_Search.Columns[1].HeaderText = "Assembly ID";
+                Grid_Search.Columns[1].Visible = true;
+                Main_Table_Name = "Tbl_M_Assembly";
+                Primary_Key_Column = "Assembly_ID";
+
+                // Main Table Column 1
+                Grid_Search.Columns[2].HeaderText = "Assembly";
+                Is_Main_column_1_needed = true;
+                Main_Column_1_Text.Text = "Assembly Name";
+                Main_Column_1_Name = "AssemblyName";
+
+                // Main Table Column 2
+                Grid_Search.Columns[3].HeaderText = "Assembly (Marathi)";
+                Is_Main_column_2_needed = true;
+                Main_Column_2_Text.Text = "Assembly Name (Marathi)";
+                Main_Column_2_Name = "AssemblyNameMr";
+
+                // Main Table Column 3
+                Grid_Search.Columns[4].HeaderText = "Assembly Code";
+                Is_Main_column_3_needed = true;
+                Main_Column_3_Text.Text = "Assembly Code";
+                Main_Column_3_Name = "AssemblyCode";
+
+                // Foreign Table 1
+                Grid_Search.Columns[5].HeaderText = "State";
+                Is_Foreign_column_1_needed = true;
+                Foreign_Table_1_Name = "M_State";
+                Foreign_Table_1_Key_Text.Text = "State Name";
+                Foreign_Table_1_Column_Name = "StateName";
+                Foreign_Table_1_Key_Column = "State_ID";
+
+                // Foreign Table 2
+                Grid_Search.Columns[6].HeaderText = "District";
+                Is_Foreign_column_2_needed = true;
+                Is_Foreign_Dropdown_2_Is_Dependant_On_1 = false;
+                Foreign_Table_2_Name = "M_District";
+                Foreign_Table_2_Key_Text.Text = "District Name";
+                Foreign_Table_2_Column_Name = "DistrictName";
+                Foreign_Table_2_Key_Column = "District_ID";
+
+                // Foreign Table 3
+                Grid_Search.Columns[7].HeaderText = "Division";
+                Is_Foreign_column_3_needed = false;
+                Is_Foreign_Dropdown_3_Is_Dependant_On_2 = false;
+                Foreign_Table_3_Name = "M_Division";
+                Foreign_Table_3_Key_Text.Text = "Division Name";
+                Foreign_Table_3_Column_Name = "DivisionName";
+                Foreign_Table_3_Key_Column = "Division_ID";
+            }
+            else if (Page.RouteData.Values["Page"].ToString().Trim() == "CustomerType")
             {
                 Page_Heading.Text = "Customer Type Master";
                 Main_Heading_1.Text = "Customer Type Details";
-                Main_Heading_2.Text = "Customer Type Code";
+                Main_Heading_2.Text = "Customer Type Records";
 
                 // Serial Number
                 Grid_Search.Columns[0].HeaderText = "Ser.No.";
@@ -1109,6 +1349,13 @@ public partial class Master_Pages_CommonMaster : System.Web.UI.Page
         try
         {
             string Primary_ID = Grid_Search.DataKeys[e.RowIndex]["ID"].ToString();
+
+            if(executeClass.Check_To_Allow_Delete(this.Page , Primary_Key_Column, Primary_ID) == false)
+            {
+                string sa_Body = $@"The record's primary key <b>{Primary_ID}</b> is in use in some other table, hence cannot delete this record. Please check";
+                SweetAlert.GetSweet(this.Page, "warning", $"Cannot delete this record !!", $"{sa_Body}");
+                return;
+            }
 
             sqlQuery = $@"UPDATE {Main_Table_Name} SET IsDeleted = 1 WHERE {Primary_Key_Column} = {Primary_ID}";
             // excute the query, new logic in execute class needed

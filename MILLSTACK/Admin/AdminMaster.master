@@ -560,8 +560,8 @@
 
                             <div class="navbar-brand text-dark ms-4 fw-light fs-6 py-2 ">
                                 Welcome 
-                                <%--<asp:Literal ID="Literal_Navbar_UserName" Text="" runat="server"></asp:Literal>
-                                <span class="white-icon">
+                               <asp:Literal ID="Literal_Navbar_UserName" Text="" runat="server"></asp:Literal>
+                                 <%--<span class="white-icon">
                                     <img src="~/assets/icons/bootstrap-icons/person-circle.svg" alt="" />
                                 </span>--%>
                                 | 
