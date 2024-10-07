@@ -89,7 +89,6 @@ namespace CommonClassLibrary
         }
 
 
-
         /// <summary>
         /// Get DataTable
         /// </summary>
@@ -133,6 +132,111 @@ namespace CommonClassLibrary
             }
 
             return dt.Rows.Count > 0 ? dt : null;
+        }
+
+
+        /// <summary>
+        /// Get DataTable From Stored Procedure
+        /// </summary>
+        /// <param name="String Procedure Name"></param>
+        /// <param name="Dictionary Object"></param>
+        /// <returns>DataTable</returns>
+        public DataTable Get_DataTable_From_StoredProcedure(Page page, string storedProcedureName, Dictionary<string, object> parameters = null)
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection connection = new SqlConnection(ConnectionClass.connection_String_Local))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand(storedProcedureName, connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    if (parameters != null)
+                    {
+                        foreach (var param in parameters)
+                        {
+                            command.Parameters.AddWithValue(param.Key, param.Value ?? DBNull.Value);
+                        }
+                    }
+
+                    using (SqlTransaction transaction = connection.BeginTransaction())
+                    {
+                        command.Transaction = transaction;
+
+                        try
+                        {
+                            using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                            {
+                                adapter.Fill(dt);
+                            }
+
+                            transaction.Commit();
+                        }
+                        catch (Exception ex)
+                        {
+                            transaction.Rollback();
+                            //throw;
+                            SweetAlert.GetSweet(page, "error", $"", $"{ex.Message}");
+                        }
+                    }
+                }
+            }
+
+            return dt;
+        }
+
+
+        /// <summary>
+        /// Get DataSet From Stored Procedure
+        /// </summary>
+        /// <param name="String Procedure Name"></param>
+        /// <param name="Dictionary Object"></param>
+        /// <returns>DataTable</returns>
+        public DataSet Get_DataSet_From_StoredProcedure(Page page, string storedProcedureName, Dictionary<string, object> parameters = null)
+        {
+            DataSet ds = new DataSet();
+
+            using (SqlConnection connection = new SqlConnection(ConnectionClass.connection_String_Local))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand(storedProcedureName, connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    if (parameters != null)
+                    {
+                        foreach (var param in parameters)
+                        {
+                            command.Parameters.AddWithValue(param.Key, param.Value ?? DBNull.Value);
+                        }
+                    }
+
+                    using (SqlTransaction transaction = connection.BeginTransaction())
+                    {
+                        command.Transaction = transaction;
+
+                        try
+                        {
+                            using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                            {
+                                adapter.Fill(ds);
+                            }
+
+                            transaction.Commit();
+                        }
+                        catch (Exception ex)
+                        {
+                            transaction.Rollback();
+                            SweetAlert.GetSweet(page, "error", $"", $"{ex.Message}");
+                        }
+                    }
+                }
+            }
+
+            return ds;
         }
 
 
@@ -260,6 +364,44 @@ namespace CommonClassLibrary
                 {
                     //connection.Close();
                 }
+            }
+        }
+
+
+        /// <summary>
+        /// Bind dropdown Using Datatable
+        /// </summary>
+        /// <param name="Page object"></param>
+        /// <param name="ListControl object"></param>
+        /// <param name="Datatable Object"></param>
+        /// <param name="String textField"></param>
+        /// <param name="String ValueField"></param>
+        /// <param name="Dictionary object"></param>
+        /// <param name="Boolean optional"></param>
+        /// <returns>Void</returns>
+        public void Bind_Dropdown_With_DT(Page page, ListControl dropdownID, DataTable dt, string textField, string valueFiled, Dictionary<string, object> parameters = null, bool multiple = false)
+        {
+            try
+            {
+                if (multiple)
+                {
+                    dropdownID.DataSource = dt;
+                    dropdownID.DataTextField = textField;
+                    dropdownID.DataValueField = valueFiled;
+                    dropdownID.DataBind();
+                }
+                else
+                {
+                    dropdownID.DataSource = dt;
+                    dropdownID.DataTextField = textField;
+                    dropdownID.DataValueField = valueFiled;
+                    dropdownID.DataBind();
+                    dropdownID.Items.Insert(0, new ListItem(" ", ""));
+                }
+            }
+            catch (Exception ex)
+            {
+                SweetAlert.GetSweet(page, "error", "", $"{ex.Message}");
             }
         }
 

@@ -35,7 +35,8 @@
                         </asp:RequiredFieldValidator>
                     </div>
                     <asp:TextBox runat="server" ID="Txt_First_Name" type="text" Enabled="true" min="0" MaxLength="500"
-                        CssClass="form-control border border-secondary-subtle bg-light rounded-1 fs-6 fw-light py-1"></asp:TextBox>
+                        CssClass="form-control border border-secondary-subtle bg-light rounded-1 fs-6 fw-light py-1">
+                    </asp:TextBox>
                     <ajax:FilteredTextBoxExtender ID="FilteredTextBoxExtender1" runat="server" TargetControlID="Txt_First_Name"
                         FilterType="Numbers, UppercaseLetters, LowercaseLetters, Custom" ValidChars=". " />
                 </div>
@@ -67,7 +68,8 @@
                         </asp:RequiredFieldValidator>
                     </div>
                     <asp:TextBox runat="server" ID="Txt_Laste_Name" type="text" Enabled="true" min="0" MaxLength="500"
-                        CssClass="form-control border border-secondary-subtle bg-light rounded-1 fs-6 fw-light py-1"></asp:TextBox>
+                        CssClass="form-control border border-secondary-subtle bg-light rounded-1 fs-6 fw-light py-1">
+                    </asp:TextBox>
                     <ajax:FilteredTextBoxExtender ID="FilteredTextBoxExtender3" runat="server" TargetControlID="Txt_Laste_Name"
                         FilterType="Numbers, UppercaseLetters, LowercaseLetters, Custom" ValidChars=". " />
                 </div>
@@ -103,7 +105,8 @@
                         </asp:RegularExpressionValidator>
                     </div>
                     <asp:TextBox runat="server" ID="Txt_Phone_Number" type="number" Enabled="true" min="0" MaxLength="10"
-                        CssClass="form-control border border-secondary-subtle bg-light rounded-1 fs-6 fw-light py-1"></asp:TextBox>
+                        CssClass="form-control border border-secondary-subtle bg-light rounded-1 fs-6 fw-light py-1">
+                    </asp:TextBox>
                     <ajax:FilteredTextBoxExtender ID="FilteredTextBoxExtender4" runat="server" TargetControlID="Txt_Phone_Number"
                         FilterType="Numbers" />
                 </div>
@@ -119,7 +122,8 @@
                         </asp:RequiredFieldValidator>
                     </div>
                     <asp:TextBox runat="server" ID="Txt_Email" type="email" Enabled="true" min="0" MaxLength="500"
-                        CssClass="form-control border border-secondary-subtle bg-light rounded-1 fs-6 fw-light py-1"></asp:TextBox>
+                        CssClass="form-control border border-secondary-subtle bg-light rounded-1 fs-6 fw-light py-1">
+                    </asp:TextBox>
                     <ajax:FilteredTextBoxExtender ID="FilteredTextBoxExtender5" runat="server" TargetControlID="Txt_Email"
                         FilterType="Numbers, UppercaseLetters, LowercaseLetters, Custom" ValidChars=".  @" />
                 </div>
@@ -134,8 +138,11 @@
                             ControlToValidate="TA_Address" InitialValue="" ValidationGroup="finalSubmit" ErrorMessage="required field">
                         </asp:RequiredFieldValidator>
                     </div>
-                    <textarea id="TA_Address" runat="server" rows="3" cols="50"
-                        class="form-control focus-input border border-secondary-subtle bg-light rounded-1 fs-6 fw-light py-1 shadow-sm"></textarea>
+                    <asp:TextBox runat="server" ID="TA_Address" type="text" Enabled="true" min="0" MaxLength="1000" TextMode="MultiLine" Height="100px"
+                        CssClass="form-control border border-secondary-subtle bg-light rounded-1 fs-6 fw-light py-1">
+                    </asp:TextBox>
+                    <%--<textarea id="TA_Address" runat="server" rows="3" cols="50"
+                        class="form-control focus-input border border-secondary-subtle bg-light rounded-1 fs-6 fw-light py-1 shadow-sm"></textarea>--%>
                 </div>
 
                 <!-- TetxtBox: Username -->
@@ -155,29 +162,29 @@
                 </div>
 
                 <!-- TetxtBox: Password -->
-                <div class="col-md-4 mb-3 align-self-end">
+                <div id="Div_Password" runat="server" visible="true" class="col-md-4 mb-3 align-self-end">
                     <div class="mb-1 fw-normal fs-6">
                         <asp:Literal ID="Literal7" runat="server" Text="">Password
                             <em style="color: red">*</em>
                         </asp:Literal>
-                        <asp:RequiredFieldValidator ID="RequiredFieldValidator9" runat="server" CssClass="invalid-feedback" SetFocusOnError="True" Display="Dynamic" ToolTip="Required"
+                        <asp:RequiredFieldValidator ID="RFV_Password" runat="server" CssClass="invalid-feedback" SetFocusOnError="True" Display="Dynamic" ToolTip="Required"
                             ControlToValidate="Txt_Password" InitialValue="" ValidationGroup="finalSubmit" ErrorMessage="required field">
                         </asp:RequiredFieldValidator>
                     </div>
                     <asp:TextBox runat="server" ID="Txt_Password" type="text" Enabled="true" min="0" MaxLength="500"
                         CssClass="form-control border border-secondary-subtle bg-light rounded-1 fs-6 fw-light py-1" oninput="validatePassword()"></asp:TextBox>
-                    <ajax:FilteredTextBoxExtender ID="FilteredTextBoxExtender8" runat="server" TargetControlID="Txt_Password"
+                    <ajax:FilteredTextBoxExtender ID="FTBE_Password" runat="server" TargetControlID="Txt_Password"
                         FilterType="Numbers, UppercaseLetters, LowercaseLetters, Custom" ValidChars=".#$@_" />
                 </div>
 
                 <!-- TetxtBox: Confirm Password -->
-                <div class="col-md-4 mb-3 align-self-end">
+                <div id="Div_ConfirmPassword" runat="server" visible="true" class="col-md-4 mb-3 align-self-end">
                     <div class="mb-1 fw-normal fs-6">
                         <asp:Literal ID="Literal8" runat="server">Confirm Password
                             <em style="color: red">*</em>
                             <span id="PasswordMessage" class="text-danger" style="font-style: italic;"></span>
                         </asp:Literal>
-                        <asp:RequiredFieldValidator ID="RequiredFieldValidator10" runat="server" CssClass="invalid-feedback" SetFocusOnError="True" Display="Dynamic" ToolTip="Required"
+                        <asp:RequiredFieldValidator ID="RFV_ConfirmPassword" runat="server" CssClass="invalid-feedback" SetFocusOnError="True" Display="Dynamic" ToolTip="Required"
                             ControlToValidate="Txt_Confirm_Password" InitialValue="" ValidationGroup="finalSubmit" ErrorMessage="required field">
                         </asp:RequiredFieldValidator>
                         <asp:CustomValidator ID="CustomValidator1" ClientValidationFunction="validatePasswordCustom" ValidationGroup="finalSubmit"
@@ -215,8 +222,9 @@
                         <!-- DropDown: Hierarchy -->
                         <div class="col-md-4 mb-3 align-self-end">
                             <div class="mb-1 fw-normal fs-6">
-                                <asp:Literal ID="Literal10" runat="server" Text="">Hierarchy
-                            <em style="color: red">*</em>
+                                <asp:Literal ID="Literal10" runat="server" Text="">
+                                    Hierarchy
+                                    <em style="color: red">*</em>
                                 </asp:Literal>
                                 <div>
                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator11" runat="server" CssClass="invalid-feedback" SetFocusOnError="True" Display="Dynamic" ToolTip="Required"
@@ -270,8 +278,71 @@
 
 
 
-                    <!-- Row 2 Starts -->
-                    <div class="row mb-3">
+                    <!-- Row 3 Starts (Multicheck Dropdowns) -->
+                    <div id="Div_MCDD" runat="server" visible="true" class="row mb-3">
+
+                        <!-- DropDown: Assembly -->
+                        <div id="Div_Assembly" runat="server" visible="false" class="col-md-4 mb-3 align-self-end">
+                            <div class="mb-1 fw-normal fs-6">
+                                <asp:Literal ID="Literal16" runat="server" Text="">Assembly<em style="color: red">*</em></asp:Literal>
+                                <div>
+                                    <asp:RequiredFieldValidator ID="RFV_Assembly" runat="server" CssClass="invalid-feedback" SetFocusOnError="True" Display="Dynamic" ToolTip="Required"
+                                        ControlToValidate="MCDD_Assembly" InitialValue="" ValidationGroup="finalSubmit" ErrorMessage="required field">
+                                    </asp:RequiredFieldValidator>
+                                </div>
+                            </div>
+                            <asp:ListBox ID="MCDD_Assembly" runat="server" SelectionMode="Multiple" Width="100%" CssClass="form-control listbox"
+                                OnSelectedIndexChanged="MCDD_Assembly_SelectedIndexChanged" AutoPostBack="true"></asp:ListBox>
+                        </div>
+
+                        <!-- DropDown: Ward -->
+                        <div id="Div_Ward" runat="server" visible="false" class="col-md-4 mb-3 align-self-end">
+                            <div class="mb-1 fw-normal fs-6">
+                                <asp:Literal ID="Literal17" runat="server" Text="">Ward<em style="color: red">*</em></asp:Literal>
+                                <div>
+                                    <asp:RequiredFieldValidator ID="RFV_Ward" runat="server" CssClass="invalid-feedback" SetFocusOnError="True" Display="Dynamic" ToolTip="Required"
+                                        ControlToValidate="MCDD_Ward" InitialValue="" ValidationGroup="finalSubmit" ErrorMessage="required field">
+                                    </asp:RequiredFieldValidator>
+                                </div>
+                            </div>
+                            <asp:ListBox ID="MCDD_Ward" runat="server" SelectionMode="Multiple" Width="100%" CssClass="form-control listbox"
+                                OnSelectedIndexChanged="MCDD_Ward_SelectedIndexChanged" AutoPostBack="true"></asp:ListBox>
+                        </div>
+
+                        <!-- DropDown: Sector -->
+                        <div id="Div_Sector" runat="server" visible="false" class="col-md-4 mb-3 align-self-end">
+                            <div class="mb-1 fw-normal fs-6">
+                                <asp:Literal ID="Literal18" runat="server" Text="">Sector<em style="color: red">*</em></asp:Literal>
+                                <div>
+                                    <asp:RequiredFieldValidator ID="RFV_Sector" runat="server" CssClass="invalid-feedback" SetFocusOnError="True" Display="Dynamic" ToolTip="Required"
+                                        ControlToValidate="MCDD_Sector" InitialValue="" ValidationGroup="finalSubmit" ErrorMessage="required field">
+                                    </asp:RequiredFieldValidator>
+                                </div>
+                            </div>
+                            <asp:ListBox ID="MCDD_Sector" runat="server" SelectionMode="Multiple" Width="100%" CssClass="form-control listbox"
+                                OnSelectedIndexChanged="MCDD_Sector_SelectedIndexChanged" AutoPostBack="true"></asp:ListBox>
+                        </div>
+
+                        <!-- DropDown: Society -->
+                        <div id="Div_Society" runat="server" visible="false" class="col-md-12 mb-3 align-self-end">
+                            <div class="mb-1 fw-normal fs-6">
+                                <asp:Literal ID="Literal19" runat="server" Text="">Society<em style="color: red">*</em></asp:Literal>
+                                <div>
+                                    <asp:RequiredFieldValidator ID="RFV_Soceity" runat="server" CssClass="invalid-feedback" SetFocusOnError="True" Display="Dynamic" ToolTip="Required"
+                                        ControlToValidate="MCDD_Society" InitialValue="" ValidationGroup="finalSubmit" ErrorMessage="required field">
+                                    </asp:RequiredFieldValidator>
+                                </div>
+                            </div>
+                            <asp:ListBox ID="MCDD_Society" runat="server" SelectionMode="Multiple" Width="100%" CssClass="form-control listbox"
+                                AutoPostBack="false"></asp:ListBox>
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Row 3 Starts (Checkbox List) -->
+                    <div id="Div_CheckboxList" runat="server" visible="false" class="row mb-3">
 
                         <!-- CheckBoxList: Division -->
                         <div id="Div_Division" runat="server" visible="false" class="form-group col-md-4 m-0 shadow">
@@ -286,7 +357,7 @@
                                         <asp:TextBox ID="Txt_CheckBoxList_Division" placeholder="Search..." CssClass="form-control" runat="server"></asp:TextBox>
                                     </div>
                                     <div class="col-md-6 form-group">
-                                        <asp:CheckBox ID="Check_All_Division" CssClass="form-control" Text="Select All" runat="server" AutoPostBack="True" 
+                                        <asp:CheckBox ID="Check_All_Division" CssClass="form-control" Text="Select All" runat="server" AutoPostBack="True"
                                             OnCheckedChanged="Check_All_Division_CheckedChanged" />
                                     </div>
                                 </div>
@@ -311,7 +382,7 @@
                                         <asp:TextBox ID="Txt_CheckBoxList_District" placeholder="Search..." CssClass="form-control" runat="server"></asp:TextBox>
                                     </div>
                                     <div class="col-md-6 form-group">
-                                        <asp:CheckBox ID="Check_All_District" CssClass="form-control" Text="Select All" runat="server" AutoPostBack="True" 
+                                        <asp:CheckBox ID="Check_All_District" CssClass="form-control" Text="Select All" runat="server" AutoPostBack="True"
                                             OnCheckedChanged="Check_All_District_CheckedChanged" />
                                     </div>
                                 </div>
@@ -336,7 +407,7 @@
                                         <asp:TextBox ID="Txt_CheckBoxList_Taluka" placeholder="Search..." CssClass="form-control" runat="server"></asp:TextBox>
                                     </div>
                                     <div class="col-md-6 form-group">
-                                        <asp:CheckBox ID="Check_All_Taluka" CssClass="form-control" Text="Select All" runat="server" AutoPostBack="True" 
+                                        <asp:CheckBox ID="Check_All_Taluka" CssClass="form-control" Text="Select All" runat="server" AutoPostBack="True"
                                             OnCheckedChanged="Check_All_Taluka_CheckedChanged" />
                                     </div>
                                 </div>
@@ -361,12 +432,23 @@
     <!-- Submit Button UI Starts -->
     <div class="col-md-11 mx-auto row mt-5 mb-2 align-self-end">
         <div class="col-md-6 text-start">
-            <asp:Button ID="Btn_Back" runat="server" Text="Back" OnClick="Btn_Back_Click"
-                CssClass="btn col-md-2 text-white shadow rounded-0" Style="background: #0f3f6f; color: #fff" />
+            <asp:Button 
+                ID="Btn_Back" 
+                runat="server" 
+                Text="Back" 
+                OnClick="Btn_Back_Click"
+                CssClass="btn col-md-2 text-white shadow rounded-0" 
+                Style="background: #0f3f6f; color: #fff" />
         </div>
         <div class="col-md-6 text-end">
-            <asp:Button ID="Btn_Submit" runat="server" Text="Save" OnClick="Btn_Submit_Click" ValidationGroup="finalSubmit"
-                CssClass="btn col-md-2 text-white shadow rounded-0" Style="background: #0f3f6f; color: #fff" />
+            <asp:Button 
+                ID="Btn_Submit" 
+                runat="server" 
+                Text="Save" 
+                OnClick="Btn_Submit_Click" 
+                ValidationGroup="finalSubmit"
+                CssClass="btn col-md-2 text-white shadow rounded-0" 
+                Style="background: #0f3f6f; color: #fff" />
         </div>
     </div>
     <!-- Submit Button UI Ends -->

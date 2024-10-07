@@ -62,13 +62,13 @@ namespace CommonClassLibrary
         /// <param name="dropdown Value"></param>
         /// <param name="Boolean check optional"></param>
         /// <returns>Void</returns>
-        public void Select_Item_In_DropDown(ListControl dropdownID, string value, bool isMultiple = false)
+        public void Select_Item_In_DropDown(ListControl dropdownID, string value, bool multiple = false)
         {
             try
             {
                 dropdownID.ClearSelection();
 
-                if (isMultiple)
+                if (multiple)
                 {
                     // multi check dropdown (asp:ListBox)
                     string[] values = value.Split(',');
@@ -96,6 +96,29 @@ namespace CommonClassLibrary
 
             }
         }
+
+        public void Select_Item_In_DropDown_With_DT(Page page, ListControl dropdownID, DataTable dt, string ColumnName, bool multiple = false)
+        {
+            try
+            {
+                dropdownID.ClearSelection();
+
+                if (multiple)
+                {
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        string ID = row[ColumnName].ToString().Trim();
+                        ListItem item = dropdownID.Items.FindByValue(ID);
+                        if (item != null) item.Selected = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                SweetAlert.GetSweet(page, "error", $"", $"{ex.Message}");
+            }
+        }
+
 
 
         /// <summary>

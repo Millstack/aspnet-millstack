@@ -149,10 +149,10 @@
             display: none;
             position: fixed;
             top: 5%;
-            /left: 20%;
-            / /width: 60%;
-            / /height: 80%;
-            / background-color: white;
+            /*left: 20%;*/
+            /*width: 60%;*/
+            /*height: 80%;*/
+            background-color: white;
             border: 1px solid black;
             z-index: 10000;
         }
@@ -167,6 +167,15 @@
             width: 100%;
             height: 90%;
             border: none;
+        }
+    </style>
+
+
+    <style>
+        .scrollable-grid-wrapper {
+            overflow-x: auto; /* Enables horizontal scrolling */
+            white-space: nowrap; /* Prevents inner content from wrapping */
+            width: 100%; /* Ensure full width is used */
         }
     </style>
 
@@ -561,7 +570,7 @@
                             <div class="navbar-brand text-dark ms-4 fw-light fs-6 py-2 ">
                                 Welcome 
                                <asp:Literal ID="Literal_Navbar_UserName" Text="" runat="server"></asp:Literal>
-                                 <%--<span class="white-icon">
+                                <%--<span class="white-icon">
                                     <img src="~/assets/icons/bootstrap-icons/person-circle.svg" alt="" />
                                 </span>--%>
                                 | 
@@ -629,6 +638,24 @@
                 setTimeout(removePanel, 10);
                 args.set_enableAjax(false);
             }
+        }
+    </script>
+
+
+    <!-- JS: Live Hide Button On Click Event For Non-Repeat Clicks -->
+    <script type="text/javascript">
+        function Hide_Button_On_Click(obj) {
+            //document.getElementById('myButton');
+            var myButton = obj;
+            var s = obj.value;
+            //alert(s);
+            // myButton.style.visibility = 'hidden';
+            myButton.style.display = 'none';
+            setTimeout(function () {
+                myButton.style.display = '';
+            }, 4000);
+
+            return false;
         }
     </script>
 

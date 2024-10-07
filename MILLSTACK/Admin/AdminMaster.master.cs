@@ -9,6 +9,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using CommonClassLibrary;
 using System.Drawing;
+using System.Web.DynamicData;
 
 public partial class Admin_AdminMaster : System.Web.UI.MasterPage
 {
@@ -87,28 +88,25 @@ public partial class Admin_AdminMaster : System.Web.UI.MasterPage
 
     private void Create_Sidebar_Menus()
     {
+        DataTable dt = new DataTable();
+        string sql = string.Empty;
+        Dictionary<string, object> parameters = new Dictionary<string, object>();
+
         try
         {
             StringBuilder menuBuilder = new StringBuilder();
             string userId = Session["User_ID"].ToString();
-            string menu_query;
 
             DataTable Main_Menu_DT = new DataTable();
             DataTable Child_Menu_DT = new DataTable();
 
-            menu_query = $@"
-                    SELECT distinct 
-                        MF.Menu_ID, MF.MenuName, MF.MenuOrder, MF.MenuURL, MF.MenuIcon
-                    FROM Tbl_M_MenuForm AS MF
-                    INNER JOIN Tbl_MAP_UserRole_MenuForm AS MAP ON MAP.Menu_ID = MF.Menu_ID
-                    INNER JOIN Tbl_MAP_UserRole AS UR ON UR.User_ID = MAP.UserRole_ID
-                    WHERE 
-                        MF.IsDeleted IS NULL AND MAP.IsDeleted IS NULL
-                        AND MF.Parent_ID = 0
-                        AND UR.User_ID = @User_ID
-                    ORDER BY MF.MenuOrder";
-            parameters = new Dictionary<string, object> { { "@User_ID", userId }, };
-            Main_Menu_DT = executeClass.Get_Datatable(menu_query, parameters);
+            parameters = new Dictionary<string, object>
+            {
+                { "@User_ID", Session["User_ID"] },
+                { "@Parent_ID", 0 },
+            };
+
+            Main_Menu_DT = executeClass.Get_DataTable_From_StoredProcedure(this.Page, "USP_GET_Sidebar_Menus", parameters);
             if (Main_Menu_DT != null && Main_Menu_DT.Rows.Count > 0)
             {
                 foreach (DataRow mainRow in Main_Menu_DT.Rows)
@@ -129,19 +127,13 @@ public partial class Admin_AdminMaster : System.Web.UI.MasterPage
                     menuBuilder.AppendLine("</div>");
 
 
-                    menu_query = $@"
-                                SELECT distinct 
-                                    MF.Menu_ID, MF.MenuName, MF.MenuOrder, MF.MenuURL, MF.MenuIcon
-                                FROM Tbl_M_MenuForm AS MF
-                                INNER JOIN Tbl_MAP_UserRole_MenuForm AS MAP ON MAP.Menu_ID = MF.Menu_ID
-                                INNER JOIN Tbl_MAP_UserRole AS UR ON UR.User_ID = MAP.UserRole_ID
-                                WHERE 
-                                    MF.IsDeleted IS NULL AND MAP.IsDeleted IS NULL
-                                    AND MF.Parent_ID = @Parent_ID
-                                    AND UR.User_ID = @User_ID
-                                ORDER BY MF.MenuOrder";
-                    parameters = new Dictionary<string, object> { { "@User_ID", userId }, { "@Parent_ID", mainMenuId }, };
-                    Child_Menu_DT = executeClass.Get_Datatable(menu_query, parameters);
+                    parameters = new Dictionary<string, object>
+                    {
+                        { "@User_ID", Session["User_ID"] },
+                        { "@Parent_ID", mainMenuId },
+                    };
+
+                    Child_Menu_DT = executeClass.Get_DataTable_From_StoredProcedure(this.Page, "USP_GET_Sidebar_Menus", parameters);
                     if (Child_Menu_DT != null && Child_Menu_DT.Rows.Count > 0)
                     {
                         menuBuilder.AppendLine("<ul class='sub-menu ps-2' >");

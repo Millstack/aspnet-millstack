@@ -45,9 +45,17 @@ namespace MILLSTACK
 
             routes.MapPageRoute(
               "UserCreation_Route",
-              "UserCreation",
-              "~/Master_Pages/UserCreation.aspx"
+              "UserCreation/{User_ID}",
+              "~/Master_Pages/UserCreation.aspx",
+              true,
+              new RouteValueDictionary { { "User_ID", "" } }  // Set default value for User_ID (for insert mode)
             );
+
+            routes.MapPageRoute(
+             "UserMaster_Route",
+             "UserMaster",
+             "~/Master_Pages/UserCreation_Update.aspx"
+           );
 
             routes.MapPageRoute(
                "CommonMaster_Route",
@@ -60,12 +68,6 @@ namespace MILLSTACK
               "RoleAndResponsibility",
               "~/Master_Pages/RoleAndResponsibility.aspx"
             );
-
-            routes.MapPageRoute(
-             "UserMaster_Route",
-             "UserMaster",
-             "~/Master_Pages/UserCreation_Update.aspx"
-           );
 
             routes.MapPageRoute(
              "Customer_Upload_Route",
