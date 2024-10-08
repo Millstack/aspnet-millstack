@@ -133,6 +133,56 @@ CREATE TABLE Tbl_M_UserMaster (
 ```
 
 
+```
+temp: user master table with seperate constraints:
+
+CREATE TABLE Tbl_M_UserMaster (
+    User_ID BIGINT IDENTITY(1,1) PRIMARY KEY,
+    GUID UNIQUEIDENTIFIER DEFAULT NEWID() NOT NULL,
+    Designation_ID BIGINT NOT NULL,
+    LoginAttempt INT NULL,
+    UserImage NVARCHAR(1000) NULL,
+    FirstName NVARCHAR(1000) NOT NULL,
+    FirstNameMr NVARCHAR(1000) NULL,
+    MiddleName NVARCHAR(1000) NULL,
+    MiddleNameMr NVARCHAR(1000) NULL,
+    LastName NVARCHAR(1000) NOT NULL,
+    LastNameMr NVARCHAR(1000) NULL,
+    Gender NVARCHAR(1000) NOT NULL,
+    UserPhoneNo VARCHAR(10) NOT NULL CHECK (LEN(UserPhoneNo) = 10 AND UserPhoneNo NOT LIKE '%[^0-9]%'),
+    UserEmail VARCHAR(1000) NOT NULL,
+    UserAddress NVARCHAR(1000) NULL,
+    UserName NVARCHAR(100) NOT NULL,
+    UserPassword NVARCHAR(1000) NOT NULL,
+    Salt NVARCHAR(1000) NOT NULL,
+    Country_ID VARCHAR(1000) NULL,
+    State_ID VARCHAR(1000) NULL,
+    Division_ID VARCHAR(MAX) NULL,
+    Sub_Division_ID VARCHAR(MAX) NULL,
+    District_ID VARCHAR(MAX) NULL,
+    Taluka_ID VARCHAR(MAX) NULL,
+    City_ID VARCHAR(MAX) NULL,
+    Village_ID VARCHAR(MAX) NULL,
+    Assembly_ID VARCHAR(MAX) NULL,
+    Ward_ID VARCHAR(MAX) NULL,
+    Sector_ID VARCHAR(MAX) NULL,
+    Society_ID VARCHAR(MAX) NULL,
+    ReportingTo BIGINT NULL,
+    IsOtpRequired BIT DEFAULT 0 NOT NULL,
+    IsActive BIT DEFAULT 1 NOT NULL,
+    SavedBy BIGINT NOT NULL,
+    SavedOn DATETIME DEFAULT GETDATE() NOT NULL,
+    IsDeleted BIT NULL,
+
+    -- Explicitly named unique constraints
+    CONSTRAINT UQ_UserPhoneNo UNIQUE (UserPhoneNo),
+    CONSTRAINT UQ_UserEmail UNIQUE (UserEmail),
+    CONSTRAINT UQ_UserName UNIQUE (UserName)
+);
+
+```
+
+
 # MAP: User Role Master
 ```
 CREATE TABLE Tbl_MAP_UserRole (

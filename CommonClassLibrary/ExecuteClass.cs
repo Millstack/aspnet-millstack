@@ -523,7 +523,7 @@ namespace CommonClassLibrary
                         catch (Exception ex)
                         {
                             transaction.Rollback();
-                            SweetAlert.GetSweet(page, "error", "An error occurred during transaction", $"{ex.Message}");
+                            SweetAlert.GetSweet(page, "error", "transaction error", $"{ex.Message}");
                         }
                     }
                 }
