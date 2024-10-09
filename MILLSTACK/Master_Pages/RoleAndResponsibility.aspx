@@ -132,8 +132,8 @@
                     <div class="mb-1  fw-semibold fs-6">
                         <asp:Literal ID="Literal15" Text="Role" runat="server"></asp:Literal>
                     </div>
-                    <asp:DropDownList ID="DD_User_Roles" Width="100%" CssClass="form-control chosen-dropdown"
-                        OnSelectedIndexChanged="DD_User_Roles_SelectedIndexChanged" AutoPostBack="true" runat="server">
+                    <asp:DropDownList ID="DD_Roles" Width="100%" CssClass="form-control chosen-dropdown"
+                        OnSelectedIndexChanged="DD_Roles_SelectedIndexChanged" AutoPostBack="true" runat="server">
                     </asp:DropDownList>
                 </div>
 

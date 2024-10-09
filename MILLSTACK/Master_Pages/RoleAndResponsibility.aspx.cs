@@ -42,7 +42,7 @@ public partial class Master_Pages_RoleAndResponsibility : System.Web.UI.Page
                     Where IsDeleted IS NULL	";
 
             parameters = new Dictionary<string, object> { /*{ "@Bank_ID", DD_Bank_Master.SelectedValue },*/ };
-            executeClass.Bind_Dropdown_Generic(DD_User_Roles, sql, "RoleName", "Role_ID", parameters);
+            executeClass.Bind_Dropdown_Generic(DD_Roles, sql, "RoleName", "Role_ID", parameters);
         }
         catch (Exception ex)
         {
@@ -55,14 +55,14 @@ public partial class Master_Pages_RoleAndResponsibility : System.Web.UI.Page
 
     //-------------------------- Dropdown Event --------------------------
 
-    protected void DD_User_Roles_SelectedIndexChanged(object sender, EventArgs e)
+    protected void DD_Roles_SelectedIndexChanged(object sender, EventArgs e)
     {
-        string selectedRole = DD_User_Roles.SelectedValue;
+        string selectedRole = DD_Roles.SelectedValue;
         ClearCheckboxes(TreeView1.Nodes);
 
-        string sql = $@"Select URFM_ID, UserRole_ID, Menu_ID, IsDeleted
+        string sql = $@"Select URFM_ID, Role_ID, Menu_ID, IsDeleted
                         From Tbl_MAP_UserRole_MenuForm 
-                        Where UserRole_ID IN (Select Distinct UserRole_ID From Tbl_MAP_UserRole Where User_ID = @User_ID AND IsDeleted IS NULL)";
+                        Where Role_ID IN (Select Distinct Role_ID From Tbl_MAP_UserRole Where User_ID = @User_ID AND IsDeleted IS NULL)";
         var parameters = new Dictionary<string, object> { { "@User_ID", Session["User_ID"] }, };
         DataTable dt = executeClass.Get_Datatable(sql, parameters);
         if (dt != null && dt.Rows.Count > 0)
@@ -70,7 +70,7 @@ public partial class Master_Pages_RoleAndResponsibility : System.Web.UI.Page
             foreach (DataRow row in dt.Rows)
             {
                 string menu_Form_ID = row["Menu_ID"].ToString();
-                string user_Role_ID = row["UserRole_ID"].ToString();
+                string user_Role_ID = row["Role_ID"].ToString();
                 TreeNode node = FindNodeByValue(TreeView1.Nodes, menu_Form_ID);
                 if (node != null && user_Role_ID == selectedRole) node.Checked = true;
             }
@@ -190,13 +190,13 @@ public partial class Master_Pages_RoleAndResponsibility : System.Web.UI.Page
     {
         List<SqlParameter> parameters;
 
-        if (DD_User_Roles.SelectedIndex == 0)
+        if (DD_Roles.SelectedIndex == 0)
         {
-            DD_User_Roles.Focus();
+            DD_Roles.Focus();
             return;
         }
 
-        string user_Role_ID = DD_User_Roles.SelectedValue;
+        string Role_ID = DD_Roles.SelectedValue;
         List<int> selected_MenuForm_IDs = new List<int>();
 
         // Collect the IDs of all checked checkboxes
@@ -216,21 +216,21 @@ public partial class Master_Pages_RoleAndResponsibility : System.Web.UI.Page
             try
             {
                 // Delete existing records for the selected UserRole_ID
-                string deleteQuery = "DELETE FROM Tbl_MAP_UserRole_MenuForm WHERE UserRole_ID = @UserRole_ID";
+                string deleteQuery = "DELETE FROM Tbl_MAP_UserRole_MenuForm WHERE Role_ID = @Role_ID";
                 parameters = new List<SqlParameter>
                 {
-                    new SqlParameter("@UserRole_ID", user_Role_ID)
+                    new SqlParameter("@Role_ID", Role_ID)
                 };
                 executeClass.ExecuteCommand(deleteQuery, command, parameters);
 
 
                 // Insert new records
-                string insertQuery = "INSERT INTO Tbl_MAP_UserRole_MenuForm (UserRole_ID, Menu_ID, SavedBy) VALUES (@UserRole_ID, @Menu_ID, @SavedBy)";
+                string insertQuery = "INSERT INTO Tbl_MAP_UserRole_MenuForm (Role_ID, Menu_ID, SavedBy) VALUES (@Role_ID, @Menu_ID, @SavedBy)";
                 foreach (int menu_Form_ID in selected_MenuForm_IDs)
                 {
                     parameters = new List<SqlParameter>
                     {
-                        new SqlParameter("@UserRole_ID", user_Role_ID),
+                        new SqlParameter("@Role_ID", Role_ID),
                         new SqlParameter("@Menu_ID", menu_Form_ID), // This is to set dynamically in each iteration
                         new SqlParameter("@SavedBy", Session["User_ID"])
                     };
@@ -242,11 +242,11 @@ public partial class Master_Pages_RoleAndResponsibility : System.Web.UI.Page
                 {
                     transaction.Commit();
 
-                    SweetAlert.GetSweet(this.Page, "success", $"", $"<b>{DD_User_Roles.SelectedItem.Text}</b> responsibilities assigned successfully");
+                    SweetAlert.GetSweet(this.Page, "success", $"", $"<b>{DD_Roles.SelectedItem.Text}</b> responsibilities assigned successfully");
 
-                    DD_User_Roles.ClearSelection();
-                    DD_User_Roles.Focus();
-                    DD_User_Roles_SelectedIndexChanged(null, null);
+                    DD_Roles.ClearSelection();
+                    DD_Roles.Focus();
+                    DD_Roles_SelectedIndexChanged(null, null);
                 }
             }
             catch (Exception ex)
