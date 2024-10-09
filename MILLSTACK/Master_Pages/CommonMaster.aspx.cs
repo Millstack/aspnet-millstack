@@ -1200,8 +1200,42 @@ public partial class Master_Pages_CommonMaster : System.Web.UI.Page
 
     private void Bind_Grid()
     {
+        DataTable dt = new DataTable();
+        string sql = string.Empty;
+        Dictionary<string, object> parameters = new Dictionary<string, object>();
+
         try
         {
+            // fetching hierarichal / designation level of logged-in user
+            parameters = new Dictionary<string, object> { { "@User_ID", Session["User_ID"] }, };
+            dt = executeClass.Get_DataTable_From_StoredProcedure(this.Page, "USP_Get_User_Hierarchy_Level", parameters);
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                parameters = new Dictionary<string, object>
+                {
+                    // mandatory work area parameters
+                    { "@Election_Class_IDs", Session["Election_Class_ID"].ToString() },
+                    { "@Election_Sub_Class_IDs", Session["Election_Sub_Class_ID"].ToString() },
+                    { "@Division_IDs", Session["Division_ID"].ToString() },
+                    { "@District_IDs", Session["District_ID"].ToString() },
+                    { "@Taluka_IDs", Session["Taluka_ID"].ToString() },
+                    { "@LevelType", dt.Rows[0]["LevelType"].ToString() },
+
+                    // dropdown search filter parameters
+                    { "@Society_ID", ddlSociety.SelectedIndex > 0 ? (object)ddlSociety.SelectedValue : DBNull.Value },
+                    { "@SocietyCode", ddlsCode.SelectedIndex > 0 ? (object)ddlsCode.SelectedValue : DBNull.Value },
+                    { "@Election_Class_ID", ddlClass.SelectedIndex > 0 ? (object)ddlClass.SelectedValue : DBNull.Value },
+                    { "@Election_Sub_Class_ID", ddlSubClass.SelectedIndex > 0 ? (object)ddlSubClass.SelectedValue : DBNull.Value }
+                };
+
+                dt = executeClass.Get_DataTable_From_StoredProcedure(this.Page, "USP_Get_GridView_SocietyMaster", parameters);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+
+                }
+            }
+
+
             // re-assigning the boolean and string variabls
             Is_Main_column_1_needed = (bool)ViewState["Is_Main_column_1_needed"];
             Is_Main_column_2_needed = (bool)ViewState["Is_Main_column_2_needed"];
@@ -1229,46 +1263,46 @@ public partial class Master_Pages_CommonMaster : System.Web.UI.Page
             Foreign_Table_3_Key_Column = (string)ViewState["Foreign_Table_3_Key_Column"];
             Foreign_Table_3_Column_Name = (string)ViewState["Foreign_Table_3_Column_Name"];
 
-            sqlQuery = $@"
-                    SELECT 
-                        {Main_Table_Name}.{Primary_Key_Column} AS ID, 
-                        {Main_Table_Name}.{Main_Column_1_Name} AS Main_Column_1, 
-                        {Main_Table_Name}.{Main_Column_2_Name} AS Main_Column_2, 
-                        {Main_Table_Name}.{Main_Column_3_Name} AS Main_Column_3, 
-                        {(Is_Foreign_column_1_needed ? $"{Foreign_Table_1_Name}.{Foreign_Table_1_Column_Name} AS Foreign_Column_1, " : "NULL AS Foreign_Column_1, ")} 
-                        {(Is_Foreign_column_2_needed ? $"{Foreign_Table_2_Name}.{Foreign_Table_2_Column_Name} AS Foreign_Column_2, " : "NULL AS Foreign_Column_2, ")} 
-                        {(Is_Foreign_column_3_needed ? $"{Foreign_Table_3_Name}.{Foreign_Table_3_Column_Name} AS Foreign_Column_3, " : "NULL AS Foreign_Column_3, ")} 
-                        NULL AS DummyColumn 
-                    FROM {Main_Table_Name} 
-                    {(Is_Foreign_column_1_needed ? $@"INNER JOIN {Foreign_Table_1_Name} ON {Foreign_Table_1_Name}.{Foreign_Table_1_Key_Column} = {Main_Table_Name}.{Foreign_Table_1_Key_Column} " : "")} 
-                    {(Is_Foreign_column_2_needed ? $@"INNER JOIN {Foreign_Table_2_Name} ON {Foreign_Table_2_Name}.{Foreign_Table_2_Key_Column} = {Main_Table_Name}.{Foreign_Table_2_Key_Column} " : "")} 
-                    {(Is_Foreign_column_3_needed ? $@"INNER JOIN {Foreign_Table_3_Name} ON {Foreign_Table_3_Name}.{Foreign_Table_3_Key_Column} = {Main_Table_Name}.{Foreign_Table_3_Key_Column} " : "")} 
-                    WHERE {Main_Table_Name}.IsDeleted IS NULL
-                    {(DD_Foriegn_Column_1.SelectedIndex > 0 ? $@" AND {Foreign_Table_1_Name}.{Foreign_Table_1_Key_Column} = {DD_Foriegn_Column_1.SelectedValue}" : "")}
-                    {(DD_Foriegn_Column_2.SelectedIndex > 0 ? $@" AND {Foreign_Table_2_Name}.{Foreign_Table_2_Key_Column} = {DD_Foriegn_Column_2.SelectedValue}" : "")}
-                    {(DD_Foriegn_Column_3.SelectedIndex > 0 ? $@" AND {Foreign_Table_3_Name}.{Foreign_Table_3_Key_Column} = {DD_Foriegn_Column_3.SelectedValue}" : "")}
-                    ORDER BY {Main_Table_Name}.{Main_Column_1_Name}";
+            //sqlQuery = $@"
+            //        SELECT 
+            //            {Main_Table_Name}.{Primary_Key_Column} AS ID, 
+            //            {Main_Table_Name}.{Main_Column_1_Name} AS Main_Column_1, 
+            //            {Main_Table_Name}.{Main_Column_2_Name} AS Main_Column_2, 
+            //            {Main_Table_Name}.{Main_Column_3_Name} AS Main_Column_3, 
+            //            {(Is_Foreign_column_1_needed ? $"{Foreign_Table_1_Name}.{Foreign_Table_1_Column_Name} AS Foreign_Column_1, " : "NULL AS Foreign_Column_1, ")} 
+            //            {(Is_Foreign_column_2_needed ? $"{Foreign_Table_2_Name}.{Foreign_Table_2_Column_Name} AS Foreign_Column_2, " : "NULL AS Foreign_Column_2, ")} 
+            //            {(Is_Foreign_column_3_needed ? $"{Foreign_Table_3_Name}.{Foreign_Table_3_Column_Name} AS Foreign_Column_3, " : "NULL AS Foreign_Column_3, ")} 
+            //            NULL AS DummyColumn 
+            //        FROM {Main_Table_Name} 
+            //        {(Is_Foreign_column_1_needed ? $@"INNER JOIN {Foreign_Table_1_Name} ON {Foreign_Table_1_Name}.{Foreign_Table_1_Key_Column} = {Main_Table_Name}.{Foreign_Table_1_Key_Column} " : "")} 
+            //        {(Is_Foreign_column_2_needed ? $@"INNER JOIN {Foreign_Table_2_Name} ON {Foreign_Table_2_Name}.{Foreign_Table_2_Key_Column} = {Main_Table_Name}.{Foreign_Table_2_Key_Column} " : "")} 
+            //        {(Is_Foreign_column_3_needed ? $@"INNER JOIN {Foreign_Table_3_Name} ON {Foreign_Table_3_Name}.{Foreign_Table_3_Key_Column} = {Main_Table_Name}.{Foreign_Table_3_Key_Column} " : "")} 
+            //        WHERE {Main_Table_Name}.IsDeleted IS NULL
+            //        {(DD_Foriegn_Column_1.SelectedIndex > 0 ? $@" AND {Foreign_Table_1_Name}.{Foreign_Table_1_Key_Column} = {DD_Foriegn_Column_1.SelectedValue}" : "")}
+            //        {(DD_Foriegn_Column_2.SelectedIndex > 0 ? $@" AND {Foreign_Table_2_Name}.{Foreign_Table_2_Key_Column} = {DD_Foriegn_Column_2.SelectedValue}" : "")}
+            //        {(DD_Foriegn_Column_3.SelectedIndex > 0 ? $@" AND {Foreign_Table_3_Name}.{Foreign_Table_3_Key_Column} = {DD_Foriegn_Column_3.SelectedValue}" : "")}
+            //        ORDER BY {Main_Table_Name}.{Main_Column_1_Name}";
 
-            //{ (Input_Search.Text.Trim().Length > 0 ? $@" AND {Main_Table_Name}.{Main_Column_1_Name} LIKE '%{Input_Search.Text.Trim()}%'" : "")}
+            ////{ (Input_Search.Text.Trim().Length > 0 ? $@" AND {Main_Table_Name}.{Main_Column_1_Name} LIKE '%{Input_Search.Text.Trim()}%'" : "")}
 
-            Dictionary<string, object> parameters = new Dictionary<string, object>()
-            {
-                //{ "@Bank_ID", DD_Bank_Master.SelectedValue },
-            };
+            //Dictionary<string, object> parameters = new Dictionary<string, object>()
+            //{
+            //    //{ "@Bank_ID", DD_Bank_Master.SelectedValue },
+            //};
 
-            DataTable dt = executeClass.Get_Datatable(sqlQuery);
-            if (dt != null && dt.Rows.Count > 0)
-            {
-                Grid_Search.DataSource = dt;
-                Grid_Search.DataBind();
-                ViewState["Grid_Common_DT"] = dt;
-            }
-            else
-            {
-                Grid_Search.DataSource = null;
-                Grid_Search.DataBind();
-                ViewState["Grid_Common_DT"] = null;
-            }
+            //DataTable dt = executeClass.Get_Datatable(sqlQuery);
+            //if (dt != null && dt.Rows.Count > 0)
+            //{
+            //    Grid_Search.DataSource = dt;
+            //    Grid_Search.DataBind();
+            //    ViewState["Grid_Common_DT"] = dt;
+            //}
+            //else
+            //{
+            //    Grid_Search.DataSource = null;
+            //    Grid_Search.DataBind();
+            //    ViewState["Grid_Common_DT"] = null;
+            //}
         }
         catch (Exception ex)
         {
@@ -1350,7 +1384,7 @@ public partial class Master_Pages_CommonMaster : System.Web.UI.Page
         {
             string Primary_ID = Grid_Search.DataKeys[e.RowIndex]["ID"].ToString();
 
-            if(executeClass.Check_To_Allow_Delete(this.Page , Primary_Key_Column, Primary_ID) == false)
+            if (executeClass.Check_To_Allow_Delete(this.Page, Primary_Key_Column, Primary_ID) == false)
             {
                 string sa_Body = $@"The record's primary key <b>{Primary_ID}</b> is in use in some other table, hence cannot delete this record. Please check";
                 SweetAlert.GetSweet(this.Page, "warning", $"Cannot delete this record !!", $"{sa_Body}");
