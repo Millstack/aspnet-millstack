@@ -47,9 +47,9 @@
                         <asp:Literal ID="Literal1" runat="server" Text="">Middle Name
                             <%--<em style="color: red">*</em>--%>
                         </asp:Literal>
-                        <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" CssClass="invalid-feedback" SetFocusOnError="True" Display="Dynamic" ToolTip="Required"
+                        <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" CssClass="invalid-feedback" SetFocusOnError="True" Display="Dynamic" ToolTip="Required"
                             ControlToValidate="Txt_Middle_Name" InitialValue="" ValidationGroup="finalSubmit" ErrorMessage="required field">
-                        </asp:RequiredFieldValidator>
+                        </asp:RequiredFieldValidator>--%>
                     </div>
                     <asp:TextBox runat="server" ID="Txt_Middle_Name" type="text" Enabled="true" min="0" MaxLength="500"
                         CssClass="form-control border border-secondary-subtle bg-light rounded-1 fs-6 fw-light py-1"></asp:TextBox>
@@ -134,15 +134,13 @@
                         <asp:Literal ID="Literal5" runat="server" Text="">Address
                             <em style="color: red"></em>
                         </asp:Literal>
-                        <asp:RequiredFieldValidator ID="RequiredFieldValidator7" runat="server" CssClass="invalid-feedback" SetFocusOnError="True" Display="Dynamic" ToolTip="Required"
+                        <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator7" runat="server" CssClass="invalid-feedback" SetFocusOnError="True" Display="Dynamic" ToolTip="Required"
                             ControlToValidate="TA_Address" InitialValue="" ValidationGroup="finalSubmit" ErrorMessage="required field">
-                        </asp:RequiredFieldValidator>
+                        </asp:RequiredFieldValidator>--%>
                     </div>
                     <asp:TextBox runat="server" ID="TA_Address" type="text" Enabled="true" min="0" MaxLength="1000" TextMode="MultiLine" Height="100px"
                         CssClass="form-control border border-secondary-subtle bg-light rounded-1 fs-6 fw-light py-1">
                     </asp:TextBox>
-                    <%--<textarea id="TA_Address" runat="server" rows="3" cols="50"
-                        class="form-control focus-input border border-secondary-subtle bg-light rounded-1 fs-6 fw-light py-1 shadow-sm"></textarea>--%>
                 </div>
 
                 <!-- TetxtBox: Username -->

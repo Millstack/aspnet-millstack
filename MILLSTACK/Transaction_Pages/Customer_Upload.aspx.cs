@@ -236,108 +236,105 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
 
             DataTable dt = ViewState["Customer_DT"] as DataTable ?? masterClass.Get_DataTable_From_Dictionary(ViewState["Table_Columns"] as Dictionary<string, Type>);
 
-            if(dt  == null && dt.Rows.Count > 0)
+            foreach (DataRow row in Customer_DT.Rows)
             {
-                foreach (DataRow row in Customer_DT.Rows)
+                //int rowIndex = dt.Rows.IndexOf(row);
+                //dt.Rows.RemoveAt(rowIndex);
+
+                // fetching the row data
+                string List_No = row["List_No"].ToString();
+                string Serial_No = row["Serial_No"].ToString();
+                string customerName = row["Customer_Name"].ToString();
+                string customerMobileNo = row["Customer_MobileNo"].ToString();
+                string customerGender = row["Gender_ID"].ToString();
+                string customerNumber = row["WRN_No"].ToString();
+                string wardNumber = row["Ward_ID"].ToString();
+                string sectorOrArea = row["Sector_ID"].ToString();
+                string society = row["Society_ID"].ToString();
+
+                string Voting_Booth = row["Voting_Booth"].ToString();
+                string Voting_Room = row["Voting_Room"].ToString();
+
+                // color columns
+                string Customer_Type = row["CustomerType_ID"].ToString();
+
+                // NOTE: yellow --> neutral, black --> against and orange --> kattar supporter
+
+                // deciding the color selected
+                //string customerType = string.Empty;
+                //if (yellow == "1") customerType = "Yellow";
+                //if (black == "1") customerType = "Black";
+                //if (orange == "1") customerType = "Orange";
+
+                bool hasError = false;
+                string errorReason = string.Empty;
+
+                // checking if all columns in the row have data inside DataTable
+                //if (row.ItemArray.All(field => !string.IsNullOrEmpty(field.ToString()))) // condition to check all column data in DataTale
+                if (row.ItemArray.All(field => !string.IsNullOrEmpty(field.ToString())))
                 {
-                    //int rowIndex = dt.Rows.IndexOf(row);
-                    //dt.Rows.RemoveAt(rowIndex);
-
-                    // fetching the row data
-                    string List_No = row["List_No"].ToString();
-                    string Serial_No = row["Serial_No"].ToString();
-                    string customerName = row["Customer_Name"].ToString();
-                    string customerMobileNo = row["Customer_MobileNo"].ToString();
-                    string customerGender = row["Gender_ID"].ToString();
-                    string customerNumber = row["WRN_No"].ToString();
-                    string wardNumber = row["Ward_ID"].ToString();
-                    string sectorOrArea = row["Sector_ID"].ToString();
-                    string society = row["Society_ID"].ToString();
-
-                    string Voting_Booth = row["Voting_Booth"].ToString();
-                    string Voting_Room = row["Voting_Room"].ToString();
-
-                    // color columns
-                    string Customer_Type = row["CustomerType_ID"].ToString();
-
-                    // NOTE: yellow --> neutral, black --> against and orange --> kattar supporter
-
-                    // deciding the color selected
-                    //string customerType = string.Empty;
-                    //if (yellow == "1") customerType = "Yellow";
-                    //if (black == "1") customerType = "Black";
-                    //if (orange == "1") customerType = "Orange";
-
-                    bool hasError = false;
-                    string errorReason = string.Empty;
-
-                    // checking if all columns in the row have data inside DataTable
-                    //if (row.ItemArray.All(field => !string.IsNullOrEmpty(field.ToString()))) // condition to check all column data in DataTale
-                    if (row.ItemArray.All(field => !string.IsNullOrEmpty(field.ToString())))
+                    // checking for duplicate customer numbers
+                    if (customerNumbers.Contains(customerNumber))
                     {
-                        // checking for duplicate customer numbers
-                        if (customerNumbers.Contains(customerNumber))
-                        {
-                            hasError = true;
-                            errorReason = "Duplicate Customer No";
-                        }
-                        else
-                        {
-                            // adding unque customer no into HashSet
-                            customerNumbers.Add(customerNumber);
-                        }
-
-                        // checking for duplicate mobile number
-                        if (customerMobileNumbers.Contains(customerMobileNo))
-                        {
-                            hasError = true;
-                            errorReason = string.IsNullOrEmpty(errorReason) ? "Duplicate Mobile Number" : $"{errorReason}, Duplicate Mobile Number";
-                        }
-                        else
-                        {
-                            // Add unique mobile number into HashSet
-                            customerMobileNumbers.Add(customerMobileNo);
-                        }
-
-                        // checking for invalid mobile no and all digits only
-                        if (customerMobileNo.Length != 10 || !customerMobileNo.All(char.IsDigit))
-                        {
-                            hasError = true;
-                            errorReason = string.IsNullOrEmpty(errorReason) ? "Invalid Mobile Number" : $"{errorReason}, Invalid Mobile Number";
-                        }
-
-                        if (hasError) AddRowToErrorDataTable(dtErrors, customerNumber, customerName, customerMobileNo, errorReason);
+                        hasError = true;
+                        errorReason = "Duplicate Customer No";
                     }
                     else
                     {
-                        // if not all columns has data
-                        errorReason = string.IsNullOrEmpty(errorReason) ? "Missing column data" : $"{errorReason}, Missing column data";
-
-                        AddRowToErrorDataTable(dtErrors, customerNumber, customerName, customerMobileNo, errorReason);
+                        // adding unque customer no into HashSet
+                        customerNumbers.Add(customerNumber);
                     }
 
-                    //AddRowToItemDataTable(dt, customerName, customerMobileNo, customerGender, customerNumber, wardNumber, society, sectorOrArea, Customer_Type, "EXCEL");
+                    // checking for duplicate mobile number
+                    if (customerMobileNumbers.Contains(customerMobileNo))
+                    {
+                        hasError = true;
+                        errorReason = string.IsNullOrEmpty(errorReason) ? "Duplicate Mobile Number" : $"{errorReason}, Duplicate Mobile Number";
+                    }
+                    else
+                    {
+                        // Add unique mobile number into HashSet
+                        customerMobileNumbers.Add(customerMobileNo);
+                    }
 
-                    // still adding all records to original grdiview for the user to check it
-                    DataRow row_1 = dt.NewRow();
+                    // checking for invalid mobile no and all digits only
+                    if (customerMobileNo.Length != 10 || !customerMobileNo.All(char.IsDigit))
+                    {
+                        hasError = true;
+                        errorReason = string.IsNullOrEmpty(errorReason) ? "Invalid Mobile Number" : $"{errorReason}, Invalid Mobile Number";
+                    }
 
-                    if (!dt.Columns.Contains("Data_Entry_Mode")) dt.Columns.Add("Data_Entry_Mode", typeof(string));
-
-                    row_1["List_No"] = List_No;
-                    row_1["Serial_No"] = Serial_No;
-                    row_1["Customer_Name"] = customerName;
-                    row_1["Customer_MobileNo"] = customerMobileNo;
-                    row_1["Gender_ID"] = customerGender;
-                    row_1["WRN_No"] = customerNumber;
-                    row_1["Voting_Booth"] = Voting_Booth;
-                    row_1["Voting_Room"] = Voting_Room;
-                    row_1["Ward_ID"] = wardNumber;
-                    row_1["Sector_ID"] = sectorOrArea;
-                    row_1["Society_ID"] = society;
-                    row_1["CustomerType_ID"] = Customer_Type;
-                    row_1["Data_Entry_Mode"] = "EXCEL";
-                    dt.Rows.Add(row_1);
+                    if (hasError) AddRowToErrorDataTable(dtErrors, customerNumber, customerName, customerMobileNo, errorReason);
                 }
+                else
+                {
+                    // if not all columns has data
+                    errorReason = string.IsNullOrEmpty(errorReason) ? "Missing column data" : $"{errorReason}, Missing column data";
+
+                    AddRowToErrorDataTable(dtErrors, customerNumber, customerName, customerMobileNo, errorReason);
+                }
+
+                //AddRowToItemDataTable(dt, customerName, customerMobileNo, customerGender, customerNumber, wardNumber, society, sectorOrArea, Customer_Type, "EXCEL");
+
+                // still adding all records to original grdiview for the user to check it
+                DataRow row_1 = dt.NewRow();
+
+                if (!dt.Columns.Contains("Data_Entry_Mode")) dt.Columns.Add("Data_Entry_Mode", typeof(string));
+
+                row_1["List_No"] = List_No;
+                row_1["Serial_No"] = Serial_No;
+                row_1["Customer_Name"] = customerName;
+                row_1["Customer_MobileNo"] = customerMobileNo;
+                row_1["Gender_ID"] = customerGender;
+                row_1["WRN_No"] = customerNumber;
+                row_1["Voting_Booth"] = Voting_Booth;
+                row_1["Voting_Room"] = Voting_Room;
+                row_1["Ward_ID"] = wardNumber;
+                row_1["Sector_ID"] = sectorOrArea;
+                row_1["Society_ID"] = society;
+                row_1["CustomerType_ID"] = Customer_Type;
+                row_1["Data_Entry_Mode"] = "EXCEL";
+                dt.Rows.Add(row_1);
             }
 
             if (dt.Rows.Count > 0)
@@ -347,8 +344,8 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
 
                 //masterClass.Bind_GridView_Dynamic(GridCustomer, dt, ViewState, "Customer_DT");
 
-                GridCustomer.DataSource = dt;
-                GridCustomer.DataBind();
+                Grid_Customer.DataSource = dt;
+                Grid_Customer.DataBind();
 
                 ViewState["Customer_DT"] = dt;
 
@@ -456,6 +453,7 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
                 executeClass.Bind_Dropdown_Generic(DD_Customer_Type, sql, "CustomerName", "CustomerType_ID", parameters);
 
                 ListItem selectedItem = DD_Customer_Type.Items.FindByText(customerType);
+                //ListItem selectedItem = DD_Customer_Type.Items.FindByValue(customerType);
                 if (selectedItem != null) DD_Customer_Type.SelectedIndex = DD_Customer_Type.Items.IndexOf(selectedItem);
 
                 // gender
@@ -463,9 +461,10 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
                         From M_Gender 
                         Where IsDeleted IS NULL";
                 parameters = new Dictionary<string, object> { /*{ "@Bank_ID", DD_Bank_Master.SelectedValue },*/ };
-                executeClass.Bind_Dropdown_Generic(DD_Customer_Type, sql, "GenderName", "Gender_ID", parameters);
+                executeClass.Bind_Dropdown_Generic(DD_Gender, sql, "GenderName", "Gender_ID", parameters);
 
                 ListItem selected_Gender = DD_Gender.Items.FindByText(customerGender);
+                //ListItem selected_Gender = DD_Gender.Items.FindByValue(customerGender);
                 if (selected_Gender != null) DD_Gender.SelectedIndex = DD_Gender.Items.IndexOf(selected_Gender);
             }
 
@@ -539,12 +538,12 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
     //-------------------------------] Submit Button Event [-------------------------------
     protected void btnBack_Click(object sender, EventArgs e)
     {
-        Response.Redirect("UploadCustomer.aspx");
+        Response.Redirect(GetRouteUrl("Customer_Upload_Route", null));
     }
 
     protected async void btnSubmit_Click(object sender, EventArgs e)
     {
-        if (GridCustomer.Rows.Count > 0)
+        if (Grid_Customer.Rows.Count > 0)
         {
             using (SqlConnection con = new SqlConnection(ConnectionClass.connection_String_Local))
             {
