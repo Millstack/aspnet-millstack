@@ -13,6 +13,9 @@ using OfficeOpenXml;
 using System.Collections;
 using System.Text;
 using System.Web.UI.HtmlControls;
+using Microsoft.Owin.BuilderProperties;
+using System.Data.Entity.Hierarchy;
+using System.IdentityModel.Protocols.WSTrust;
 
 public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
 {
@@ -35,9 +38,9 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
                     { "Serial_No", typeof(Int64) },
                     { "Customer_Name", typeof(string) },
                     { "Customer_MobileNo", typeof(string) },
-                    { "Gender_ID", typeof(Int64) },
+                    { "Gender_ID", typeof(string) },
                     { "WRN_No", typeof(Int64) },
-                    { "CustomerType_ID", typeof(Int64) },
+                    { "CustomerType_ID", typeof(string) },
                     { "Voting_Booth", typeof(Int64) },
                     { "Voting_Room", typeof(Int64) },
                     { "Ward_ID", typeof(Int64) },
@@ -396,24 +399,6 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
         }
     }
 
-    //private void AddRowToItemDataTable(DataTable dt, string customerName, string customerMobileNo, string customerGender, string customerNumber, string wardNumber, string society, string sectorOrArea, string customerType, string enteryMode)
-    //{
-    //    DataRow row = dt.NewRow();
-
-    //    if (!dt.Columns.Contains("DataEntryMode")) dt.Columns.Add("DataEntryMode", typeof(string));
-
-    //    row["Customer_Name"] = customerName;
-    //    row["Customer_Mobile"] = customerMobileNo;
-    //    row["Gender"] = customerGender;
-    //    row["Customer_No"] = customerNumber;
-    //    row["Ward_No"] = wardNumber;
-    //    row["Customer_Society"] = society;
-    //    row["Customer_Sector_Area"] = sectorOrArea;
-    //    row["Customer_Type"] = customerType;
-    //    row["DataEntryMode"] = enteryMode;
-    //    dt.Rows.Add(row);
-    //}
-
     private void AddRowToErrorDataTable(DataTable dtErrors, string customerNumber, string customerName, string customerMobileNo, string errorReason)
     {
         DataRow errorRow = dtErrors.NewRow();
@@ -450,12 +435,15 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
                          From Tbl_M_CustomerType as ct
                          Where IsDeleted IS NULL";
                 parameters = new Dictionary<string, object> { /*{ "@Bank_ID", DD_Bank_Master.SelectedValue },*/ };
-                executeClass.Bind_Dropdown_Generic(DD_Customer_Type, sql, "CustomerName", "CustomerType_ID", parameters);
+                executeClass.Bind_Dropdown_Generic(DD_Customer_Type, sql, "CustomerName", "CustomerCode", parameters);
 
                 ListItem selectedItem = DD_Customer_Type.Items.FindByText(customerType);
                 //ListItem selectedItem = DD_Customer_Type.Items.FindByValue(customerType);
                 if (selectedItem != null) DD_Customer_Type.SelectedIndex = DD_Customer_Type.Items.IndexOf(selectedItem);
+            }
 
+            if (DD_Gender != null)
+            {
                 // gender
                 sql = $@"Select Gender_ID, GenderName, GenderNameMr, GenderCode, IsDeleted 
                         From M_Gender 
@@ -467,6 +455,7 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
                 //ListItem selected_Gender = DD_Gender.Items.FindByValue(customerGender);
                 if (selected_Gender != null) DD_Gender.SelectedIndex = DD_Gender.Items.IndexOf(selected_Gender);
             }
+
 
             HtmlGenericControl div = (HtmlGenericControl)e.Row.FindControl("DivWrapper");
             if (div != null)
@@ -484,6 +473,11 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
             //customerTypeCell.Text = customerType;
 
         }
+    }
+
+    protected void Grid_Customer_RowDeleting(object sender, GridViewDeleteEventArgs e)
+    {
+
     }
 
     protected void DD_Customer_Type_SelectedIndexChanged(object sender, EventArgs e)
@@ -541,44 +535,41 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
         Response.Redirect(GetRouteUrl("Customer_Upload_Route", null));
     }
 
-    protected async void btnSubmit_Click(object sender, EventArgs e)
+    protected void btnSubmit_Click(object sender, EventArgs e)
     {
         if (Grid_Customer.Rows.Count > 0)
         {
-            using (SqlConnection con = new SqlConnection(ConnectionClass.connection_String_Local))
+            try
             {
-                con.Open();
-                SqlTransaction transaction = con.BeginTransaction(IsolationLevel.Serializable);
+                ViewState["OPERATION"] = "INSERT";
+                string OperationStatus = string.IsNullOrEmpty(ViewState["OPERATION"]?.ToString()) ? string.Empty : ViewState["OPERATION"].ToString();
 
-                try
+                Dictionary<string, object> parameters = new Dictionary<string, object>
                 {
-                    // checking for existing database records
-                    DataTable dtErrors = await CheckForExistingCustomerRecords(con, transaction);
+                    { "@Operation", OperationStatus },
+                    { "@User_ID", ViewState["OPERATION"].ToString() == "INSERT" ? (object)DBNull.Value : Session["User_ID"] },
 
-                    if (dtErrors.Rows.Count == 0)
-                    {
-                        // insert header
-                        await InsertCustomerRecords(con, transaction);
+                    { "@List_No", XXXXXXXXXX },
+                    { "@Serial_No", XXXXXXXXXX },
+                    { "@Customer_Name", XXXXXXXXXX },
+                    { "@Customer_MobileNo", XXXXXXXXXX },
+                    { "@Gender_ID", XXXXXXXXXX },
+                    { "@WRN_No", XXXXXXXXXX },
+                    { "@CustomerType_ID", XXXXXXXXXX },
+                    { "@Voting_Booth", XXXXXXXXXX },
+                    { "@Voting_Room", XXXXXXXXXX },
 
+                    { "@Ward_ID", XXXXXXXXXX },
+                    { "@Sector_ID", XXXXXXXXXX },
+                    { "@Society_ID", XXXXXXXXXX },
+                    { "@Data_Entry_Mode", XXXXXXXXXX },
 
-                        if (transaction.Connection != null)
-                        {
-                            transaction.Commit();
-
-                            SweetAlert.GetSweet(this.Page, "success", "Customers Uploaded!", $"The Customers List Uploaded Successfully", "~/View/Customer/UploadCustomer.aspx");
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    transaction.Rollback();
-                    SweetAlert.GetSweet(this.Page, "warning", "Oops!", $"{ex.Message}");
-                }
-                finally
-                {
-                    con.Close();
-                    transaction.Dispose();
-                }
+                    { "@SavedBy", Session["User_ID"] },
+                };
+            }
+            catch (Exception ex)
+            {
+                SweetAlert.GetSweet(this.Page, "error", $"", $"{ex.Message}");
             }
         }
         else
@@ -591,91 +582,7 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
 
 
 
-    private async Task<DataTable> CheckForExistingCustomerRecords(SqlConnection con, SqlTransaction transaction)
-    {
-        DataTable custDT = ViewState["Customer_DT"] as DataTable;
 
-        // creating error records datatable
-        DataTable dtErrors = new DataTable();
-        dtErrors.Columns.Add("CustomerNo");
-        dtErrors.Columns.Add("CustomerName");
-        dtErrors.Columns.Add("MobileNo");
-        dtErrors.Columns.Add("ErrorReason");
-
-        if (custDT.Rows.Count > 0)
-        {
-            foreach (DataRow row in custDT.Rows)
-            {
-                string customerName = row["CustomerName"].ToString();
-                string customerNo = row["CustomerNo"].ToString();
-                string mobileNo = row["MobileNo"].ToString();
-
-                string sql = "SELECT CustomerNo FROM CustomerMaster WHERE CustomerNo = @CustomerNo";
-                SqlCommand cmd = new SqlCommand(sql, con, transaction);
-                cmd.Parameters.AddWithValue("@CustomerNo", customerNo);
-
-                object result = await cmd.ExecuteScalarAsync();
-                if (result != null)
-                {
-                    DataRow errorRow = dtErrors.NewRow();
-                    errorRow["CustomerName"] = customerName;
-                    errorRow["CustomerNo"] = customerNo;
-                    errorRow["MobileNo"] = mobileNo;
-                    errorRow["ErrorReason"] = $"Customer number {customerNo} already exists in the database, please check";
-                    dtErrors.Rows.Add(errorRow);
-                }
-            }
-        }
-
-        if (dtErrors.Rows.Count > 0)
-        {
-            SubmitCancelButtonDiv.Visible = true;
-            btnSubmit.Visible = true;
-
-            ErrorGridDiv.Visible = true;
-
-            GridErrors.DataSource = dtErrors;
-            GridErrors.DataBind();
-
-            SweetAlert.GetSweet(this.Page, "info", "Existing Customers!", $"There are existing <b>customer numbers</b> in the database, please check the error records");
-        }
-
-        return dtErrors;
-    }
-
-    private async Task InsertCustomerRecords(SqlConnection con, SqlTransaction transaction)
-    {
-        string userID = Session["UserId"].ToString();
-
-        DataTable custDT = ViewState["Customer_DT"] as DataTable;
-
-        if (custDT.Rows.Count > 0)
-        {
-            foreach (DataRow row in custDT.Rows)
-            {
-                // fetching next refID
-                //int customer_RefID = await GetNewCustomerRefID(con, transaction);
-
-                // insertion
-                string sql = $@"Insert Into CustomerMaster 
-                                (CustomerName, MobileNo, Gender, CustomerNo, WardNo, Society, SectorArea, CustomerType, SavedBy) 
-                                Values 
-                                (@CustomerName, @MobileNo, @Gender, @CustomerNo, @WardNo, @Society, @SectorArea, @CustomerType, @SavedBy)";
-
-                SqlCommand cmd = new SqlCommand(sql, con, transaction);
-                cmd.Parameters.AddWithValue("@CustomerName", row["CustomerName"]);
-                cmd.Parameters.AddWithValue("@MobileNo", row["MobileNo"]);
-                cmd.Parameters.AddWithValue("@Gender", row["Gender"]);
-                cmd.Parameters.AddWithValue("@CustomerNo", row["CustomerNo"]);
-                cmd.Parameters.AddWithValue("@WardNo", row["WardNo"]);
-                cmd.Parameters.AddWithValue("@Society", row["Society"]);
-                cmd.Parameters.AddWithValue("@SectorArea", row["SectorArea"]);
-                cmd.Parameters.AddWithValue("@CustomerType", row["CustomerType"]);
-                cmd.Parameters.AddWithValue("@SavedBy", userID);
-                await cmd.ExecuteNonQueryAsync();
-            }
-        }
-    }
 
 
 

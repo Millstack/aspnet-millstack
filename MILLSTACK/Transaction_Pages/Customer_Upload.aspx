@@ -17,7 +17,7 @@
     </style>
 
 
-    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+    <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
         <ContentTemplate>
 
             <!-- Heading -->
@@ -88,7 +88,7 @@
 
                         <div class="col-md-12">
                             <asp:GridView ShowHeaderWhenEmpty="true" ID="Grid_Customer" runat="server" AutoGenerateColumns="false"
-                                OnRowDataBound="GridCustomer_RowDataBound"
+                                OnRowDataBound="GridCustomer_RowDataBound" OnRowDeleting="Grid_Customer_RowDeleting"
                                 CssClass="datatables table table-bordered table-hover border border-1 border-dark-subtle text-center grid-custom mb-3">
                                 <HeaderStyle CssClass="align-middle" />
                                 <Columns>
@@ -213,10 +213,23 @@
 
                         <div class="row mt-5 mb-2">
                             <div class="col-md-6 text-start">
-                                <asp:Button ID="btnBack" runat="server" Text="Back" OnClick="btnBack_Click" CssClass="btn btn-custom text-white shadow mb-5" />
+                                <asp:Button 
+                                    ID="btnBack"
+                                    runat="server" 
+                                    Text="Back" 
+                                    OnClick="btnBack_Click" 
+                                    CssClass="btn btn-custom text-white shadow mb-5"
+                                    Style="background: #0f3f6f; color: #fff"/>
                             </div>
                             <div class="col-md-6 text-end">
-                                <asp:Button ID="btnSubmit" runat="server" Text="Submit" OnClick="btnSubmit_Click" ValidationGroup="finalSubmit" CssClass="btn btn-custom text-white shadow mb-5" />
+                                <asp:Button 
+                                    ID="btnSubmit" 
+                                    runat="server" 
+                                    Text="Submit" 
+                                    OnClick="btnSubmit_Click" 
+                                    ValidationGroup="finalSubmit" 
+                                    CssClass="btn btn-custom text-white shadow mb-5"
+                                    Style="background: #0f3f6f; color: #fff"/>
                             </div>
                         </div>
                     </div>
