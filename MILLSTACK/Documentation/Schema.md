@@ -416,7 +416,7 @@ Create Table Tbl_M_Customer (
 	Customer_Name VARCHAR(500) NOT NULL,
 	Customer_MobileNo VARCHAR(10) UNIQUE NOT NULL CHECK (LEN(Customer_MobileNo) = 10 AND Customer_MobileNo NOT LIKE '%[^0-9]%'),
 	Gender_ID BIGINT NOT NULL,
-	WRN_No VARCHAR(1000) NOT NULL,
+	WRN_No VARCHAR(1000) UNIQUE NOT NULL,
 	CustomerType_ID BIGINT NOT NULL,
 
 	Voting_Booth VARCHAR(100) NOT NULL,
@@ -433,6 +433,37 @@ Create Table Tbl_M_Customer (
 	IsDeleted BIT NULL
 );
 ```
+
+
+
+
+```
+IF EXISTS (SELECT * FROM sys.types WHERE is_table_type = 1 AND name = 'Customer_TVP')
+BEGIN
+    DROP TYPE dbo.Customer_TVP;
+END
+GO
+
+CREATE TYPE Customer_TVP AS TABLE
+(
+    List_No INT,
+    Serial_No INT,
+    Customer_Name NVARCHAR(100),
+    Customer_MobileNo NVARCHAR(15),
+    Gender_ID INT,
+    WRN_No NVARCHAR(50),
+    CustomerType_ID INT,
+    Voting_Booth NVARCHAR(50),
+    Voting_Room NVARCHAR(50),
+    Ward_ID INT,
+    Sector_ID INT,
+    Society_ID INT,
+    Data_Entry_Mode NVARCHAR(10)
+	--SavedBy BIGINT
+);
+GO
+```
+
 
 
 

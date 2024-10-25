@@ -531,5 +531,57 @@ namespace CommonClassLibrary
         }
 
 
+
+
+        /// <summary>
+        /// Executing SQL Command 
+        /// </summary>
+        /// <param name="Page Control Onject"></param>
+        /// <param name="Stored Procedure Name"></param>
+        /// <param name="Dictionary Object"></param>
+        /// <returns>Void</returns>
+        public void Execute_Stored_Procedure(Page page, string storedProcedureName, Dictionary<string, object> parameters = null, DataTable TVP_DT = null, string TVP_Name = null)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionClass.connection_String_Local))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(storedProcedureName, connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    if(parameters != null)
+                    {
+                        foreach (var param in parameters)
+                        {
+                            command.Parameters.AddWithValue(param.Key, param.Value ?? DBNull.Value);
+                        }
+                    }
+
+                    if (TVP_DT != null && !string.IsNullOrEmpty(TVP_Name))
+                    {
+                        SqlParameter TVP_Param = command.Parameters.AddWithValue(TVP_Name, TVP_DT);
+                        TVP_Param.SqlDbType = SqlDbType.Structured;
+                        TVP_Param.TypeName = TVP_Name;  // eg: dbo.RoleIDTableType
+                    }
+
+                    using (SqlTransaction transaction = connection.BeginTransaction())
+                    {
+                        command.Transaction = transaction;
+                        try
+                        {
+                            command.ExecuteNonQuery();
+                            transaction.Commit();
+                        }
+                        catch (Exception ex)
+                        {
+                            transaction.Rollback();
+                            SweetAlert.GetSweet(page, "info", "", $"{ex.Message}");
+                        }
+                    }
+                }
+            }
+        }
+
+
     }
 }

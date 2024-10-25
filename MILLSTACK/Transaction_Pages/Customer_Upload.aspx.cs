@@ -435,7 +435,7 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
                          From Tbl_M_CustomerType as ct
                          Where IsDeleted IS NULL";
                 parameters = new Dictionary<string, object> { /*{ "@Bank_ID", DD_Bank_Master.SelectedValue },*/ };
-                executeClass.Bind_Dropdown_Generic(DD_Customer_Type, sql, "CustomerName", "CustomerCode", parameters);
+                executeClass.Bind_Dropdown_Generic(DD_Customer_Type, sql, "CustomerName", "CustomerType_ID", parameters);
 
                 ListItem selectedItem = DD_Customer_Type.Items.FindByText(customerType);
                 //ListItem selectedItem = DD_Customer_Type.Items.FindByValue(customerType);
@@ -541,31 +541,32 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
         {
             try
             {
-                ViewState["OPERATION"] = "INSERT";
-                string OperationStatus = string.IsNullOrEmpty(ViewState["OPERATION"]?.ToString()) ? string.Empty : ViewState["OPERATION"].ToString();
-
-                Dictionary<string, object> parameters = new Dictionary<string, object>
+                DataTable Customer_DT = ViewState["Customer_DT"] as DataTable;
+                if (Customer_DT != null && Customer_DT.Rows.Count > 0)
                 {
-                    { "@Operation", OperationStatus },
-                    { "@User_ID", ViewState["OPERATION"].ToString() == "INSERT" ? (object)DBNull.Value : Session["User_ID"] },
+                    foreach (GridViewRow row in Grid_Customer.Rows)
+                    {
+                        DataRow dataRow = Customer_DT.Rows[row.RowIndex];
 
-                    { "@List_No", XXXXXXXXXX },
-                    { "@Serial_No", XXXXXXXXXX },
-                    { "@Customer_Name", XXXXXXXXXX },
-                    { "@Customer_MobileNo", XXXXXXXXXX },
-                    { "@Gender_ID", XXXXXXXXXX },
-                    { "@WRN_No", XXXXXXXXXX },
-                    { "@CustomerType_ID", XXXXXXXXXX },
-                    { "@Voting_Booth", XXXXXXXXXX },
-                    { "@Voting_Room", XXXXXXXXXX },
+                        DropDownList DD_Gender = (DropDownList)row.FindControl("DD_Gender");
+                        DropDownList DD_Customer_Type = (DropDownList)row.FindControl("DD_Customer_Type");
 
-                    { "@Ward_ID", XXXXXXXXXX },
-                    { "@Sector_ID", XXXXXXXXXX },
-                    { "@Society_ID", XXXXXXXXXX },
-                    { "@Data_Entry_Mode", XXXXXXXXXX },
+                        if (DD_Gender != null && DD_Customer_Type != null)
+                        {
+                            dataRow["Gender_ID"] = Convert.ToInt32(DD_Gender.SelectedValue);
+                            dataRow["CustomerType_ID"] = Convert.ToInt32(DD_Customer_Type.SelectedValue);
+                        }
+                    }
 
-                    { "@SavedBy", Session["User_ID"] },
-                };
+                    Dictionary<string, object> parameters = new Dictionary<string, object>
+                    {
+                        { "@SavedBy", Session["User_ID"] },
+                    };
+
+                    executeClass.Execute_Stored_Procedure(this.Page, "USP_Insert_Customers", parameters: parameters, TVP_DT: Customer_DT, TVP_Name: "Customer_TVP");
+
+                    SweetAlert.GetSweet(this.Page, "success", $"", $"All customer <b>{Customer_DT.Rows.Count}</b> records inserted succesfully", GetRouteUrl("Customer_Upload_Route", null));
+                }
             }
             catch (Exception ex)
             {
@@ -574,7 +575,7 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
         }
         else
         {
-            SweetAlert.GetSweet(this.Page, "warning", "No Customer Found!", $"Kindly Upload Some Customers To Proceed Further");
+            SweetAlert.GetSweet(this.Page, "warning", "No Customer Found!", $"Kindly upload some customers to proceed further");
         }
     }
 
