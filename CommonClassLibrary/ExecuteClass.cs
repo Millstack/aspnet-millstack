@@ -540,7 +540,7 @@ namespace CommonClassLibrary
         /// <param name="Stored Procedure Name"></param>
         /// <param name="Dictionary Object"></param>
         /// <returns>Void</returns>
-        public void Execute_Stored_Procedure(Page page, string storedProcedureName, Dictionary<string, object> parameters = null, DataTable TVP_DT = null, string TVP_Name = null)
+        public void Execute_Stored_Procedure(string storedProcedureName, Dictionary<string, object> parameters = null, DataTable TVP_DT = null, string TVP_Name = null)
         {
             using (SqlConnection connection = new SqlConnection(ConnectionClass.connection_String_Local))
             {
@@ -567,16 +567,20 @@ namespace CommonClassLibrary
                     using (SqlTransaction transaction = connection.BeginTransaction())
                     {
                         command.Transaction = transaction;
-                        try
-                        {
-                            command.ExecuteNonQuery();
-                            transaction.Commit();
-                        }
-                        catch (Exception ex)
-                        {
-                            transaction.Rollback();
-                            SweetAlert.GetSweet(page, "info", "", $"{ex.Message}");
-                        }
+
+                        command.ExecuteNonQuery();
+                        transaction.Commit();
+
+                        //try
+                        //{
+                        //    command.ExecuteNonQuery();
+                        //    transaction.Commit();
+                        //}
+                        //catch (Exception ex)
+                        //{
+                        //    transaction.Rollback();
+                        //    SweetAlert.GetSweet_Large(page, "error", $"", $"{ex.Message}", "560px", "850px");
+                        //}
                     }
                 }
             }

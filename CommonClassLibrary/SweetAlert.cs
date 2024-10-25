@@ -53,6 +53,57 @@ namespace CommonClassLibrary
         }
 
 
+        public static void GetSweet_Large(Page page, string icontype, string title, string message, string maxHeight, string width, string redirectUrl = null)
+        {
+            string confirmButtonText = "OK";
+            string allowOutsideClick = "false";
+
+            string sweetAlertScript;
+
+            // Replace newline characters with <br> for HTML formatting in the message
+            message = message.Replace(Environment.NewLine, "<br/>");
+
+            if (string.IsNullOrEmpty(redirectUrl))
+            {
+                sweetAlertScript = $@"
+                <script>
+                    Swal.fire({{
+                        title: '{title}',
+                        html: `<div style='max-height: {maxHeight}; overflow-y: auto; text-align: left;'>{message}</div>`,
+                        icon: '{icontype}',
+                        confirmButtonText: '{confirmButtonText}',
+                        allowOutsideClick: {allowOutsideClick},
+                        width: '{width}',
+                        heightAuto: false
+                    }});
+                </script>";
+            }
+            else
+            {
+                string resolvedUrl = page.ResolveUrl(redirectUrl);
+
+                sweetAlertScript = $@"
+                <script>
+                    Swal.fire({{
+                        title: '{title}',
+                        html: `<div style='max-height: {maxHeight}; overflow-y: auto; text-align: left;'>{message}</div>`,
+                        icon: '{icontype}',
+                        confirmButtonText: '{confirmButtonText}',
+                        allowOutsideClick: {allowOutsideClick},
+                        width: '{width}',
+                        heightAuto: false
+                    }}).then((result) => {{
+                        if (result.isConfirmed) {{
+                            window.location.href = '{resolvedUrl}';
+                        }}
+                    }});
+                </script>";
+            }
+
+            ScriptManager.RegisterStartupScript(page, page.GetType(), "largeSweetAlert", sweetAlertScript, false);
+        }
+
+
 
         public static void GetSweet_ModaL(Page page, string icontype, string title, string message, string redirectUrl = null, bool closeModal = false, bool reloadPage = false)
         {
@@ -105,6 +156,10 @@ namespace CommonClassLibrary
 
             ScriptManager.RegisterStartupScript(page, page.GetType(), "sweetAlert", sweetAlertScript, false);
         }
+
+
+
+
 
     }
 }

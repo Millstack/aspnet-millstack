@@ -563,14 +563,14 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
                         { "@SavedBy", Session["User_ID"] },
                     };
 
-                    executeClass.Execute_Stored_Procedure(this.Page, "USP_Insert_Customers", parameters: parameters, TVP_DT: Customer_DT, TVP_Name: "Customer_TVP");
+                    executeClass.Execute_Stored_Procedure("USP_Insert_Customers", parameters: parameters, TVP_DT: Customer_DT, TVP_Name: "Customer_TVP");
 
                     SweetAlert.GetSweet(this.Page, "success", $"", $"All customer <b>{Customer_DT.Rows.Count}</b> records inserted succesfully", GetRouteUrl("Customer_Upload_Route", null));
                 }
             }
             catch (Exception ex)
             {
-                SweetAlert.GetSweet(this.Page, "error", $"", $"{ex.Message}");
+                SweetAlert.GetSweet_Large(this.Page, "info", $"", $"{ex.Message}", "700px", "60%");
             }
         }
         else
