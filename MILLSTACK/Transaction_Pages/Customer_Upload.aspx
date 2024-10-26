@@ -54,7 +54,13 @@
                                 <h6 class="fw-lighter fs-6 text-body-tertiary">User can upload excel with format .xlsx or .xls</h6>
 
                                 <!-- Reference Excel Format -->
-                                <asp:LinkButton ID="Reference_Excel" runat="server" CssClass="link- text-decoration-none fw-normal">download excel format</asp:LinkButton>
+                                <asp:LinkButton 
+                                    ID="Reference_Excel" 
+                                    runat="server" 
+                                    CssClass="link- text-decoration-none fw-normal"
+                                    Text="download reference excel sheet"
+                                    OnClick="Reference_Excel_Click">
+                                </asp:LinkButton>
 
                                 <div>
                                     <asp:RequiredFieldValidator ID="RFV_Upload" runat="server" CssClass="invalid-feedback" SetFocusOnError="True" Display="Dynamic" ToolTip="Required"
@@ -139,10 +145,20 @@
                                     <asp:BoundField Visible="true" DataField="Sector_ID" HeaderText="Sector" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="fw-light text-start" />
                                     <asp:BoundField Visible="true" DataField="Society_ID" HeaderText="Society" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="fw-light text-start" />
 
-                                    <asp:TemplateField HeaderText="Delete">
+                                    <asp:TemplateField HeaderText="Remove">
                                         <ItemTemplate>
-                                            <asp:LinkButton ID="lnkDelete" runat="server" CommandName="Delete" CommandArgument='<%# Container.DataItemIndex %>'>
-                                        <asp:Image runat="server" ImageUrl="~/assets/image/delete-cut/delete.png" AlternateText="Edit" style="width: 28px; height: 28px;" />
+                                            <asp:LinkButton 
+                                                ID="lnkDelete" 
+                                                runat="server" 
+                                                CommandName="Delete" 
+                                                ToolTip="Delete"
+                                                CommandArgument='<%# Container.DataItemIndex %>'
+                                                OnClientClick="return confirm('Are you sure to Delete this record ?');">
+                                                <asp:Image runat="server" 
+                                                    ImageUrl="~/assets/image/delete-cut/delete-5.png" 
+                                                    AlternateText="Edit" 
+                                                    style="width: 40px; height: 40px;"
+                                                    CssClass="shadow"/>
                                             </asp:LinkButton>
                                         </ItemTemplate>
                                         <ItemStyle HorizontalAlign="Center" CssClass="align-middle" Width="30px" />
@@ -244,6 +260,7 @@
 
         </ContentTemplate>
         <Triggers>
+            <asp:PostBackTrigger ControlID="Reference_Excel" />
             <asp:PostBackTrigger ControlID="Btn_Upload" />
         </Triggers>
     </asp:UpdatePanel>

@@ -16,6 +16,7 @@ using System.Web.UI.HtmlControls;
 using Microsoft.Owin.BuilderProperties;
 using System.Data.Entity.Hierarchy;
 using System.IdentityModel.Protocols.WSTrust;
+using System.Threading;
 
 public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
 {
@@ -60,6 +61,56 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
 
 
 
+    //-------------------------------] Reference Excel Download Event [-------------------------------
+
+    protected void Reference_Excel_Click(object sender, EventArgs e)
+    {
+        string filename = "~/Reference_Documents/Excel/Reference_Customer_Upload_Sheet.xlsx";
+
+        if (!string.IsNullOrEmpty(filename))
+        {
+            string path = Server.MapPath(filename);
+
+            try
+            {
+                System.IO.FileInfo file = new System.IO.FileInfo(path);
+
+                if (file.Exists)
+                {
+                    // Clear response and set headers for file download
+                    Response.Clear();
+                    Response.ContentType = MimeMapping.GetMimeMapping(file.Name); // automatically detect MIME type
+                    Response.AddHeader("Content-Disposition", $"attachment; filename=\"{file.Name}\"");
+                    Response.AddHeader("Content-Length", file.Length.ToString());
+
+                    // Use TransmitFile to stream the file
+                    Response.TransmitFile(file.FullName);
+                    Response.Flush();
+                    Response.End();
+                }
+                else
+                {
+                    SweetAlert.GetSweet(this.Page, "info", $"", $"File does not exists. Please contact admin");
+                }
+            }
+            catch (ThreadAbortException)
+            {
+                // Suppress ThreadAbortException triggered by Response.End()
+            }
+            catch (Exception ex)
+            {
+                SweetAlert.GetSweet(this.Page, "error", $"", $"{ex.Message}");
+            }
+        }
+        else
+        {
+            SweetAlert.GetSweet(this.Page, "info", $"", $"File path not found. Please contact to admin !");
+        }
+    }
+
+
+
+
     //-------------------------------] Upload Event [-------------------------------
 
     protected void Btn_Upload_Click(object sender, EventArgs e)
@@ -72,7 +123,8 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
 
                 if (FileExtension == ".xlsx" || FileExtension == ".xls")
                 {
-                    string unique_File_Name = $@"{DateTime.Now.ToString("dd_MM_yyyy_HH_mm_ss_fff")}_{File_Upload.FileName}{System.IO.Path.GetExtension(File_Upload.PostedFile.FileName)}";
+                    //string unique_File_Name = $@"{DateTime.Now.ToString("dd_MM_yyyy_HH_mm_ss_fff")}_{File_Upload.FileName}{System.IO.Path.GetExtension(File_Upload.PostedFile.FileName)}";
+                    string unique_File_Name = $@"{DateTime.Now.ToString("dd_MM_yyyy_HH_mm_ss_fff")}_{File_Upload.FileName}";
 
                     string virtualPath = Server.MapPath("/Excel_Upload/Customer");
                     if (!Directory.Exists(virtualPath)) Directory.CreateDirectory(virtualPath);
@@ -477,7 +529,26 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
 
     protected void Grid_Customer_RowDeleting(object sender, GridViewDeleteEventArgs e)
     {
+        string GridView_ID = "Grid_Customer";
 
+        DataTable dt = ViewState["Customer_DT"] as DataTable;
+
+        GridView gridView = (GridView)sender;
+
+        if (gridView.ID == GridView_ID)
+        {
+            int rowIndex = e.RowIndex;
+
+            if (dt != null && dt.Rows.Count > rowIndex)
+            {
+                dt.Rows.RemoveAt(rowIndex);
+
+                ViewState["Document_DT"] = dt;
+
+                gridView.DataSource = dt;
+                gridView.DataBind();
+            }
+        }
     }
 
     protected void DD_Customer_Type_SelectedIndexChanged(object sender, EventArgs e)
@@ -587,4 +658,6 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
 
 
 
+
+    
 }
