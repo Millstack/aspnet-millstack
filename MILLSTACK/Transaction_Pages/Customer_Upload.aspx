@@ -54,9 +54,9 @@
                                 <h6 class="fw-lighter fs-6 text-body-tertiary">User can upload excel with format .xlsx or .xls</h6>
 
                                 <!-- Reference Excel Format -->
-                                <asp:LinkButton 
-                                    ID="Reference_Excel" 
-                                    runat="server" 
+                                <asp:LinkButton
+                                    ID="Reference_Excel"
+                                    runat="server"
                                     CssClass="link- text-decoration-none fw-normal"
                                     Text="download reference excel sheet"
                                     OnClick="Reference_Excel_Click">
@@ -117,6 +117,11 @@
                                     <asp:TemplateField HeaderText="Gender">
                                         <ItemTemplate>
                                             <div id="Div_Gender_Wrapper" runat="server" class="">
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server"
+                                                    CssClass="invalid-feedback" SetFocusOnError="True" Display="Dynamic" ToolTip="Required"
+                                                    ErrorMessage="select gender" InitialValue=""
+                                                    ControlToValidate="DD_Gender" ValidationGroup="finalSubmit">
+                                                </asp:RequiredFieldValidator>
                                                 <asp:DropDownList ID="DD_Gender" runat="server" Width="100%"
                                                     CssClass="form-control chosen-dropdown" AutoPostBack="false">
                                                 </asp:DropDownList>
@@ -130,6 +135,11 @@
                                     <asp:TemplateField HeaderText="Customer Type">
                                         <ItemTemplate>
                                             <div id="DivWrapper" runat="server" class="">
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server"
+                                                    CssClass="invalid-feedback" SetFocusOnError="True" Display="Dynamic" ToolTip="Required"
+                                                    ErrorMessage="select customer type" InitialValue=""
+                                                    ControlToValidate="DD_Customer_Type" ValidationGroup="finalSubmit">
+                                                </asp:RequiredFieldValidator>
                                                 <asp:DropDownList ID="DD_Customer_Type" runat="server" Width="100%"
                                                     CssClass="form-control chosen-dropdown" AutoPostBack="true"
                                                     OnSelectedIndexChanged="DD_Customer_Type_SelectedIndexChanged">
@@ -141,16 +151,17 @@
 
                                     <asp:BoundField Visible="true" DataField="Voting_Booth" HeaderText="Voting Booth" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="fw-light text-start" />
                                     <asp:BoundField Visible="true" DataField="Voting_Room" HeaderText="Voting Room" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="fw-light text-start" />
+                                    <asp:BoundField Visible="true" DataField="Assembly_ID" HeaderText="Assembly" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="fw-light text-start" />
                                     <asp:BoundField Visible="true" DataField="Ward_ID" HeaderText="Ward" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="fw-light text-start" />
                                     <asp:BoundField Visible="true" DataField="Sector_ID" HeaderText="Sector" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="fw-light text-start" />
                                     <asp:BoundField Visible="true" DataField="Society_ID" HeaderText="Society" HeaderStyle-CssClass="text-center" ItemStyle-CssClass="fw-light text-start" />
 
                                     <asp:TemplateField HeaderText="Remove">
                                         <ItemTemplate>
-                                            <asp:LinkButton 
-                                                ID="lnkDelete" 
-                                                runat="server" 
-                                                CommandName="Delete" 
+                                            <asp:LinkButton
+                                                ID="lnkDelete"
+                                                runat="server"
+                                                CommandName="Delete"
                                                 ToolTip="Delete"
                                                 CommandArgument='<%# Container.DataItemIndex %>'
                                                 OnClientClick="return confirm('Are you sure to Delete this record ?');">
@@ -229,23 +240,23 @@
 
                         <div class="row mt-5 mb-2">
                             <div class="col-md-6 text-start">
-                                <asp:Button 
+                                <asp:Button
                                     ID="btnBack"
-                                    runat="server" 
-                                    Text="Back" 
-                                    OnClick="btnBack_Click" 
+                                    runat="server"
+                                    Text="Back"
+                                    OnClick="btnBack_Click"
                                     CssClass="btn btn-custom text-white shadow mb-5"
-                                    Style="background: #0f3f6f; color: #fff"/>
+                                    Style="background: #0f3f6f; color: #fff" />
                             </div>
                             <div class="col-md-6 text-end">
-                                <asp:Button 
-                                    ID="btnSubmit" 
-                                    runat="server" 
-                                    Text="Submit" 
-                                    OnClick="btnSubmit_Click" 
-                                    ValidationGroup="finalSubmit" 
+                                <asp:Button
+                                    ID="btnSubmit"
+                                    runat="server"
+                                    Text="Submit"
+                                    OnClick="btnSubmit_Click"
+                                    ValidationGroup="finalSubmit"
                                     CssClass="btn btn-custom text-white shadow mb-5"
-                                    Style="background: #0f3f6f; color: #fff"/>
+                                    Style="background: #0f3f6f; color: #fff" />
                             </div>
                         </div>
                     </div>

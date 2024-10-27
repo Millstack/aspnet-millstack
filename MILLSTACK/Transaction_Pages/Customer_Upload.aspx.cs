@@ -44,6 +44,7 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
                     { "CustomerType_ID", typeof(string) },
                     { "Voting_Booth", typeof(Int64) },
                     { "Voting_Room", typeof(Int64) },
+                    { "Assembly_ID", typeof(Int64) },
                     { "Ward_ID", typeof(Int64) },
                     { "Sector_ID", typeof(Int64) },
                     { "Society_ID", typeof(Int64) },
@@ -303,6 +304,7 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
                 string customerMobileNo = row["Customer_MobileNo"].ToString();
                 string customerGender = row["Gender_ID"].ToString();
                 string customerNumber = row["WRN_No"].ToString();
+                string Assembly_ID = row["Assembly_ID"].ToString();
                 string wardNumber = row["Ward_ID"].ToString();
                 string sectorOrArea = row["Sector_ID"].ToString();
                 string society = row["Society_ID"].ToString();
@@ -384,6 +386,7 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
                 row_1["WRN_No"] = customerNumber;
                 row_1["Voting_Booth"] = Voting_Booth;
                 row_1["Voting_Room"] = Voting_Room;
+                row_1["Assembly_ID"] = Assembly_ID;
                 row_1["Ward_ID"] = wardNumber;
                 row_1["Sector_ID"] = sectorOrArea;
                 row_1["Society_ID"] = society;

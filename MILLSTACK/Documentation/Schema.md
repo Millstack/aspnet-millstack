@@ -422,6 +422,7 @@ Create Table Tbl_M_Customer (
 	Voting_Booth VARCHAR(100) NOT NULL,
 	Voting_Room VARCHAR(100) NOT NULL,
 
+	Assembly_ID BIGINT NOT NULL,
 	Ward_ID BIGINT NOT NULL,
 	Sector_ID BIGINT NOT NULL,
 	Society_ID BIGINT NOT NULL,
@@ -446,18 +447,19 @@ GO
 
 CREATE TYPE Customer_TVP AS TABLE
 (
-    List_No INT,
-    Serial_No INT,
+    List_No BIGINT,
+    Serial_No BIGINT,
     Customer_Name NVARCHAR(100),
     Customer_MobileNo NVARCHAR(15),
-    Gender_ID INT,
+    Gender_ID BIGINT,
     WRN_No NVARCHAR(50),
     CustomerType_ID INT,
     Voting_Booth NVARCHAR(50),
     Voting_Room NVARCHAR(50),
-    Ward_ID INT,
-    Sector_ID INT,
-    Society_ID INT,
+	Assembly_ID BIGINT,
+    Ward_ID BIGINT,
+    Sector_ID BIGINT,
+    Society_ID BIGINT,
     Data_Entry_Mode NVARCHAR(10)
 	--SavedBy BIGINT
 );

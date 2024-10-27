@@ -60,7 +60,9 @@ public partial class Login_Login : System.Web.UI.Page
         string userName = Txt_UserName.Text;
         string password = Txt_Passowrd.Text;
 
-        string sql = $@"Select Distinct um.User_ID, UserName,  Concat(um.FirstName, ' ' ,um.LastName) as User_FullName, Salt, UserPassword
+        string sql = $@"Select Distinct     
+                            um.User_ID, UserName,  Concat(um.FirstName, ' ' ,um.LastName) as User_FullName, Salt, UserPassword,
+                            Assembly_ID, Ward_ID, Sector_ID, Society_ID
                         From Tbl_M_UserMaster as um 
                         Where um.IsDeleted IS NULL AND UserName = @UserName";
         var parameters = new Dictionary<string, object> { { "@UserName", userName }, };
@@ -82,10 +84,16 @@ public partial class Login_Login : System.Web.UI.Page
                 Session["UserName"] = dt.Rows[0]["UserName"].ToString();
                 Session["User_FullName"] = dt.Rows[0]["User_FullName"].ToString();
 
+                // work area assignment
+                Session["Assembly_ID"] = dt.Rows[0]["Assembly_ID"].ToString();
+                Session["Ward_ID"] = dt.Rows[0]["Ward_ID"].ToString();
+                Session["Sector_ID"] = dt.Rows[0]["Sector_ID"].ToString();
+                //Session["Society_ID"] = dt.Rows[0]["Society_ID"].ToString();
+
                 System.Threading.Thread.Sleep(2000);
 
-                //Response.Redirect(GetRouteUrl("HomePage_Route", null)); // home page
-                Response.Redirect(GetRouteUrl("Dashboard_Route", null)); // dashboard
+                Response.Redirect(GetRouteUrl("HomePage_Route", null)); // home page
+                //Response.Redirect(GetRouteUrl("Dashboard_Route", null)); // dashboard
             }
             else
             {
