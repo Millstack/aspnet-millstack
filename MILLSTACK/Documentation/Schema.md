@@ -320,7 +320,10 @@ CREATE TABLE M_Taluka (
 
 
 
-
+-- to add foriegn key constraint in already cerated table
+ALTER TABLE Tbl_M_Ward
+ADD CONSTRAINT FK_Tbl_M_Ward_Assembly
+FOREIGN KEY (Assembly_ID) REFERENCES Tbl_M_Assembly(Assembly_ID);
 
 
 
@@ -350,7 +353,9 @@ CREATE TABLE Tbl_M_Ward (
 	WardCode NVARCHAR(100) NOT NULL,
     SavedBy VARCHAR(1000) NOT NULL,
     SavedOn DATETIME DEFAULT GETDATE() NOT NULL,
-	IsDeleted BIT NULL
+	IsDeleted BIT NULL,
+
+	CONSTRAINT FK_Tbl_M_Ward_Assembly FOREIGN KEY (Assembly_ID) REFERENCES Tbl_M_Assembly(Assembly_ID)
 );
 ```
 
@@ -359,13 +364,17 @@ CREATE TABLE Tbl_M_Ward (
 ```
 CREATE TABLE Tbl_M_Sector (
 	Sector_ID BIGINT PRIMARY KEY,
+	Assembly_ID BIGINT NOT NULL,
 	Ward_ID BIGINT NOT NULL,
 	SectorName NVARCHAR(1000) NOT NULL,
 	SectorNameMr NVARCHAR(1000) NULL,
 	SectorCode NVARCHAR(100) NOT NULL,
     SavedBy VARCHAR(1000) NOT NULL,
     SavedOn DATETIME DEFAULT GETDATE() NOT NULL,
-	IsDeleted BIT NULL
+	IsDeleted BIT NULL,
+
+	CONSTRAINT FK_Tbl_M_Sector_Assembly FOREIGN KEY (Assembly_ID) REFERENCES Tbl_M_Assembly(Assembly_ID),
+	CONSTRAINT FK_Tbl_M_Sector_Ward FOREIGN KEY (Ward_ID) REFERENCES Tbl_M_Ward (Ward_ID)
 );
 ```
 
@@ -374,15 +383,20 @@ CREATE TABLE Tbl_M_Sector (
 ```
 CREATE TABLE Tbl_M_Society (
 	Society_ID BIGINT PRIMARY KEY,
+	Assembly_ID BIGINT NOT NULL,
+	Ward_ID BIGINT NOT NULL,
 	Sector_ID BIGINT NOT NULL,
 	SocietyName NVARCHAR(1000) NOT NULL,
 	SocietyNameMr NVARCHAR(1000) NULL,
 	SocietyCode NVARCHAR(100) NOT NULL,
     SavedBy VARCHAR(1000) NOT NULL,
     SavedOn DATETIME DEFAULT GETDATE() NOT NULL,
-	IsDeleted BIT NULL
-);
+	IsDeleted BIT NULL,
 
+	CONSTRAINT FK_Tbl_M_Society_Assembly FOREIGN KEY (Assembly_ID) REFERENCES Tbl_M_Assembly(Assembly_ID),
+	CONSTRAINT FK_Tbl_M_Society_Ward FOREIGN KEY (Ward_ID) REFERENCES Tbl_M_Ward (Ward_ID),
+	CONSTRAINT FK_Tbl_M_Society_Sector FOREIGN KEY (Sector_ID) REFERENCES Tbl_M_Sector (Sector_ID)
+);
 ```
 
 
@@ -434,9 +448,6 @@ Create Table Tbl_M_Customer (
 	IsDeleted BIT NULL
 );
 ```
-
-
-
 
 ```
 IF EXISTS (SELECT * FROM sys.types WHERE is_table_type = 1 AND name = 'Customer_TVP')
