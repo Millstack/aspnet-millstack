@@ -107,30 +107,30 @@ public partial class Master_Pages_CommonMaster : System.Web.UI.Page
                 Main_Column_3_Name = "SocietyCode";
 
                 // Foreign Table 1
-                Grid_Search.Columns[5].HeaderText = "Sector";
+                Grid_Search.Columns[5].HeaderText = "Assembly";
                 Is_Foreign_column_1_needed = true;
-                Foreign_Table_1_Name = "Tbl_M_Sector";
-                Foreign_Table_1_Key_Text.Text = "Sector Name";
-                Foreign_Table_1_Column_Name = "SectorName";
-                Foreign_Table_1_Key_Column = "Sector_ID";
+                Foreign_Table_1_Name = "Tbl_M_Assembly";
+                Foreign_Table_1_Key_Text.Text = "Assembly Name";
+                Foreign_Table_1_Column_Name = "AssemblyName";
+                Foreign_Table_1_Key_Column = "Assembly_ID";
 
                 // Foreign Table 2
-                Grid_Search.Columns[6].HeaderText = "Division";
-                Is_Foreign_column_2_needed = false;
-                Is_Foreign_Dropdown_2_Is_Dependant_On_1 = false;
-                Foreign_Table_2_Name = "M_Division";
-                Foreign_Table_2_Key_Text.Text = "Division Name";
-                Foreign_Table_2_Column_Name = "DivisionName";
-                Foreign_Table_2_Key_Column = "Division_ID";
+                Grid_Search.Columns[6].HeaderText = "Ward";
+                Is_Foreign_column_2_needed = true;
+                Is_Foreign_Dropdown_2_Is_Dependant_On_1 = true;
+                Foreign_Table_2_Name = "Tbl_M_Ward";
+                Foreign_Table_2_Key_Text.Text = "Ward Name";
+                Foreign_Table_2_Column_Name = "WardName";
+                Foreign_Table_2_Key_Column = "Ward_ID";
 
                 // Foreign Table 3
-                Grid_Search.Columns[7].HeaderText = "Division";
-                Is_Foreign_column_3_needed = false;
-                Is_Foreign_Dropdown_3_Is_Dependant_On_2 = false;
-                Foreign_Table_3_Name = "M_Division";
-                Foreign_Table_3_Key_Text.Text = "Division Name";
-                Foreign_Table_3_Column_Name = "DivisionName";
-                Foreign_Table_3_Key_Column = "Division_ID";
+                Grid_Search.Columns[7].HeaderText = "Sector";
+                Is_Foreign_column_3_needed = true;
+                Is_Foreign_Dropdown_3_Is_Dependant_On_2 = true;
+                Foreign_Table_3_Name = "Tbl_M_Sector";
+                Foreign_Table_3_Key_Text.Text = "Sector Name";
+                Foreign_Table_3_Column_Name = "SectorName";
+                Foreign_Table_3_Key_Column = "Sector_ID";
             }
             else if (Page.RouteData.Values["Page"].ToString().Trim() == "Sector")
             {
@@ -1383,16 +1383,10 @@ public partial class Master_Pages_CommonMaster : System.Web.UI.Page
         try
         {
             bool canDelete = true;
-            string sa_Body = string.Empty;
 
             string Primary_ID = Grid_Search.DataKeys[e.RowIndex]["ID"].ToString();
 
-            if (executeClass.Check_To_Allow_Delete(this.Page, Primary_Key_Column, Primary_ID) == false)
-            {
-                sa_Body = $@"The record's primary key <b>{Primary_ID}</b> is in use in some other table, hence cannot delete this record. Please check";
-                canDelete = false;
-                //return;
-            }
+            if (executeClass.Check_To_Allow_Delete(this.Page, Primary_Key_Column, Primary_ID) == false) canDelete = false;
 
             if (canDelete)
             {
@@ -1422,7 +1416,7 @@ public partial class Master_Pages_CommonMaster : System.Web.UI.Page
             }
             else
             {
-                SweetAlert.GetSweet(this.Page, "warning", $"Cannot delete this record !!", $"{sa_Body}");
+                SweetAlert.GetSweet(this.Page, "info", "", $"The record is already in use in some other table, can not delete it now");
             }
         }
         catch (Exception ex)

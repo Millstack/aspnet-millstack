@@ -445,7 +445,10 @@ Create Table Tbl_M_Customer (
 
 	SavedBy BIGINT NOT NULL,
 	SavedOn DATETIME DEFAULT GETDATE() NOT NULL,
-	IsDeleted BIT NULL
+	IsDeleted BIT NULL,
+
+	CONSTRAINT FK_Tbl_M_Customer_CustomerType FOREIGN KEY (CustomerType_ID) REFERENCES Tbl_M_CustomerType(CustomerType_ID),
+	CONSTRAINT FK_Tbl_M_Customer_Gender FOREIGN KEY (Gender_ID) REFERENCES M_Gender (Gender_ID)
 );
 ```
 
