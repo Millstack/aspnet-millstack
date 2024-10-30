@@ -498,7 +498,7 @@
 
         <!-- Side bar UI Starts -->
         <!-- sidebar close -->
-        <div class="sidebar ">
+        <div class="sidebar close">
             <div class="logo-details">
                 <asp:Image runat="server" ImageUrl="~/assets/image/logo/millstack.png" AlternateText="na" Style="height: 66px; width: 66px;" CssClass="px-2 py-3" />
                 <span class="logo_name">MillStack</span>

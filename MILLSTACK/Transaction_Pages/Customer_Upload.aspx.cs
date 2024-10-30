@@ -639,7 +639,7 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
 
                     executeClass.Execute_Stored_Procedure("USP_Insert_Customers", parameters: parameters, TVP_DT: Customer_DT, TVP_Name: "Customer_TVP");
 
-                    SweetAlert.GetSweet(this.Page, "success", $"", $"All customer <b>{Customer_DT.Rows.Count}</b> records inserted succesfully", GetRouteUrl("Customer_Upload_Route", null));
+                    SweetAlert.GetSweet(this.Page, "success", $"", $"All customer <b>{Customer_DT.Rows.Count}</b> records inserted succesfully", GetRouteUrl("Customer_Master_Update_Route", null));
                 }
             }
             catch (Exception ex)
