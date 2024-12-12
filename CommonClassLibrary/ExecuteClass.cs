@@ -141,7 +141,7 @@ namespace CommonClassLibrary
         /// <param name="String Procedure Name"></param>
         /// <param name="Dictionary Object"></param>
         /// <returns>DataTable</returns>
-        public DataTable Get_DataTable_From_StoredProcedure(Page page, string storedProcedureName, Dictionary<string, object> parameters = null)
+        public DataTable Get_DataTable_From_StoredProcedure(string storedProcedureName, Dictionary<string, object> parameters = null)
         {
             DataTable dt = new DataTable();
 
@@ -161,26 +161,31 @@ namespace CommonClassLibrary
                         }
                     }
 
-                    using (SqlTransaction transaction = connection.BeginTransaction())
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(command))
                     {
-                        command.Transaction = transaction;
-
-                        try
-                        {
-                            using (SqlDataAdapter adapter = new SqlDataAdapter(command))
-                            {
-                                adapter.Fill(dt);
-                            }
-
-                            transaction.Commit();
-                        }
-                        catch (Exception ex)
-                        {
-                            transaction.Rollback();
-                            //throw;
-                            SweetAlert.GetSweet(page, "error", $"", $"{ex.Message}");
-                        }
+                        adapter.Fill(dt);
                     }
+
+                    //using (SqlTransaction transaction = connection.BeginTransaction())
+                    //{
+                    //    command.Transaction = transaction;
+
+                    //    try
+                    //    {
+                    //        using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                    //        {
+                    //            adapter.Fill(dt);
+                    //        }
+
+                    //        transaction.Commit();
+                    //    }
+                    //    catch (Exception ex)
+                    //    {
+                    //        transaction.Rollback();
+                    //        //throw;
+                    //        SweetAlert.GetSweet(page, "error", $"", $"{ex.Message}");
+                    //    }
+                    //}
                 }
             }
 
@@ -194,7 +199,7 @@ namespace CommonClassLibrary
         /// <param name="String Procedure Name"></param>
         /// <param name="Dictionary Object"></param>
         /// <returns>DataTable</returns>
-        public DataSet Get_DataSet_From_StoredProcedure(Page page, string storedProcedureName, Dictionary<string, object> parameters = null)
+        public DataSet Get_DataSet_From_StoredProcedure(string storedProcedureName, Dictionary<string, object> parameters = null)
         {
             DataSet ds = new DataSet();
 
@@ -214,25 +219,30 @@ namespace CommonClassLibrary
                         }
                     }
 
-                    using (SqlTransaction transaction = connection.BeginTransaction())
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(command))
                     {
-                        command.Transaction = transaction;
-
-                        try
-                        {
-                            using (SqlDataAdapter adapter = new SqlDataAdapter(command))
-                            {
-                                adapter.Fill(ds);
-                            }
-
-                            transaction.Commit();
-                        }
-                        catch (Exception ex)
-                        {
-                            transaction.Rollback();
-                            SweetAlert.GetSweet(page, "error", $"", $"{ex.Message}");
-                        }
+                        adapter.Fill(ds);
                     }
+
+                    //using (SqlTransaction transaction = connection.BeginTransaction())
+                    //{
+                    //    command.Transaction = transaction;
+
+                    //    try
+                    //    {
+                    //        using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                    //        {
+                    //            adapter.Fill(ds);
+                    //        }
+
+                    //        transaction.Commit();
+                    //    }
+                    //    catch (Exception ex)
+                    //    {
+                    //        transaction.Rollback();
+                    //        SweetAlert.GetSweet(page, "error", $"", $"{ex.Message}");
+                    //    }
+                    //}
                 }
             }
 
@@ -379,29 +389,22 @@ namespace CommonClassLibrary
         /// <param name="Dictionary object"></param>
         /// <param name="Boolean optional"></param>
         /// <returns>Void</returns>
-        public void Bind_Dropdown_With_DT(Page page, ListControl dropdownID, DataTable dt, string textField, string valueFiled, Dictionary<string, object> parameters = null, bool multiple = false)
+        public void Bind_Dropdown_With_DT(ListControl dropdownID, DataTable dt, string textField, string valueFiled, Dictionary<string, object> parameters = null, bool multiple = false)
         {
-            try
+            if (multiple)
             {
-                if (multiple)
-                {
-                    dropdownID.DataSource = dt;
-                    dropdownID.DataTextField = textField;
-                    dropdownID.DataValueField = valueFiled;
-                    dropdownID.DataBind();
-                }
-                else
-                {
-                    dropdownID.DataSource = dt;
-                    dropdownID.DataTextField = textField;
-                    dropdownID.DataValueField = valueFiled;
-                    dropdownID.DataBind();
-                    dropdownID.Items.Insert(0, new ListItem(" ", ""));
-                }
+                dropdownID.DataSource = dt;
+                dropdownID.DataTextField = textField;
+                dropdownID.DataValueField = valueFiled;
+                dropdownID.DataBind();
             }
-            catch (Exception ex)
+            else
             {
-                SweetAlert.GetSweet(page, "error", "", $"{ex.Message}");
+                dropdownID.DataSource = dt;
+                dropdownID.DataTextField = textField;
+                dropdownID.DataValueField = valueFiled;
+                dropdownID.DataBind();
+                dropdownID.Items.Insert(0, new ListItem(" ", ""));
             }
         }
 
@@ -534,22 +537,25 @@ namespace CommonClassLibrary
 
 
         /// <summary>
-        /// Executing SQL Command 
+        /// Executing SQL Command With Optional TVP Paramteres
         /// </summary>
         /// <param name="Page Control Onject"></param>
         /// <param name="Stored Procedure Name"></param>
         /// <param name="Dictionary Object"></param>
-        /// <returns>Void</returns>
-        public void Execute_Stored_Procedure(string storedProcedureName, Dictionary<string, object> parameters = null, DataTable TVP_DT = null, string TVP_Name = null)
+        /// <param name="TVP DataTable"></param>
+        /// <param name="TVP Parameter Name"></param>
+        /// <param name="TVP Type Name"></param>
+        /// <returns>Boolean</returns>
+        public bool Execute_Stored_Procedure(Page page, string SP_Name, Dictionary<string, object> parameters = null, DataTable TVP_DT = null, string TVP_Parameter = null, string TVP_Name = null)
         {
             using (SqlConnection connection = new SqlConnection(ConnectionClass.connection_String_Local))
             {
                 connection.Open();
-                using (SqlCommand command = new SqlCommand(storedProcedureName, connection))
+                using (SqlCommand command = new SqlCommand(SP_Name, connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
 
-                    if(parameters != null)
+                    if (parameters != null)
                     {
                         foreach (var param in parameters)
                         {
@@ -557,9 +563,9 @@ namespace CommonClassLibrary
                         }
                     }
 
-                    if (TVP_DT != null && !string.IsNullOrEmpty(TVP_Name))
+                    if (TVP_DT != null && TVP_DT.Rows.Count > 0 && !string.IsNullOrEmpty(TVP_Parameter) && !string.IsNullOrEmpty(TVP_Name))
                     {
-                        SqlParameter TVP_Param = command.Parameters.AddWithValue(TVP_Name, TVP_DT);
+                        SqlParameter TVP_Param = command.Parameters.AddWithValue(TVP_Parameter, TVP_DT);
                         TVP_Param.SqlDbType = SqlDbType.Structured;
                         TVP_Param.TypeName = TVP_Name;  // eg: dbo.RoleIDTableType
                     }
@@ -567,20 +573,18 @@ namespace CommonClassLibrary
                     using (SqlTransaction transaction = connection.BeginTransaction())
                     {
                         command.Transaction = transaction;
-
-                        command.ExecuteNonQuery();
-                        transaction.Commit();
-
-                        //try
-                        //{
-                        //    command.ExecuteNonQuery();
-                        //    transaction.Commit();
-                        //}
-                        //catch (Exception ex)
-                        //{
-                        //    transaction.Rollback();
-                        //    SweetAlert.GetSweet_Large(page, "error", $"", $"{ex.Message}", "560px", "850px");
-                        //}
+                        try
+                        {
+                            command.ExecuteNonQuery();
+                            transaction.Commit();
+                            return true;
+                        }
+                        catch (Exception ex)
+                        {
+                            transaction.Rollback();
+                            SweetAlert.GetSweet(page, "error", "", $"{ex.Message}");
+                            return false;
+                        }
                     }
                 }
             }

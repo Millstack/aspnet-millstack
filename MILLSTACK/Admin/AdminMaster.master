@@ -18,12 +18,12 @@
     <telerik:RadCodeBlock ID="RadCodeBlock1" runat="server">
 
         <!-- CSS -->
-        <%-- <link href="<%= ResolveUrl("../assets/components/bootstrap/css/bootstrap.min_v5.3.3.css") %>" rel="stylesheet" />
+        <link href="<%= ResolveUrl("../assets/components/bootstrap/css/bootstrap.min_v5.3.3.css") %>" rel="stylesheet" />
         <link href="<%= ResolveUrl("../assets/icons/bootstrap-icons/bootstrap-icons.min_v1.11.3.css") %>" rel="stylesheet" />
         <link href="<%= ResolveUrl("../assets/components/select2/select2.min_v4.0.13.css") %>" rel="stylesheet" />
         <link href="<%= ResolveUrl("../assets/components/sweet-alert/sweetalert2.min_v11.11.css") %>" rel="stylesheet" />
         <link href="<%= ResolveUrl("../assets/components/chosen_v1.8.7/chosen.min.css") %>" rel="stylesheet" />
-        <link href="<%= ResolveUrl("../assets/components/sumo-select/sumoselect.min_v3.0.3.css") %>" rel="stylesheet" />--%>
+        <link href="<%= ResolveUrl("../assets/components/sumo-select/sumoselect.min_v3.0.3.css") %>" rel="stylesheet" />
 
         <!-- JavaScript -->
         <script src="<%= ResolveUrl("../assets/components/bootstrap/js/bootstrap.bundle.min_v5.3.3.js") %>"></script>
@@ -35,7 +35,6 @@
         <script src="<%= ResolveUrl("../assets/components/select2/select2.min_v4.0.13.js") %>"></script>
         <script src="<%= ResolveUrl("../assets/components/chosen_v1.8.7/chosen.jquery.min.js") %>"></script>
         <script src="<%= ResolveUrl("../assets/components/sumo-select/jquery.sumoselect.min_v3.0.3.js") %>"></script>
-        <script src="<%= ResolveUrl("../assets/components/apex-charts/apexcharts_v3.53.0.js") %>"></script>
 
 
         <!-- DataTables CSS -->
@@ -534,7 +533,7 @@
                             <asp:Label ID="lblLiveDayDateTime" runat="server" CssClass="navbar-brand ms-4 text-dark fw-light fs-6 py-2"></asp:Label>
 
                             <span id="Live_Date_Time" class="navbar-brand ms-4 text-dark fw-light fs-6 py-2" style="font-family: Verdana; font-size: 9pt;"></span>
-                            <script type="text/javascript"> window.onload = updateDateTime(); </script>
+                            <%--<script type="text/javascript"> window.onload = updateDateTime(); </script>--%>
 
                             <!-- Add other menu items here -->
                         </div>
@@ -619,141 +618,6 @@
         <!-- Main content Ends -->
 
     </form>
-
-
-
-
-
-    <script type="text/javascript">
-        function removePanel() {
-            $telerik.findControl(document, "RadAjaxLoadingPanel1").hide();
-        }
-
-        function requestStart(sender, args) {
-            // Disable the loading panel for specific export buttons
-            if (args.get_eventTarget().indexOf("ExportToExcelButton") >= 0 ||
-                args.get_eventTarget().indexOf("ExportToWordButton") >= 0 ||
-                args.get_eventTarget().indexOf("ExportToPdfButton") >= 0 ||
-                args.get_eventTarget().indexOf("ExportToCsvButton") >= 0) {
-                setTimeout(removePanel, 10);
-                args.set_enableAjax(false);
-            }
-        }
-    </script>
-
-
-    <!-- JS: Live Hide Button On Click Event For Non-Repeat Clicks -->
-    <script type="text/javascript">
-        function Hide_Button_On_Click(obj) {
-            //document.getElementById('myButton');
-            var myButton = obj;
-            var s = obj.value;
-            //alert(s);
-            // myButton.style.visibility = 'hidden';
-            myButton.style.display = 'none';
-            setTimeout(function () {
-                myButton.style.display = '';
-            }, 4000);
-
-            return false;
-        }
-    </script>
-
-
-
-    <!-- JS: Live Day Date Time -->
-    <script type="text/javascript">
-
-        // function to set live day, date and time
-        setInterval(function () {
-            updateDateTime();
-        }, 1000);
-
-        function updateDateTime() {
-
-            var now = new Date();
-
-            var day = now.toLocaleDateString('en-US', {
-                weekday: 'long'
-            });
-
-            var month = now.toLocaleDateString('en-US', {
-                month: 'long'
-            });
-
-            var date = now.getDate();
-            var year = now.getFullYear();
-
-            var time = now.toLocaleTimeString('en-US', {
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: true
-            });
-
-            var formattedDateTime = day + ', ' + month + ' ' + date + ', ' + year + ' | ' + time;
-
-            document.getElementById('<%= lblLiveDayDateTime.ClientID %>').innerHTML = formattedDateTime;
-        }
-
-        // open parent dropdown
-        let iconLinks = document.querySelectorAll(".iocn-link");
-        for (let i = 0; i < iconLinks.length; i++) {
-            iconLinks[i].addEventListener("click", (e) => {
-                let iconLinkParent = e.currentTarget.parentElement; // selecting main parent of iconLink
-                iconLinkParent.classList.toggle("showMenu");
-            });
-        }
-
-        // open parent dropdown
-        let arrows = document.querySelectorAll(".arrow");
-        for (let i = 0; i < arrows.length; i++) {
-            arrows[i].addEventListener("click", (e) => {
-                e.stopPropagation(); // prevent the event from bubbling up to the parent div
-                let arrowParent = e.target.parentElement.parentElement; // selecting main parent of arrow
-                arrowParent.classList.toggle("showMenu");
-            });
-        }
-
-
-        // toggle side bar to open and close
-        let sidebar = document.querySelector(".sidebar");
-        let sidebarBtn = document.querySelector(".bx-menu");
-        console.log(sidebarBtn);
-        sidebarBtn.addEventListener("click", () => {
-            sidebar.classList.toggle("close");
-        });
-    </script>
-
-
-    <!-- iFrame Modal Popup Window JavaScript -->
-    <script>
-        // Function to open the modal, load a page into the iframe, and set the size dynamically
-        function openModal(pageUrl, width = '60%', height = '80%') {
-            // Set the modal's width and height based on parameters
-            var modal = document.getElementById('myModal');
-            modal.style.width = width;
-            modal.style.height = height;
-            modal.style.left = 'calc((100% - ' + width + ') / 2)'; // Center the modal horizontally
-
-            // Set iframe source and show modal
-            document.getElementById('iframeModal').src = pageUrl;
-            modal.style.display = 'block';
-        }
-
-        // Close the modal when the close button is clicked
-        document.getElementById('closeModal').onclick = function () {
-            var modal = document.getElementById('myModal');
-            modal.style.display = 'none';
-            document.getElementById('iframeModal').src = ''; // Clear iframe content when closing
-        }
-
-        // Function to close the modal
-        function closeModal() {
-            document.getElementById('myModal').style.display = 'none';
-            document.getElementById('iframeModal').src = '';
-        }
-    </script>
 
 
     <!-- JS: jQuery Plugin Initilization -->
@@ -1010,18 +874,156 @@
 
             var prm = Sys.WebForms.PageRequestManager.getInstance();
             prm.add_endRequest(function () {
-                setTimeout(function () {
 
-                    Bind_Dropdown_By_Class(".chosen-dropdown");
-                    Initialize_DataTables_By_Class(".datatables");
-                    Bind_Dropdown_Multicheck_By_Class('.listbox');
+                Bind_Dropdown_By_Class(".chosen-dropdown");
+                Initialize_DataTables_By_Class(".datatables");
+                Bind_Dropdown_Multicheck_By_Class('.listbox');
 
-                }, 0);
+                //setTimeout(function () {
+
+                //    Bind_Dropdown_By_Class(".chosen-dropdown");
+                //    Initialize_DataTables_By_Class(".datatables");
+                //    Bind_Dropdown_Multicheck_By_Class('.listbox');
+
+                //}, 0);
             });
         });
-
-
     </script>
+
+
+    <script type="text/javascript">
+        function removePanel() {
+            $telerik.findControl(document, "RadAjaxLoadingPanel1").hide();
+        }
+
+        function requestStart(sender, args) {
+            // Disable the loading panel for specific export buttons
+            if (args.get_eventTarget().indexOf("ExportToExcelButton") >= 0 ||
+                args.get_eventTarget().indexOf("ExportToWordButton") >= 0 ||
+                args.get_eventTarget().indexOf("ExportToPdfButton") >= 0 ||
+                args.get_eventTarget().indexOf("ExportToCsvButton") >= 0) {
+                setTimeout(removePanel, 10);
+                args.set_enableAjax(false);
+            }
+        }
+    </script>
+
+
+    <!-- JS: Live Hide Button On Click Event For Non-Repeat Clicks -->
+    <script type="text/javascript">
+        function Hide_Button_On_Click(obj) {
+            //document.getElementById('myButton');
+            var myButton = obj;
+            var s = obj.value;
+            //alert(s);
+            // myButton.style.visibility = 'hidden';
+            myButton.style.display = 'none';
+            setTimeout(function () {
+                myButton.style.display = '';
+            }, 4000);
+
+            return false;
+        }
+    </script>
+
+
+
+    <!-- JS: Live Day Date Time -->
+    <script type="text/javascript">
+
+        // function to set live day, date and time
+        setInterval(function () {
+            updateDateTime();
+        }, 1000);
+
+        function updateDateTime() {
+
+            var now = new Date();
+
+            var day = now.toLocaleDateString('en-US', {
+                weekday: 'long'
+            });
+
+            var month = now.toLocaleDateString('en-US', {
+                month: 'long'
+            });
+
+            var date = now.getDate();
+            var year = now.getFullYear();
+
+            var time = now.toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true
+            });
+
+            var formattedDateTime = day + ', ' + month + ' ' + date + ', ' + year + ' | ' + time;
+
+            document.getElementById('<%= lblLiveDayDateTime.ClientID %>').innerHTML = formattedDateTime;
+        }
+
+        // open parent dropdown
+        let iconLinks = document.querySelectorAll(".iocn-link");
+        for (let i = 0; i < iconLinks.length; i++) {
+            iconLinks[i].addEventListener("click", (e) => {
+                let iconLinkParent = e.currentTarget.parentElement; // selecting main parent of iconLink
+                iconLinkParent.classList.toggle("showMenu");
+            });
+        }
+
+        // open parent dropdown
+        let arrows = document.querySelectorAll(".arrow");
+        for (let i = 0; i < arrows.length; i++) {
+            arrows[i].addEventListener("click", (e) => {
+                e.stopPropagation(); // prevent the event from bubbling up to the parent div
+                let arrowParent = e.target.parentElement.parentElement; // selecting main parent of arrow
+                arrowParent.classList.toggle("showMenu");
+            });
+        }
+
+
+        // toggle side bar to open and close
+        let sidebar = document.querySelector(".sidebar");
+        let sidebarBtn = document.querySelector(".bx-menu");
+        console.log(sidebarBtn);
+        sidebarBtn.addEventListener("click", () => {
+            sidebar.classList.toggle("close");
+        });
+    </script>
+
+
+    <!-- iFrame Modal Popup Window JavaScript -->
+    <script>
+        // Function to open the modal, load a page into the iframe, and set the size dynamically
+        function openModal(pageUrl, width = '60%', height = '80%') {
+            // Set the modal's width and height based on parameters
+            var modal = document.getElementById('myModal');
+            modal.style.width = width;
+            modal.style.height = height;
+            modal.style.left = 'calc((100% - ' + width + ') / 2)'; // Center the modal horizontally
+
+            // Set iframe source and show modal
+            document.getElementById('iframeModal').src = pageUrl;
+            modal.style.display = 'block';
+        }
+
+        // Close the modal when the close button is clicked
+        document.getElementById('closeModal').onclick = function () {
+            var modal = document.getElementById('myModal');
+            modal.style.display = 'none';
+            document.getElementById('iframeModal').src = ''; // Clear iframe content when closing
+        }
+
+        // Function to close the modal
+        function closeModal() {
+            document.getElementById('myModal').style.display = 'none';
+            document.getElementById('iframeModal').src = '';
+        }
+    </script>
+
+
+
 
 </body>
 </html>

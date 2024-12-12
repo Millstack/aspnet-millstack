@@ -78,7 +78,7 @@ public partial class Master_Pages_UserCreation_Update : System.Web.UI.Page
                 { "@Designation_ID", DD_Designation.SelectedIndex > 0 ? (object)DD_Designation.SelectedValue : DBNull.Value },
             };
 
-            dt = executeClass.Get_DataTable_From_StoredProcedure(this.Page, "USP_Get_UserMaster", parameters);
+            dt = executeClass.Get_DataTable_From_StoredProcedure("USP_Get_UserMaster", parameters);
             if (dt != null && dt.Rows.Count > 0)
             {
                 Grid_Search.DataSource = dt;

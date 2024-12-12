@@ -106,7 +106,7 @@ public partial class Admin_AdminMaster : System.Web.UI.MasterPage
                 { "@Parent_ID", 0 },
             };
 
-            Main_Menu_DT = executeClass.Get_DataTable_From_StoredProcedure(this.Page, "USP_GET_Sidebar_Menus", parameters);
+            Main_Menu_DT = executeClass.Get_DataTable_From_StoredProcedure("USP_GET_Sidebar_Menus", parameters);
             if (Main_Menu_DT != null && Main_Menu_DT.Rows.Count > 0)
             {
                 foreach (DataRow mainRow in Main_Menu_DT.Rows)
@@ -133,7 +133,7 @@ public partial class Admin_AdminMaster : System.Web.UI.MasterPage
                         { "@Parent_ID", mainMenuId },
                     };
 
-                    Child_Menu_DT = executeClass.Get_DataTable_From_StoredProcedure(this.Page, "USP_GET_Sidebar_Menus", parameters);
+                    Child_Menu_DT = executeClass.Get_DataTable_From_StoredProcedure("USP_GET_Sidebar_Menus", parameters);
                     if (Child_Menu_DT != null && Child_Menu_DT.Rows.Count > 0)
                     {
                         menuBuilder.AppendLine("<ul class='sub-menu ps-2' >");

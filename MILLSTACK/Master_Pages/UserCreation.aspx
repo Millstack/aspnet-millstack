@@ -37,8 +37,12 @@
                     <asp:TextBox runat="server" ID="Txt_First_Name" type="text" Enabled="true" min="0" MaxLength="500"
                         CssClass="form-control border border-secondary-subtle bg-light rounded-1 fs-6 fw-light py-1">
                     </asp:TextBox>
-                    <ajax:FilteredTextBoxExtender ID="FilteredTextBoxExtender1" runat="server" TargetControlID="Txt_First_Name"
-                        FilterType="Numbers, UppercaseLetters, LowercaseLetters, Custom" ValidChars=". " />
+                    <ajax:FilteredTextBoxExtender
+                        ID="FilteredTextBoxExtender1"
+                        runat="server"
+                        TargetControlID="Txt_First_Name"
+                        FilterType="Numbers, UppercaseLetters, LowercaseLetters, Custom"
+                        ValidChars=". " />
                 </div>
 
                 <!-- TetxtBox: Middle Name -->
@@ -430,22 +434,22 @@
     <!-- Submit Button UI Starts -->
     <div class="col-md-11 mx-auto row mt-5 mb-2 align-self-end">
         <div class="col-md-6 text-start">
-            <asp:Button 
-                ID="Btn_Back" 
-                runat="server" 
-                Text="Back" 
+            <asp:Button
+                ID="Btn_Back"
+                runat="server"
+                Text="Back"
                 OnClick="Btn_Back_Click"
-                CssClass="btn col-md-2 text-white shadow rounded-0" 
+                CssClass="btn col-md-2 text-white shadow rounded-0"
                 Style="background: #0f3f6f; color: #fff" />
         </div>
         <div class="col-md-6 text-end">
-            <asp:Button 
-                ID="Btn_Submit" 
-                runat="server" 
-                Text="Save" 
-                OnClick="Btn_Submit_Click" 
+            <asp:Button
+                ID="Btn_Submit"
+                runat="server"
+                Text="Save"
+                OnClick="Btn_Submit_Click"
                 ValidationGroup="finalSubmit"
-                CssClass="btn col-md-2 text-white shadow rounded-0" 
+                CssClass="btn col-md-2 text-white shadow rounded-0"
                 Style="background: #0f3f6f; color: #fff" />
         </div>
     </div>

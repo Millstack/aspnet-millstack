@@ -637,7 +637,17 @@ public partial class Transaction_Pages_Customer_Upload : System.Web.UI.Page
                         { "@SavedBy", Session["User_ID"] },
                     };
 
-                    executeClass.Execute_Stored_Procedure("USP_Insert_Customers", parameters: parameters, TVP_DT: Customer_DT, TVP_Name: "Customer_TVP");
+                    //executeClass.Execute_Stored_Procedure("USP_Insert_Customers", parameters: parameters, TVP_DT: Customer_DT, TVP_Name: "Customer_TVP");
+
+                    bool isSuccessful =
+                    executeClass.Execute_Stored_Procedure(
+                        this.Page,
+                        SP_Name: "USP_Insert_Customers",
+                        parameters: parameters,
+                        TVP_DT: Customer_DT,
+                        TVP_Parameter: "@Customer_TVP",
+                        TVP_Name: "dbo.Customer_TVP"
+                    );
 
                     SweetAlert.GetSweet(this.Page, "success", $"", $"All customer <b>{Customer_DT.Rows.Count}</b> records inserted succesfully", GetRouteUrl("Customer_Master_Update_Route", null));
                 }

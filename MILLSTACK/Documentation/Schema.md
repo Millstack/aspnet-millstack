@@ -486,6 +486,13 @@ GO
 
 
 
-
+```
+<ajax:FilteredTextBoxExtender 
+ID="FilteredTextBoxExtender1" 
+runat="server" 
+TargetControlID="Txt_First_Name"
+FilterType="Numbers, UppercaseLetters, LowercaseLetters, Custom" 
+ValidChars=". " />
+```
 
 

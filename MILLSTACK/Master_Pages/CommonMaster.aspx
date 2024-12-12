@@ -8,7 +8,6 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="main" runat="Server">
 
 
-
     <!-- Heading -->
     <div class="col-md-11 mx-auto fw-normal fs-3 fw-bold ps-0 pb-2 text-dark-emphasis mt-1 mb-1 text-center">
         <asp:Literal ID="Page_Heading" Text="" runat="server"></asp:Literal>
@@ -229,7 +228,7 @@
                                 </asp:LinkButton>
                             </ItemTemplate>
                             <HeaderStyle Width="80px"></HeaderStyle>
-                             <ItemStyle CssClass="align-middle" />
+                            <ItemStyle CssClass="align-middle" />
                         </asp:TemplateField>
                     </Columns>
 

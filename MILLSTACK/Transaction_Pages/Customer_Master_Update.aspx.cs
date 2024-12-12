@@ -35,7 +35,7 @@ public partial class Transaction_Pages_Customer_Master_Update : System.Web.UI.Pa
         try
         {
             parameters = new Dictionary<string, object> { { "@User_ID", Session["User_ID"] }, };
-            dt = executeClass.Get_DataTable_From_StoredProcedure(this.Page, "USP_Get_User_Hierarchy_Level", parameters);
+            dt = executeClass.Get_DataTable_From_StoredProcedure("USP_Get_User_Hierarchy_Level", parameters);
             if (dt != null && dt.Rows.Count > 0)
             {
                 parameters = new Dictionary<string, object>
@@ -58,15 +58,15 @@ public partial class Transaction_Pages_Customer_Master_Update : System.Web.UI.Pa
                     //{ "@Sector_ID", DD_Sector.SelectedIndex > 0 ? (object)DD_Sector.SelectedValue : DBNull.Value },
                 };
 
-                dt = executeClass.Get_DataTable_From_StoredProcedure(this.Page, "USP_GET_DD_CustomerMasterUpdate", parameters);
+                dt = executeClass.Get_DataTable_From_StoredProcedure("USP_GET_DD_CustomerMasterUpdate", parameters);
                 if (dt != null && dt.Rows.Count > 0)
                 {
-                    executeClass.Bind_Dropdown_With_DT(this.Page, DD_List_No, dt, "List_No", "List_No");
-                    executeClass.Bind_Dropdown_With_DT(this.Page, DD_Serial_No, dt, "Serial_No", "Serial_No");
-                    executeClass.Bind_Dropdown_With_DT(this.Page, DD_Customer_Name, dt, "Customer_Name", "Customer_ID");
-                    executeClass.Bind_Dropdown_With_DT(this.Page, DD_WRN_No, dt, "WRN_No", "WRN_No");
-                    executeClass.Bind_Dropdown_With_DT(this.Page, DD_Ward, dt, "WardName", "Ward_ID");
-                    executeClass.Bind_Dropdown_With_DT(this.Page, DD_Sector, dt, "SectorName", "Sector_ID");
+                    executeClass.Bind_Dropdown_With_DT(DD_List_No, dt, "List_No", "List_No");
+                    executeClass.Bind_Dropdown_With_DT(DD_Serial_No, dt, "Serial_No", "Serial_No");
+                    executeClass.Bind_Dropdown_With_DT(DD_Customer_Name, dt, "Customer_Name", "Customer_ID");
+                    executeClass.Bind_Dropdown_With_DT(DD_WRN_No, dt, "WRN_No", "WRN_No");
+                    executeClass.Bind_Dropdown_With_DT(DD_Ward, dt, "WardName", "Ward_ID");
+                    executeClass.Bind_Dropdown_With_DT(DD_Sector, dt, "SectorName", "Sector_ID");
                 }
                 else
                 {
@@ -97,7 +97,7 @@ public partial class Transaction_Pages_Customer_Master_Update : System.Web.UI.Pa
         try
         {
             parameters = new Dictionary<string, object> { { "@User_ID", Session["User_ID"] }, };
-            dt = executeClass.Get_DataTable_From_StoredProcedure(this.Page, "USP_Get_User_Hierarchy_Level", parameters);
+            dt = executeClass.Get_DataTable_From_StoredProcedure("USP_Get_User_Hierarchy_Level", parameters);
             if (dt != null && dt.Rows.Count > 0)
             {
                 parameters = new Dictionary<string, object>
@@ -120,7 +120,7 @@ public partial class Transaction_Pages_Customer_Master_Update : System.Web.UI.Pa
                     { "@Sector_ID", DD_Sector.SelectedIndex > 0 ? (object)DD_Sector.SelectedValue : DBNull.Value },
                 };
 
-                dt = executeClass.Get_DataTable_From_StoredProcedure(this.Page, "USP_GET_GRID_CustomerMasterUpdate", parameters);
+                dt = executeClass.Get_DataTable_From_StoredProcedure("USP_GET_GRID_CustomerMasterUpdate", parameters);
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     Grid_Search.DataSource = dt;

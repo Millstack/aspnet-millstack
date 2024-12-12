@@ -1,20 +1,13 @@
 ﻿using CommonClassLibrary;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Data;
-using System.Data.Entity.Infrastructure;
-using System.Data.SqlClient;
 using System.Linq;
-using System.Net.Configuration;
-using System.Reflection;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Windows;
-using System.Windows.Media.TextFormatting;
 
-public partial class Master_Pages_UserCreation : System.Web.UI.Page
+public partial class Transaction_Pages_Customer : System.Web.UI.Page
 {
     #region [ Global Declaration ]
     ExecuteClass executeClass = new ExecuteClass();
@@ -40,7 +33,7 @@ public partial class Master_Pages_UserCreation : System.Web.UI.Page
                         AutoFill_UserRecord(User_ID);
                     }
                 }
-                else 
+                else
                 {
                     ViewState["OPERATION"] = "INSERT";
                     Page_Heading.Text = $"User Creation";
@@ -714,7 +707,7 @@ public partial class Master_Pages_UserCreation : System.Web.UI.Page
             string salt = HashHelper.GenerateSalt();
             string hashed_Password = HashHelper.Hash(password, salt);
 
-            
+
             // work area allocation
             string hierarchy = DD_Hierarchy.SelectedValue;
 
@@ -774,7 +767,7 @@ public partial class Master_Pages_UserCreation : System.Web.UI.Page
 
             string iconType, mssg, redirect;
 
-            if(ViewState["OPERATION"].ToString() == "INSERT")
+            if (ViewState["OPERATION"].ToString() == "INSERT")
             {
                 iconType = $@"success";
                 mssg = $@"User with UserName : <b>{user_Name}</b> created susccesfully !";
@@ -792,6 +785,7 @@ public partial class Master_Pages_UserCreation : System.Web.UI.Page
             SweetAlert.GetSweet(this.Page, "error", $"", $"{ex.Message}");
         }
     }
+
 
 
 
