@@ -48,7 +48,7 @@ public partial class Transaction_Pages_Customer_Master : System.Web.UI.Page
 
 
 
-    //-------------------------- Bind Dropdown --------------------------
+    //-------------------------- Dropdown Bind --------------------------
     private void Bind_Dropdown()
     {
         DataSet ds = new DataSet();
@@ -89,6 +89,122 @@ public partial class Transaction_Pages_Customer_Master : System.Web.UI.Page
             SweetAlert.GetSweet(this.Page, "error", "", $"{ex.Message}");
         }
     }
+
+
+
+
+    //-------------------------- Dropdown Event --------------------------
+    protected void DD_Assembly_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        DataSet ds = new DataSet();
+        DataTable dt = new DataTable();
+        string sql = string.Empty;
+        Dictionary<string, object> parameters;
+
+        try
+        {
+            if(DD_Assembly.SelectedIndex > 0)
+            {
+                parameters = new Dictionary<string, object>
+                {
+                    { "@DD_Assembly", DD_Assembly },
+                    { "@DD_Ward", DBNull.Value },
+                    { "@DD_Sector", DBNull.Value },
+                };
+                ds = executeClass.Get_DataSet_From_StoredProcedure("USP_GET_DDE_CustomerCreation", parameters);
+                if (ds != null && ds.Tables.Count > 0)
+                {
+                    // ward
+                    dt = ds.Tables[0];
+                    if (dt != null && dt.Rows.Count > 0) executeClass.Bind_Dropdown_With_DT(DD_Ward, dt, "WardName", "Ward_ID", parameters, multiple: false);
+                }
+            }
+            else
+            {
+                DD_Ward.Items.Clear();
+                DD_Sector.Items.Clear();
+                DD_Society.Items.Clear();
+            }
+        }
+        catch (Exception ex)
+        {
+            SweetAlert.GetSweet(this.Page, "error", "", $"An error occured: {ex.Message}");
+        }
+    }
+
+    protected void DD_Ward_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        DataSet ds = new DataSet();
+        DataTable dt = new DataTable();
+        string sql = string.Empty;
+        Dictionary<string, object> parameters;
+
+        try
+        {
+            if (DD_Ward.SelectedIndex > 0)
+            {
+                parameters = new Dictionary<string, object>
+                {
+                    { "@DD_Assembly", DBNull.Value },
+                    { "@DD_Ward", DD_Ward },
+                    { "@DD_Sector", DBNull.Value },
+                };
+                ds = executeClass.Get_DataSet_From_StoredProcedure("USP_GET_DDE_CustomerCreation", parameters);
+                if (ds != null && ds.Tables.Count > 0)
+                {
+                    // sector
+                    dt = ds.Tables[1];
+                    if (dt != null && dt.Rows.Count > 0) executeClass.Bind_Dropdown_With_DT(DD_Sector, dt, "SectorName", "Sector_ID", parameters, multiple: false);
+                }
+            }
+            else
+            {
+                DD_Sector.Items.Clear();
+                DD_Society.Items.Clear();
+            }
+        }
+        catch (Exception ex)
+        {
+            SweetAlert.GetSweet(this.Page, "error", "", $"An error occured: {ex.Message}");
+        }
+    }
+
+    protected void DD_Sector_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        DataSet ds = new DataSet();
+        DataTable dt = new DataTable();
+        string sql = string.Empty;
+        Dictionary<string, object> parameters;
+
+        try
+        {
+            if (DD_Sector.SelectedIndex > 0)
+            {
+                parameters = new Dictionary<string, object>
+                {
+                    { "@DD_Assembly", DBNull.Value },
+                    { "@DD_Ward", DBNull.Value },
+                    { "@DD_Sector", DD_Sector },
+                };
+                ds = executeClass.Get_DataSet_From_StoredProcedure("USP_GET_DDE_CustomerCreation", parameters);
+                if (ds != null && ds.Tables.Count > 0)
+                {
+                    // society
+                    dt = ds.Tables[2];
+                    if (dt != null && dt.Rows.Count > 0) executeClass.Bind_Dropdown_With_DT(DD_Society, dt, "SocietyName", "Society_ID", parameters, multiple: false);
+                }
+            }
+            else
+            {
+                DD_Society.Items.Clear();
+            }
+        }
+        catch (Exception ex)
+        {
+            SweetAlert.GetSweet(this.Page, "error", "", $"An error occured: {ex.Message}");
+        }
+    }
+
 
 
 
@@ -168,4 +284,8 @@ public partial class Transaction_Pages_Customer_Master : System.Web.UI.Page
 
 
 
+
+
+
+    
 }
