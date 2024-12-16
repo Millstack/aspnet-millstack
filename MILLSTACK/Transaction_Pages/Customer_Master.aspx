@@ -372,7 +372,7 @@
                                     </asp:RequiredFieldValidator>
                             </div>
                             <asp:DropDownList ID="DD_Ward" runat="server" Width="100%" CssClass="form-control chosen-dropdown"
-                                OnSelectedIndexChanged="DD_Ward_SelectedIndexChanged" AutoPostBack="false">
+                                OnSelectedIndexChanged="DD_Ward_SelectedIndexChanged" AutoPostBack="true">
                             </asp:DropDownList>
                         </div>
 
@@ -387,7 +387,7 @@
                                     </asp:RequiredFieldValidator>
                             </div>
                             <asp:DropDownList ID="DD_Sector" runat="server" Width="100%" CssClass="form-control chosen-dropdown"
-                                OnSelectedIndexChanged="DD_Sector_SelectedIndexChanged" AutoPostBack="false">
+                                OnSelectedIndexChanged="DD_Sector_SelectedIndexChanged" AutoPostBack="true">
                             </asp:DropDownList>
                         </div>
 

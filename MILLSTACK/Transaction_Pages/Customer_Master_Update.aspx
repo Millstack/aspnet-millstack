@@ -142,7 +142,7 @@
                         <asp:BoundField DataField="WardName" Visible="true" HeaderText="Ward" HeaderStyle-CssClass="text-start" ItemStyle-CssClass="fw-light text-center" />
                         <asp:BoundField DataField="SectorName" Visible="true" HeaderText="Sector" HeaderStyle-CssClass="text-start" ItemStyle-CssClass="fw-light text-center" />
 
-                        <asp:TemplateField HeaderText="Edit" ShowHeader="true" Visible="false" HeaderStyle-Width="50px">
+                        <asp:TemplateField HeaderText="Edit" ShowHeader="true" Visible="true" HeaderStyle-Width="50px">
                             <ItemTemplate>
                                 <asp:LinkButton
                                     ID="Link_Btn_Edit"

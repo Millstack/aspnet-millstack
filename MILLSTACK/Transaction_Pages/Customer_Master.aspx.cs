@@ -23,7 +23,7 @@ public partial class Transaction_Pages_Customer_Master : System.Web.UI.Page
             {
                 Bind_Dropdown();
 
-                if (Page.RouteData.Values["User_ID"] is string encrypted_ID && !string.IsNullOrWhiteSpace(encrypted_ID))
+                if (Page.RouteData.Values["Customer_ID"] is string encrypted_ID && !string.IsNullOrWhiteSpace(encrypted_ID))
                 {
                     ViewState["OPERATION"] = "UPDATE";
                     string Decrypted_ID = EncryptionHelper.Decrypt_UrlSafe(this.Page, HttpUtility.UrlDecode(encrypted_ID));
@@ -107,7 +107,7 @@ public partial class Transaction_Pages_Customer_Master : System.Web.UI.Page
             {
                 parameters = new Dictionary<string, object>
                 {
-                    { "@DD_Assembly", DD_Assembly },
+                    { "@DD_Assembly", DD_Assembly.SelectedValue },
                     { "@DD_Ward", DBNull.Value },
                     { "@DD_Sector", DBNull.Value },
                 };
@@ -146,7 +146,7 @@ public partial class Transaction_Pages_Customer_Master : System.Web.UI.Page
                 parameters = new Dictionary<string, object>
                 {
                     { "@DD_Assembly", DBNull.Value },
-                    { "@DD_Ward", DD_Ward },
+                    { "@DD_Ward", DD_Ward.SelectedValue },
                     { "@DD_Sector", DBNull.Value },
                 };
                 ds = executeClass.Get_DataSet_From_StoredProcedure("USP_GET_DDE_CustomerCreation", parameters);
@@ -184,7 +184,7 @@ public partial class Transaction_Pages_Customer_Master : System.Web.UI.Page
                 {
                     { "@DD_Assembly", DBNull.Value },
                     { "@DD_Ward", DBNull.Value },
-                    { "@DD_Sector", DD_Sector },
+                    { "@DD_Sector", DD_Sector.SelectedValue },
                 };
                 ds = executeClass.Get_DataSet_From_StoredProcedure("USP_GET_DDE_CustomerCreation", parameters);
                 if (ds != null && ds.Tables.Count > 0)
@@ -229,27 +229,27 @@ public partial class Transaction_Pages_Customer_Master : System.Web.UI.Page
                 DataTable customer_DT = ds.Tables[0];
                 if (customer_DT != null && customer_DT.Rows.Count > 0)
                 {
-                    Txt_Customer_Name.Text = customer_DT.Rows[0]["FirstName"].ToString();
-                    Txt_Customer_Mobile.Text = customer_DT.Rows[0]["MiddleName"].ToString();
-                    Txt_List_No.Text = customer_DT.Rows[0]["UserName"].ToString();
-                    Txt_Serial_No.Text = customer_DT.Rows[0]["UserName"].ToString();
-                    Txt_WRN_No.Text = customer_DT.Rows[0]["UserName"].ToString();
-                    Txt_Voting_Booth.Text = customer_DT.Rows[0]["UserPhoneNo"].ToString();
-                    Txt_Voting_Room.Text = customer_DT.Rows[0]["UserPhoneNo"].ToString();
+                    Txt_Customer_Name.Text = customer_DT.Rows[0]["Customer_Name"].ToString();
+                    Txt_Customer_Mobile.Text = customer_DT.Rows[0]["Customer_MobileNo"].ToString();
+                    Txt_List_No.Text = customer_DT.Rows[0]["List_No"].ToString();
+                    Txt_Serial_No.Text = customer_DT.Rows[0]["Serial_No"].ToString();
+                    Txt_WRN_No.Text = customer_DT.Rows[0]["WRN_No"].ToString();
+                    Txt_Voting_Booth.Text = customer_DT.Rows[0]["Voting_Booth"].ToString();
+                    Txt_Voting_Room.Text = customer_DT.Rows[0]["Voting_Room"].ToString();
 
-                    Txt_Data_Entry_Mode.Text = customer_DT.Rows[0]["UserPhoneNo"].ToString();
+                    Txt_Data_Entry_Mode.Text = customer_DT.Rows[0]["Data_Entry_Mode"].ToString();
 
                     DD_Gender.SelectedValue = customer_DT.Rows[0]["Gender_ID"].ToString();
-                    DD_Customer_Type.SelectedValue = customer_DT.Rows[0]["Designation_ID"].ToString();
+                    DD_Customer_Type.SelectedValue = customer_DT.Rows[0]["CustomerType_ID"].ToString();
 
                     // customer paid boolean
-                    bluetooth.Checked = Convert.ToBoolean(customer_DT.Rows[0]["UserPhoneNo"]);
+                    bluetooth.Checked = Convert.ToBoolean(customer_DT.Rows[0]["Gender_ID"]);
 
                     // customer location details
-                    DD_Assembly.SelectedValue = customer_DT.Rows[0]["Designation_ID"].ToString();
-                    DD_Ward.SelectedValue = customer_DT.Rows[0]["Designation_ID"].ToString();
-                    DD_Sector.SelectedValue = customer_DT.Rows[0]["Designation_ID"].ToString();
-                    DD_Society.SelectedValue = customer_DT.Rows[0]["Designation_ID"].ToString();
+                    DD_Assembly.SelectedValue = customer_DT.Rows[0]["Assembly_ID"].ToString();
+                    DD_Ward.SelectedValue = customer_DT.Rows[0]["Ward_ID"].ToString();
+                    DD_Sector.SelectedValue = customer_DT.Rows[0]["Sector_ID"].ToString();
+                    DD_Society.SelectedValue = customer_DT.Rows[0]["Society_ID"].ToString();
                 }
 
                 ViewState["Customer_DT"] = customer_DT;
@@ -269,6 +269,7 @@ public partial class Transaction_Pages_Customer_Master : System.Web.UI.Page
             SweetAlert.GetSweet(this.Page, "error", $"", $"{ex.Message}");
         }
     }
+
 
 
     //-------------------------- Save / Update Event --------------------------

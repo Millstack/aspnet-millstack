@@ -162,8 +162,8 @@ public partial class Transaction_Pages_Customer_Master_Update : System.Web.UI.Pa
 
             // redirecting to user creation page with encrypted ID in the url
             string encrypted_ID = EncryptionHelper.Encrypt_UrlSafe(Customer_ID);
-            //Response.Redirect(GetRouteUrl("UserCreation_Route", new { User_ID = HttpUtility.UrlEncode(encrypted_ID) }), false);
-            //Context.ApplicationInstance.CompleteRequest();
+            Response.Redirect(GetRouteUrl("Customer_Master_Route", new { Customer_ID = HttpUtility.UrlEncode(encrypted_ID) }), false);
+            Context.ApplicationInstance.CompleteRequest();
         }
         catch (Exception ex)
 
