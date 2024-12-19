@@ -131,7 +131,7 @@
                                 ID="FilteredTextBoxExtender1"
                                 runat="server"
                                 TargetControlID="Txt_Customer_Name"
-                                FilterType="UppercaseLetters, LowercaseLetters, Custom"
+                                FilterType="UppercaseLetters, LowercaseLetters, Numbers, Custom"
                                 ValidChars=" " />
                         </div>
 
