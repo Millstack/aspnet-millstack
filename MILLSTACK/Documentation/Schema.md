@@ -425,14 +425,14 @@ CREATE TABLE Tbl_M_CustomerType (
 ```
 Create Table Tbl_M_Customer (
 	Customer_ID BIGINT PRIMARY KEY IDENTITY (1,1),
+	CustomerType_ID BIGINT NOT NULL,
+	Gender_ID BIGINT NOT NULL,
+
 	List_No BIGINT NOT NULL,
 	Serial_No BIGINT NOT NULL,
 	Customer_Name VARCHAR(500) NOT NULL,
 	Customer_MobileNo VARCHAR(10) UNIQUE NOT NULL CHECK (LEN(Customer_MobileNo) = 10 AND Customer_MobileNo NOT LIKE '%[^0-9]%'),
-	Gender_ID BIGINT NOT NULL,
 	WRN_No VARCHAR(1000) UNIQUE NOT NULL,
-	CustomerType_ID BIGINT NOT NULL,
-
 	Voting_Booth VARCHAR(100) NOT NULL,
 	Voting_Room VARCHAR(100) NOT NULL,
 
@@ -442,6 +442,13 @@ Create Table Tbl_M_Customer (
 	Society_ID BIGINT NOT NULL,
 
 	Data_Entry_Mode VARCHAR(100) NOT NULL,
+	Customer_Done BIT DEFAULT 0,
+	Customer_AR DECIMAL(18,2) NULL,
+
+	IsApproved BIT NULL,
+	IsApprovedBy BIGINT NULL,
+	IsVerified BIT NULL,
+	IsVerifiedBy BIGINT NULL,
 
 	SavedBy BIGINT NOT NULL,
 	SavedOn DATETIME DEFAULT GETDATE() NOT NULL,
@@ -494,5 +501,14 @@ TargetControlID="Txt_First_Name"
 FilterType="Numbers, UppercaseLetters, LowercaseLetters, Custom" 
 ValidChars=". " />
 ```
+
+
+
+
+
+
+
+
+
 
 

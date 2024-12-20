@@ -239,6 +239,7 @@ public partial class Transaction_Pages_Customer_Master : System.Web.UI.Page
                     Txt_Voting_Room.Text = customer_DT.Rows[0]["Voting_Room"].ToString();
 
                     Txt_Data_Entry_Mode.Text = customer_DT.Rows[0]["Data_Entry_Mode"].ToString();
+                    ViewState["Data_Entry_Mode"] = customer_DT.Rows[0]["Data_Entry_Mode"].ToString();
 
                     DD_Gender.SelectedValue = customer_DT.Rows[0]["Gender_ID"].ToString();
                     DD_Customer_Type.SelectedValue = customer_DT.Rows[0]["CustomerType_ID"].ToString();
@@ -287,80 +288,86 @@ public partial class Transaction_Pages_Customer_Master : System.Web.UI.Page
 
     protected void Btn_Submit_Click(object sender, EventArgs e)
     {
-        try
+        //try
+        //{
+
+        //}
+        //catch (Exception ex)
+        //{
+        //    SweetAlert.GetSweet(this.Page, "error", $"", $"{ex.Message}");
+        //}
+
+        // user inputs
+        string Customer_Name = Txt_Customer_Name.Text.Trim();
+        string Customer_MobileNo = Txt_Customer_Mobile.Text.Trim();
+        string List_No = Txt_List_No.Text.Trim();
+        string Serial_No = Txt_Serial_No.Text.Trim();
+        string Wrn_No = Txt_WRN_No.Text.Trim();
+        string Voting_Booth = Txt_Voting_Booth.Text.Trim();
+        string Voting_Room = Txt_Voting_Room.Text.Trim();
+
+        string Data_Entry_Mode = Txt_Data_Entry_Mode.Text.Trim();
+        if (ViewState["OPERATION"].ToString() == "INSERT") Data_Entry_Mode = "MANUAL";
+        else if (ViewState["OPERATION"].ToString() == "UPDATE" && ViewState["Data_Entry_Mode"].ToString() == "EXCEL") Data_Entry_Mode = "EXCEL";
+        //else Customer_Done = "XXX";
+
+        string Customer_Done = bluetooth.Value;
+
+        string Customer_Gender = DD_Gender.SelectedValue;
+        string Customer_Type = DD_Customer_Type.SelectedValue;
+
+        string Assembly = DD_Assembly.SelectedValue;
+        string Ward = DD_Ward.SelectedValue;
+        string Sector = DD_Sector.SelectedValue;
+        string Society = DD_Society.SelectedValue;
+
+        string OperationStatus = string.IsNullOrEmpty(ViewState["OPERATION"]?.ToString()) ? string.Empty : ViewState["OPERATION"].ToString();
+
+        Dictionary<string, object> parameters = new Dictionary<string, object>
         {
-            // user inputs
-            string Customer_Name = Txt_Customer_Name.Text.Trim();
-            string Customer_MobileNo = Txt_Customer_Mobile.Text.Trim();
-            string List_No = Txt_List_No.Text.Trim();
-            string Serial_No = Txt_Serial_No.Text.Trim();
-            string Wrn_No = Txt_WRN_No.Text.Trim();
-            string Voting_Booth = Txt_Voting_Booth.Text.Trim();
-            string Voting_Room = Txt_Voting_Room.Text.Trim();
-            string Data_Entry_Mode = Txt_Data_Entry_Mode.Text.Trim();
+            { "@Operation", OperationStatus },
+            { "@Customer_ID", ViewState["OPERATION"].ToString() == "INSERT" ? (object)DBNull.Value : ViewState["Customer_ID"] },
+            { "@Customer_Name", Customer_Name },
+            { "@Customer_MobileNo", Customer_MobileNo },
+            { "@List_No", List_No },
+            { "@Serial_No", Serial_No },
+            { "@Wrn_No", Wrn_No },
+            { "@Voting_Booth", Voting_Booth },
+            { "@Voting_Room", Voting_Room },
+            { "@Data_Entry_Mode", Data_Entry_Mode },
+            { "@Customer_Done", Customer_Done },
+            { "@Customer_Gender", Customer_Gender },
+            { "@Customer_Type", Customer_Type },
+            { "@Assembly", Assembly },
+            { "@Ward", Ward },
+            { "@Sector", Sector },
+            { "@Society", Society },
+            { "@SavedBy", Session["User_ID"].ToString() },
+        };
 
-            string Customer_Done = bluetooth.Value;
+        // drop and create new customer table with additional required columns
+        // IsApproved
+        // IsVerified
+        // IsActive
+        // Customer_Done ***
+        // etc
 
-            string Customer_Gender = DD_Gender.SelectedValue;
-            string Customer_Type = DD_Customer_Type.SelectedValue;
+        executeClass.ExecuteStoredProcedure(this.Page, "USP_IU_Customer", parameters);
 
-            string Assembly = DD_Assembly.SelectedValue;
-            string Ward = DD_Ward.SelectedValue;
-            string Sector = DD_Sector.SelectedValue;
-            string Society = DD_Society.SelectedValue;
+        string iconType, mssg, redirect;
 
-            string OperationStatus = string.IsNullOrEmpty(ViewState["OPERATION"]?.ToString()) ? string.Empty : ViewState["OPERATION"].ToString();
-
-            Dictionary<string, object> parameters = new Dictionary<string, object>
-            {
-                { "@Operation", OperationStatus },
-                { "@Customer_ID", ViewState["OPERATION"].ToString() == "INSERT" ? (object)DBNull.Value : ViewState["Customer_ID"] },
-                { "@Customer_Name", Customer_Name },
-                { "@Customer_MobileNo", Customer_MobileNo },
-                { "@List_No", List_No },
-                { "@Serial_No", Serial_No },
-                { "@Wrn_No", Wrn_No },
-                { "@Voting_Booth", Voting_Booth },
-                { "@Voting_Room", Voting_Room },
-                { "@Data_Entry_Mode", Data_Entry_Mode },
-                { "@Customer_Done", Customer_Done },
-                { "@Customer_Gender", Customer_Gender },
-                { "@Customer_Type", Customer_Type },
-                { "@Assembly", Assembly },
-                { "@Ward", Ward },
-                { "@Sector", Sector },
-                { "@Society", Society },
-                { "@SavedBy", Session["User_ID"].ToString() },
-            };
-
-            // drop and create new customer table with additional required columns
-            // IsApproved
-            // IsVerified
-            // IsActive
-            // Customer_Done ***
-            // etc
-
-            executeClass.ExecuteStoredProcedure(this.Page, "USP_IU_Customer", parameters);
-
-            string iconType, mssg, redirect;
-
-            if (ViewState["OPERATION"].ToString() == "INSERT")
-            {
-                iconType = $@"success";
-                mssg = $@"Customer : <b>{Customer_Name}</b> created susccesfully !";
-            }
-            else
-            {
-                iconType = $@"info";
-                mssg = $@"Customer : <b>{Customer_Name}</b> updated susccesfully !";
-            }
-
-            SweetAlert.GetSweet(this.Page, iconType, $"", mssg, GetRouteUrl("Customer_Master_Update_Route", null));
-        }
-        catch (Exception ex)
+        if (ViewState["OPERATION"].ToString() == "INSERT")
         {
-            SweetAlert.GetSweet(this.Page, "error", $"", $"{ex.Message}");
+            iconType = $@"success";
+            mssg = $@"Customer : <b>{Customer_Name}</b> created susccesfully !";
         }
+        else
+        {
+            iconType = $@"info";
+            mssg = $@"Customer : <b>{Customer_Name}</b> updated susccesfully !";
+        }
+
+        SweetAlert.GetSweet(this.Page, iconType, $"", mssg, GetRouteUrl("Customer_Master_Update_Route", null));
     }
 
 
