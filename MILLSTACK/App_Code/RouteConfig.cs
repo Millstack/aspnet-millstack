@@ -59,16 +59,17 @@ namespace MILLSTACK
 
             //---------------------------- Traansction Pages ---------------------------- 
 
-            // Csutomer Upload
+            // Customer Upload
             routes.MapPageRoute("Customer_Upload_Route", "CustomerUpload", "~/Transaction_Pages/Customer_Upload.aspx");
 
-            // Csutomer Insert / Update
+            // Customer Insert / Update
             routes.MapPageRoute("Customer_Master_Route", "Customer/{Customer_ID}", "~/Transaction_Pages/Customer_Master.aspx", true, new RouteValueDictionary { { "Customer_ID", "" } });
 
-            // Csutomer Master Grid
+            // Customer Master Grid
             routes.MapPageRoute("Customer_Master_Update_Route", "CustomerMaster", "~/Transaction_Pages/Customer_Master_Update.aspx");
 
-
+            // Booth Master Grid
+            routes.MapPageRoute("Customer_Booth_Route", "CustomerBooth", "~/Transaction_Pages/Customer_Master_Update.aspx");
 
         }
     }

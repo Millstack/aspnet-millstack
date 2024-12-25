@@ -133,7 +133,7 @@
                         </asp:TemplateField>
 
                         <asp:BoundField DataField="Customer_ID" Visible="false" HeaderText="Customer ID" HeaderStyle-CssClass="text-start" ItemStyle-CssClass="fw-light text-center" />
-                        <asp:BoundField DataField="List_No" Visible="true" HeaderText="List No" HeaderStyle-CssClass="text-start" ItemStyle-CssClass="fw-light text-center" />
+                        <asp:BoundField DataField="List_No" Visible="false" HeaderText="List No" HeaderStyle-CssClass="text-start" ItemStyle-CssClass="fw-light text-center" />
                         <asp:BoundField DataField="Serial_No" Visible="true" HeaderText="Serial No" HeaderStyle-CssClass="text-start" ItemStyle-CssClass="fw-light text-center" />
                         <asp:BoundField DataField="Customer_Name" Visible="true" HeaderText="Customer Name" HeaderStyle-CssClass="text-start" ItemStyle-CssClass="fw-light text-center" />
                         <asp:BoundField DataField="Customer_MobileNo" Visible="true" HeaderText="Mobile No" HeaderStyle-CssClass="text-start" ItemStyle-CssClass="fw-light text-center" />
@@ -141,6 +141,32 @@
                         <asp:BoundField DataField="WRN_No" Visible="true" HeaderText="WRN No" HeaderStyle-CssClass="text-start" ItemStyle-CssClass="fw-light text-center" />
                         <asp:BoundField DataField="WardName" Visible="true" HeaderText="Ward" HeaderStyle-CssClass="text-start" ItemStyle-CssClass="fw-light text-center" />
                         <asp:BoundField DataField="SectorName" Visible="true" HeaderText="Sector" HeaderStyle-CssClass="text-start" ItemStyle-CssClass="fw-light text-center" />
+
+                        <asp:TemplateField HeaderText="Customer Type">
+                            <ItemTemplate>
+                                <asp:Literal
+                                    ID="Literal_CustomerType"
+                                    runat="server"
+                                    Text='<%# Eval("CustomerType_ID") %>'
+                                    EnableViewState="false"
+                                    Mode="PassThrough" />
+                            </ItemTemplate>
+                            <HeaderStyle CssClass="align-middle"></HeaderStyle>
+                            <ItemStyle CssClass="text-center align-middle" />
+                        </asp:TemplateField>
+
+                        <asp:TemplateField HeaderText="Customer Status">
+                            <ItemTemplate>
+                                <asp:Literal
+                                    ID="Literal_CustomerStatus"
+                                    runat="server"
+                                    Text='<%# Eval("Customer_Done") %>'
+                                    EnableViewState="false"
+                                    Mode="PassThrough" />
+                            </ItemTemplate>
+                            <HeaderStyle CssClass="align-middle"></HeaderStyle>
+                            <ItemStyle CssClass="text-center align-middle" />
+                        </asp:TemplateField>
 
                         <asp:TemplateField HeaderText="Edit" ShowHeader="true" Visible="true" HeaderStyle-Width="50px">
                             <ItemTemplate>

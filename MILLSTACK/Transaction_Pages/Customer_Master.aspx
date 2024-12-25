@@ -302,7 +302,7 @@
                                 </asp:RequiredFieldValidator>
                             </div>
                             <asp:TextBox runat="server" ID="Txt_Data_Entry_Mode" Enabled="false" min="0" MaxLength="500"
-                                CssClass="form-control border border-secondary-subtle bg-light rounded-1 fs-6 fw-light py-1">
+                                CssClass="form-control border border-secondary-subtle bg-light rounded-1 fs-6 fw-light py-1 text-secondary">
                             </asp:TextBox>
                             <ajax:FilteredTextBoxExtender
                                 ID="FilteredTextBoxExtender8"

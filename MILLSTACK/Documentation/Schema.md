@@ -443,7 +443,7 @@ Create Table Tbl_M_Customer (
 
 	Data_Entry_Mode VARCHAR(100) NOT NULL,
 	Customer_Done BIT DEFAULT 0,
-	Customer_AR DECIMAL(18,2) NULL,
+	Customer_AR DECIMAL(18,2) NULL, -- Amount Received
 
 	IsApproved BIT NULL,
 	IsApprovedBy BIGINT NULL,

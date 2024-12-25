@@ -38,6 +38,8 @@ public partial class Transaction_Pages_Customer_Master : System.Web.UI.Page
                     ViewState["OPERATION"] = "INSERT";
                     Page_Heading.Text = $"Customer Creation";
                     Btn_Submit.Text = $"Save";
+
+                    Txt_Data_Entry_Mode.Text = "MANUAL";
                 }
             }
         }
@@ -245,7 +247,7 @@ public partial class Transaction_Pages_Customer_Master : System.Web.UI.Page
                     DD_Customer_Type.SelectedValue = customer_DT.Rows[0]["CustomerType_ID"].ToString();
 
                     // customer paid boolean
-                    bluetooth.Checked = true; /*Convert.ToBoolean(customer_DT.Rows[0]["Gender_ID"]);*/
+                    bluetooth.Checked = Convert.ToBoolean(customer_DT.Rows[0]["Customer_Done"]);
 
                     // customer location details
                     DD_Assembly.SelectedValue = customer_DT.Rows[0]["Assembly_ID"].ToString();
@@ -309,9 +311,9 @@ public partial class Transaction_Pages_Customer_Master : System.Web.UI.Page
         string Data_Entry_Mode = Txt_Data_Entry_Mode.Text.Trim();
         if (ViewState["OPERATION"].ToString() == "INSERT") Data_Entry_Mode = "MANUAL";
         else if (ViewState["OPERATION"].ToString() == "UPDATE" && ViewState["Data_Entry_Mode"].ToString() == "EXCEL") Data_Entry_Mode = "EXCEL";
-        //else Customer_Done = "XXX";
+        else Data_Entry_Mode = "OTHER";
 
-        string Customer_Done = bluetooth.Value;
+        int Customer_Done = bluetooth.Checked ? 1 : 0;
 
         string Customer_Gender = DD_Gender.SelectedValue;
         string Customer_Type = DD_Customer_Type.SelectedValue;
