@@ -55,8 +55,7 @@ namespace MILLSTACK
 
 
 
-
-
+            
             //---------------------------- Traansction Pages ---------------------------- 
 
             // Customer Upload
@@ -69,7 +68,13 @@ namespace MILLSTACK
             routes.MapPageRoute("Customer_Master_Update_Route", "CustomerMaster", "~/Transaction_Pages/Customer_Master_Update.aspx");
 
             // Booth Master Grid
-            routes.MapPageRoute("Customer_Booth_Route", "CustomerBooth", "~/Transaction_Pages/Customer_Master_Update.aspx");
+            routes.MapPageRoute("Booth_Master_Route", "BoothMaster", "~/Transaction_Pages/Booth_Master.aspx");
+
+            // Booth Details Modal
+            routes.MapPageRoute("Booth_Details_Modal_Route", "BoothDetails", "~/Transaction_Pages/Modal/Booth_Master_Modal.aspx");
+
+
+
 
         }
     }
