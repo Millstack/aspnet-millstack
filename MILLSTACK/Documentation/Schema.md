@@ -420,6 +420,53 @@ CREATE TABLE Tbl_M_CustomerType (
 ```
 
 
+# Voting Booth Master
+```
+CREATE TABLE Tbl_M_Voting_Booth (
+    Voting_Booth_ID BIGINT PRIMARY KEY,
+	Voting_Booth NVARCHAR(1000) NOT NULL,
+	Voting_BoothMr NVARCHAR(1000) NULL,
+	Voting_Booth_Code NVARCHAR(20) NOT NULL,
+
+	IsApproved BIT NULL,
+	IsApprovedBy BIGINT NULL,
+	IsVerified BIT NULL,
+	IsVerifiedBy BIGINT NULL,
+
+    SavedOn DATETIME DEFAULT GETDATE() NOT NULL,
+	SavedBy BIGINT NOT NULL,
+	IsDeleted BIT DEFAULT NULL,
+	DeletedOn DATETIME NULL,
+	DeletedBy BIGINT NULL,
+);
+```
+
+
+# Voting Room Master
+```
+CREATE TABLE Tbl_M_Voting_Room (
+    Voting_Room_ID BIGINT PRIMARY KEY,
+	Voting_Booth_ID BIGINT NOT NULL,
+	Voting_Room NVARCHAR(1000) NOT NULL,
+	Voting_RoomMr NVARCHAR(1000) NULL,
+	Voting_Room_Code NVARCHAR(20) NOT NULL,
+
+	IsApproved BIT NULL,
+	IsApprovedBy BIGINT NULL,
+	IsVerified BIT NULL,
+	IsVerifiedBy BIGINT NULL,
+
+    SavedOn DATETIME DEFAULT GETDATE() NOT NULL,
+	SavedBy BIGINT NOT NULL,
+	IsDeleted BIT DEFAULT NULL,
+	DeletedOn DATETIME NULL,
+	DeletedBy BIGINT NULL,
+
+	CONSTRAINT FK_Tbl_M_VotingRoom_VotingBooth FOREIGN KEY (Voting_Booth_ID) REFERENCES Tbl_M_Voting_Booth (Voting_Booth_ID)
+);
+```
+
+
 
 # Customer Master
 ```

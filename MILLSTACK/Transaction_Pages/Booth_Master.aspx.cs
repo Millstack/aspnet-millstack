@@ -65,8 +65,10 @@ public partial class Transaction_Pages_Booth_Master : System.Web.UI.Page
                     executeClass.Bind_Dropdown_With_DT(DD_Serial_No, dt, "Serial_No", "Serial_No");
                     executeClass.Bind_Dropdown_With_DT(DD_Customer_Name, dt, "Customer_Name", "Customer_ID");
                     executeClass.Bind_Dropdown_With_DT(DD_WRN_No, dt, "WRN_No", "WRN_No");
-                    executeClass.Bind_Dropdown_With_DT(DD_Ward, dt, "WardName", "Ward_ID");
-                    executeClass.Bind_Dropdown_With_DT(DD_Sector, dt, "SectorName", "Sector_ID");
+                    //executeClass.Bind_Dropdown_With_DT(DD_Ward, dt, "WardName", "Ward_ID");
+                    //executeClass.Bind_Dropdown_With_DT(DD_Sector, dt, "SectorName", "Sector_ID");
+                    executeClass.Bind_Dropdown_With_DT(DD_Voting_Booth, dt, "Voting_Booth", "Voting_Booth");
+                    executeClass.Bind_Dropdown_With_DT(DD_Voting_Room, dt, "Voting_Room", "Voting_Room");
                 }
                 else
                 {
@@ -74,8 +76,8 @@ public partial class Transaction_Pages_Booth_Master : System.Web.UI.Page
                     DD_Serial_No.Items.Clear();
                     DD_Customer_Name.Items.Clear();
                     DD_WRN_No.Items.Clear();
-                    DD_Ward.Items.Clear();
-                    DD_Sector.Items.Clear();
+                    DD_Voting_Booth.Items.Clear();
+                    DD_Voting_Room.Items.Clear();
                 }
             }
         }
@@ -116,8 +118,8 @@ public partial class Transaction_Pages_Booth_Master : System.Web.UI.Page
                     { "@Serial_No", DD_Serial_No.SelectedIndex > 0 ? (object)DD_Serial_No.SelectedValue : DBNull.Value },
                     { "@Customer_ID", DD_Customer_Name.SelectedIndex > 0 ? (object)DD_Customer_Name.SelectedValue : DBNull.Value },
                     { "@WRN_No", DD_WRN_No.SelectedIndex > 0 ? (object)DD_WRN_No.SelectedValue : DBNull.Value },
-                    { "@Ward_ID", DD_Ward.SelectedIndex > 0 ? (object)DD_Ward.SelectedValue : DBNull.Value },
-                    { "@Sector_ID", DD_Sector.SelectedIndex > 0 ? (object)DD_Sector.SelectedValue : DBNull.Value },
+                    { "@DD_Voting_Booth", DD_Voting_Booth.SelectedIndex > 0 ? (object)DD_Voting_Booth.SelectedValue : DBNull.Value },
+                    { "@DD_Voting_Room", DD_Voting_Room.SelectedIndex > 0 ? (object)DD_Voting_Room.SelectedValue : DBNull.Value },
                 };
 
                 dt = executeClass.Get_DataTable_From_StoredProcedure("USP_GET_GRID_Customer_Booth", parameters);
@@ -163,7 +165,7 @@ public partial class Transaction_Pages_Booth_Master : System.Web.UI.Page
             // redirecting to user creation page with encrypted ID in the url
             string encrypted_ID = EncryptionHelper.Encrypt_UrlSafe(Customer_ID);
 
-            string script = $"openModal('Transaction_Pages/Modal/Booth_Master_Modal.aspx?ID={HttpUtility.UrlEncode(encrypted_ID)}', '60%', '60%');";
+            string script = $"openModal('Transaction_Pages/Modal/Booth_Master_Modal.aspx?ID={HttpUtility.UrlEncode(encrypted_ID)}', '40%', '90%');";
             ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "OpenModalScript", script, true);
 
             //Response.Redirect(GetRouteUrl("Booth_Details_Modal_Route", new { Customer_ID = HttpUtility.UrlEncode(encrypted_ID) }), false);

@@ -65,21 +65,21 @@
                     </asp:DropDownList>
                 </div>
 
-                <!-- DropDown: Ward -->
+                <!-- DropDown: Voting Booth -->
                 <div class="col-md-4 mb-3 align-self-end">
                     <div class="mb-1 fw-semibold fs-6">
-                        <asp:Literal ID="Literal4" runat="server" Text="Ward"></asp:Literal>
+                        <asp:Literal ID="Literal4" runat="server" Text="Voting Booth"></asp:Literal>
                     </div>
-                    <asp:DropDownList ID="DD_Ward" runat="server" Width="100%" CssClass="form-control chosen-dropdown">
+                    <asp:DropDownList ID="DD_Voting_Booth" runat="server" Width="100%" CssClass="form-control chosen-dropdown">
                     </asp:DropDownList>
                 </div>
 
-                <!-- DropDown: Sector -->
+                <!-- DropDown: Voting Room -->
                 <div class="col-md-4 mb-3 align-self-end">
                     <div class="mb-1 fw-semibold fs-6">
-                        <asp:Literal ID="Literal5" runat="server" Text="Sector"></asp:Literal>
+                        <asp:Literal ID="Literal5" runat="server" Text="Voting Room"></asp:Literal>
                     </div>
-                    <asp:DropDownList ID="DD_Sector" runat="server" Width="100%" CssClass="form-control chosen-dropdown">
+                    <asp:DropDownList ID="DD_Voting_Room" runat="server" Width="100%" CssClass="form-control chosen-dropdown">
                     </asp:DropDownList>
                 </div>
 

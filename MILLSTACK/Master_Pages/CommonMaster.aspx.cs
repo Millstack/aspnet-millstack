@@ -72,7 +72,127 @@ public partial class Master_Pages_CommonMaster : System.Web.UI.Page
     {
         try
         {
-            if (Page.RouteData.Values["Page"].ToString().Trim() == "Society")
+            if (Page.RouteData.Values["Page"].ToString().Trim() == "VotingRoom")
+            {
+                Page_Heading.Text = "Voting Room Master";
+                Main_Heading_1.Text = "Voting Room Details";
+                Main_Heading_2.Text = "Voting Room Records";
+
+                // Serial Number
+                Grid_Search.Columns[0].HeaderText = "Ser.No.";
+                Grid_Search.Columns[0].Visible = true;
+
+                // Main Table
+                Grid_Search.Columns[1].HeaderText = "Room ID";
+                Grid_Search.Columns[1].Visible = true;
+                Main_Table_Name = "Tbl_M_Voting_Room";
+                Primary_Key_Column = "Voting_Room_ID";
+
+                // Main Table Column 1
+                Grid_Search.Columns[2].HeaderText = "Voting Room";
+                Is_Main_column_1_needed = true;
+                Main_Column_1_Text.Text = "Voting Room";
+                Main_Column_1_Name = "Voting_Room";
+
+                // Main Table Column 2
+                Grid_Search.Columns[3].HeaderText = "Voting Room (Marathi)";
+                Is_Main_column_2_needed = false;
+                Main_Column_2_Text.Text = "Voting Room (Marathi)";
+                Main_Column_2_Name = "Voting_RoomMr";
+
+                // Main Table Column 3
+                Grid_Search.Columns[4].HeaderText = "Voting Room Code";
+                Is_Main_column_3_needed = true;
+                Main_Column_3_Text.Text = "Voting Room Code";
+                Main_Column_3_Name = "Voting_Room_Code";
+
+                // Foreign Table 1
+                Grid_Search.Columns[5].HeaderText = "Voting Booth";
+                Is_Foreign_column_1_needed = true;
+                Foreign_Table_1_Name = "Tbl_M_Voting_Booth";
+                Foreign_Table_1_Key_Text.Text = "Voting Booth";
+                Foreign_Table_1_Column_Name = "Voting_Booth";
+                Foreign_Table_1_Key_Column = "Voting_Booth_ID";
+
+                // Foreign Table 2
+                Grid_Search.Columns[6].HeaderText = "Ward";
+                Is_Foreign_column_2_needed = false;
+                Is_Foreign_Dropdown_2_Is_Dependant_On_1 = false;
+                Foreign_Table_2_Name = "Tbl_M_Ward";
+                Foreign_Table_2_Key_Text.Text = "Ward Name";
+                Foreign_Table_2_Column_Name = "WardName";
+                Foreign_Table_2_Key_Column = "Ward_ID";
+
+                // Foreign Table 3
+                Grid_Search.Columns[7].HeaderText = "Sector";
+                Is_Foreign_column_3_needed = false;
+                Is_Foreign_Dropdown_3_Is_Dependant_On_2 = false;
+                Foreign_Table_3_Name = "Tbl_M_Sector";
+                Foreign_Table_3_Key_Text.Text = "Sector Name";
+                Foreign_Table_3_Column_Name = "SectorName";
+                Foreign_Table_3_Key_Column = "Sector_ID";
+            }
+            else if (Page.RouteData.Values["Page"].ToString().Trim() == "VotingBooth")
+            {
+                Page_Heading.Text = "Voting Booth Master";
+                Main_Heading_1.Text = "Voting Booth Details";
+                Main_Heading_2.Text = "Voting Booth Records";
+
+                // Serial Number
+                Grid_Search.Columns[0].HeaderText = "Ser.No.";
+                Grid_Search.Columns[0].Visible = true;
+
+                // Main Table
+                Grid_Search.Columns[1].HeaderText = "Booth ID";
+                Grid_Search.Columns[1].Visible = true;
+                Main_Table_Name = "Tbl_M_Voting_Booth";
+                Primary_Key_Column = "Voting_Booth_ID";
+
+                // Main Table Column 1
+                Grid_Search.Columns[2].HeaderText = "Voting Booth";
+                Is_Main_column_1_needed = true;
+                Main_Column_1_Text.Text = "Voting Booth";
+                Main_Column_1_Name = "Voting_Booth";
+
+                // Main Table Column 2
+                Grid_Search.Columns[3].HeaderText = "Voting Booth (Marathi)";
+                Is_Main_column_2_needed = false;
+                Main_Column_2_Text.Text = "Voting Booth (Marathi)";
+                Main_Column_2_Name = "Voting_BoothMr";
+
+                // Main Table Column 3
+                Grid_Search.Columns[4].HeaderText = "Voting Booth Code";
+                Is_Main_column_3_needed = true;
+                Main_Column_3_Text.Text = "Voting Booth Code";
+                Main_Column_3_Name = "Voting_Booth_Code";
+
+                // Foreign Table 1
+                Grid_Search.Columns[5].HeaderText = "Assembly";
+                Is_Foreign_column_1_needed = false;
+                Foreign_Table_1_Name = "Tbl_M_Assembly";
+                Foreign_Table_1_Key_Text.Text = "Assembly Name";
+                Foreign_Table_1_Column_Name = "AssemblyName";
+                Foreign_Table_1_Key_Column = "Assembly_ID";
+
+                // Foreign Table 2
+                Grid_Search.Columns[6].HeaderText = "Ward";
+                Is_Foreign_column_2_needed = false;
+                Is_Foreign_Dropdown_2_Is_Dependant_On_1 = false;
+                Foreign_Table_2_Name = "Tbl_M_Ward";
+                Foreign_Table_2_Key_Text.Text = "Ward Name";
+                Foreign_Table_2_Column_Name = "WardName";
+                Foreign_Table_2_Key_Column = "Ward_ID";
+
+                // Foreign Table 3
+                Grid_Search.Columns[7].HeaderText = "Sector";
+                Is_Foreign_column_3_needed = false;
+                Is_Foreign_Dropdown_3_Is_Dependant_On_2 = false;
+                Foreign_Table_3_Name = "Tbl_M_Sector";
+                Foreign_Table_3_Key_Text.Text = "Sector Name";
+                Foreign_Table_3_Column_Name = "SectorName";
+                Foreign_Table_3_Key_Column = "Sector_ID";
+            }
+            else if (Page.RouteData.Values["Page"].ToString().Trim() == "Society")
             {
                 Page_Heading.Text = "Society Master";
                 Main_Heading_1.Text = "Society Details";
