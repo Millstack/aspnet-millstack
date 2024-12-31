@@ -28,6 +28,7 @@ public partial class Transaction_Pages_Booth_Master : System.Web.UI.Page
     //-----------------------------] DropDown Bind [-----------------------------
     private void Bind_Dropdown()
     {
+        DataSet ds = new DataSet();
         DataTable dt = new DataTable();
         Dictionary<string, object> parameters;
         string sql = string.Empty;
@@ -58,17 +59,40 @@ public partial class Transaction_Pages_Booth_Master : System.Web.UI.Page
                     //{ "@Sector_ID", DD_Sector.SelectedIndex > 0 ? (object)DD_Sector.SelectedValue : DBNull.Value },
                 };
 
-                dt = executeClass.Get_DataTable_From_StoredProcedure("USP_GET_DD_CustomerMasterUpdate", parameters);
-                if (dt != null && dt.Rows.Count > 0)
+                ds = executeClass.Get_DataSet_From_StoredProcedure("USP_GET_DD_CustomerMasterUpdate", parameters);
+                if (ds != null && ds.Tables.Count > 0)
                 {
-                    executeClass.Bind_Dropdown_With_DT(DD_List_No, dt, "List_No", "List_No");
-                    executeClass.Bind_Dropdown_With_DT(DD_Serial_No, dt, "Serial_No", "Serial_No");
-                    executeClass.Bind_Dropdown_With_DT(DD_Customer_Name, dt, "Customer_Name", "Customer_ID");
-                    executeClass.Bind_Dropdown_With_DT(DD_WRN_No, dt, "WRN_No", "WRN_No");
-                    //executeClass.Bind_Dropdown_With_DT(DD_Ward, dt, "WardName", "Ward_ID");
-                    //executeClass.Bind_Dropdown_With_DT(DD_Sector, dt, "SectorName", "Sector_ID");
-                    executeClass.Bind_Dropdown_With_DT(DD_Voting_Booth, dt, "Voting_Booth", "Voting_Booth");
-                    executeClass.Bind_Dropdown_With_DT(DD_Voting_Room, dt, "Voting_Room", "Voting_Room");
+                    // list no, serial no, customer name, wrn no
+                    dt = ds.Tables[0];
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        executeClass.Bind_Dropdown_With_DT(DD_List_No, dt, "List_No", "List_No");
+                        executeClass.Bind_Dropdown_With_DT(DD_Serial_No, dt, "Serial_No", "Serial_No");
+                        executeClass.Bind_Dropdown_With_DT(DD_Customer_Name, dt, "Customer_Name", "Customer_ID");
+                        executeClass.Bind_Dropdown_With_DT(DD_WRN_No, dt, "WRN_No", "WRN_No");
+                        //executeClass.Bind_Dropdown_With_DT(DD_Ward, dt, "WardName", "Ward_ID");
+                        //executeClass.Bind_Dropdown_With_DT(DD_Sector, dt, "SectorName", "Sector_ID");
+                    }
+                    else
+                    {
+                        DD_List_No.Items.Clear();
+                        DD_Serial_No.Items.Clear();
+                        DD_Customer_Name.Items.Clear();
+                        DD_WRN_No.Items.Clear();
+                    }
+
+                    // voting booth & voting room
+                    dt = ds.Tables[1];
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        executeClass.Bind_Dropdown_With_DT(DD_Voting_Booth, dt, "Voting_Booth", "Voting_Booth_ID");
+                        executeClass.Bind_Dropdown_With_DT(DD_Voting_Room, dt, "Voting_Room", "Voting_Room_ID");
+                    }
+                    else
+                    {
+                        DD_Voting_Booth.Items.Clear();
+                        DD_Voting_Room.Items.Clear();
+                    }
                 }
                 else
                 {
