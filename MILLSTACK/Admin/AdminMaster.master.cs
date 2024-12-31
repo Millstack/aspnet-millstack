@@ -35,6 +35,8 @@ public partial class Admin_AdminMaster : System.Web.UI.MasterPage
 
                 if (Session["Menu_Form_Structure"] == null) Create_Sidebar_Menus();
                 else LiteralMenu.Text = Session["Menu_Form_Structure"].ToString().Trim();
+
+                Admin_Sidebar_State();
             }
         }
         else
@@ -56,6 +58,33 @@ public partial class Admin_AdminMaster : System.Web.UI.MasterPage
         foreach (var key in ViewState.Keys.Cast<string>().ToList())
         {
             ViewState[key] = null;
+        }
+    }
+
+
+
+
+    //-----------------------------] DropDown Bind [-----------------------------
+    private void Admin_Sidebar_State()
+    {
+        DataSet ds = new DataSet();
+        DataTable dt = new DataTable();
+        Dictionary<string, object> parameters;
+        string sql = string.Empty;
+
+        try
+        {
+            parameters = new Dictionary<string, object> { /*{ "@User_ID", Session["User_ID"] },*/ };
+            dt = executeClass.Get_DataTable_From_StoredProcedure("USP_ADMIN_Sidebar_Class", parameters);
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                bool isSidebarClosed = Convert.ToBoolean(dt.Rows[0]["Is_Sidebar_Closed"]);
+                Div_Sidebar.Attributes["class"] = isSidebarClosed ? "sidebar close" : "sidebar";
+            }
+        }
+        catch (Exception ex)
+        {
+            SweetAlert.GetSweet(this.Page, "error", "", $"{ex.Message}");
         }
     }
 

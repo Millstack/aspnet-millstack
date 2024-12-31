@@ -1032,6 +1032,66 @@ public partial class Master_Pages_CommonMaster : System.Web.UI.Page
                 Foreign_Table_3_Column_Name = "DistrictName";
                 Foreign_Table_3_Key_Column = "District_ID";
             }
+            else if (Page.RouteData.Values["Page"].ToString().Trim() == "SB25V577501DD") // sidebar decider (closed || opened)
+            {
+                Page_Heading.Text = "Sidebar";
+                Main_Heading_1.Text = "Sidebar";
+                Main_Heading_2.Text = "Sidebar";
+
+                // Serial Number
+                Grid_Search.Columns[0].HeaderText = "Ser.No.";
+                Grid_Search.Columns[0].Visible = true;
+
+                // Main Table
+                Grid_Search.Columns[1].HeaderText = "Sidebar ID";
+                Grid_Search.Columns[1].Visible = true;
+                Main_Table_Name = "Tbl_SPAD_Sidebar";
+                Primary_Key_Column = "Sidebar_ID";
+
+                // Main Table Column 1
+                Grid_Search.Columns[2].HeaderText = "Sidebar State";
+                Is_Main_column_1_needed = true;
+                Main_Column_1_Text.Text = "Sidebar";
+                Main_Column_1_Name = "Sidebar";
+
+                // Main Table Column 2
+                Grid_Search.Columns[3].HeaderText = "Voting Room (Marathi)";
+                Is_Main_column_2_needed = false;
+                Main_Column_2_Text.Text = "Voting Room (Marathi)";
+                Main_Column_2_Name = "Sidebar";
+
+                // Main Table Column 3
+                Grid_Search.Columns[4].HeaderText = "Voting Room Code";
+                Is_Main_column_3_needed = false;
+                Main_Column_3_Text.Text = "Voting Room Code";
+                Main_Column_3_Name = "Sidebar";
+
+                // Foreign Table 1
+                Grid_Search.Columns[5].HeaderText = "Voting Booth";
+                Is_Foreign_column_1_needed = false;
+                Foreign_Table_1_Name = "Tbl_M_Voting_Booth";
+                Foreign_Table_1_Key_Text.Text = "Voting Booth";
+                Foreign_Table_1_Column_Name = "Voting_Booth";
+                Foreign_Table_1_Key_Column = "Voting_Booth_ID";
+
+                // Foreign Table 2
+                Grid_Search.Columns[6].HeaderText = "Ward";
+                Is_Foreign_column_2_needed = false;
+                Is_Foreign_Dropdown_2_Is_Dependant_On_1 = false;
+                Foreign_Table_2_Name = "Tbl_M_Ward";
+                Foreign_Table_2_Key_Text.Text = "Ward Name";
+                Foreign_Table_2_Column_Name = "WardName";
+                Foreign_Table_2_Key_Column = "Ward_ID";
+
+                // Foreign Table 3
+                Grid_Search.Columns[7].HeaderText = "Sector";
+                Is_Foreign_column_3_needed = false;
+                Is_Foreign_Dropdown_3_Is_Dependant_On_2 = false;
+                Foreign_Table_3_Name = "Tbl_M_Sector";
+                Foreign_Table_3_Key_Text.Text = "Sector Name";
+                Foreign_Table_3_Column_Name = "SectorName";
+                Foreign_Table_3_Key_Column = "Sector_ID";
+            }
             else
             {
                 // no page found, hiding the parent div for no UI and notification to user

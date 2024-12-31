@@ -77,22 +77,20 @@ public partial class Transaction_Pages_Booth_Master : System.Web.UI.Page
                     {
                         DD_List_No.Items.Clear();
                         DD_Serial_No.Items.Clear();
-                        DD_Customer_Name.Items.Clear();
+                        DD_Customer_Name.Items.Clear(); 
                         DD_WRN_No.Items.Clear();
                     }
 
-                    // voting booth & voting room
+                    // voting booth
                     dt = ds.Tables[1];
-                    if (dt != null && dt.Rows.Count > 0)
-                    {
-                        executeClass.Bind_Dropdown_With_DT(DD_Voting_Booth, dt, "Voting_Booth", "Voting_Booth_ID");
-                        executeClass.Bind_Dropdown_With_DT(DD_Voting_Room, dt, "Voting_Room", "Voting_Room_ID");
-                    }
-                    else
-                    {
-                        DD_Voting_Booth.Items.Clear();
-                        DD_Voting_Room.Items.Clear();
-                    }
+                    if (dt != null && dt.Rows.Count > 0) executeClass.Bind_Dropdown_With_DT(DD_Voting_Booth, dt, "Voting_Booth", "Voting_Booth");
+                    else DD_Voting_Booth.Items.Clear();
+
+
+                    // voting room
+                    dt = ds.Tables[2];
+                    if (dt != null && dt.Rows.Count > 0) executeClass.Bind_Dropdown_With_DT(DD_Voting_Room, dt, "Voting_Room", "Voting_Room");
+                    else DD_Voting_Room.Items.Clear();
                 }
                 else
                 {

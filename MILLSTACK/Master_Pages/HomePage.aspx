@@ -12,7 +12,8 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="main" runat="Server">
 
 
-    <h1>Hello World</h1>
+    <h1>Welcome to EMTS</h1> <br />
+    <h4>Election Monitoring And Tracking System</h4>
 
 
 

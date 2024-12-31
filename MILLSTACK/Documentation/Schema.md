@@ -3,6 +3,26 @@
 ### Database: *MillStack*
 
 
+### Super Admin
+----------------------
+
+# Sidebar close state decider
+```
+CREATE TABLE Tbl_SPAD_Sidebar (
+	Sidebar_ID BIGINT PRIMARY KEY,
+	Sidebar BIT NOT NULL,
+
+    SavedOn DATETIME DEFAULT GETDATE() NOT NULL,
+	SavedBy BIGINT NOT NULL,
+	IsDeleted BIT DEFAULT NULL,
+	DeletedOn DATETIME NULL,
+	DeletedBy BIGINT NULL,
+);
+```
+
+
+
+
 ### User Management
 ----------------------
 
