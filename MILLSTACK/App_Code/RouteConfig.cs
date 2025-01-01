@@ -55,7 +55,7 @@ namespace MILLSTACK
 
 
 
-            
+
             //---------------------------- Traansction Pages ---------------------------- 
 
             // Customer Upload
@@ -76,6 +76,17 @@ namespace MILLSTACK
 
 
 
+
+
+
+
+
+            // Fallback route for unmapped URLs
+            routes.MapPageRoute(
+                "404_Page_Not_Found_Route", // Route name
+                "{*url}",           // Catch-all route
+                "~/Master_Pages/404.aspx"        // Redirect to your custom 404 page
+            );
         }
     }
 }
