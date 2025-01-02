@@ -113,7 +113,8 @@
         <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePartialRendering="true"></asp:ScriptManager>
 
         <section class="error_section">
-            <p class="error_section_subtitle">Thanks. You just broke it all !</p>
+            <%--<p class="error_section_subtitle">Thanks. You just broke it all !</p>--%>
+            <p class="error_section_subtitle">HTTP 404 | Page Not Found...</p>
             <h1 class="error_title">
                 <p>404</p>
                 404

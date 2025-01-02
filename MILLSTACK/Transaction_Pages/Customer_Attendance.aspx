@@ -138,7 +138,7 @@
                         <asp:BoundField DataField="WRN_No" Visible="true" HeaderText="WRN No" HeaderStyle-CssClass="text-start" ItemStyle-CssClass="fw-light text-center" />
                         <asp:BoundField DataField="Customer_Name" Visible="true" HeaderText="Customer Name" HeaderStyle-CssClass="text-start" ItemStyle-CssClass="fw-light text-center" />
                         <asp:BoundField DataField="Customer_MobileNo" Visible="true" HeaderText="Mobile No" HeaderStyle-CssClass="text-start" ItemStyle-CssClass="fw-light text-center" />
-                        <asp:BoundField DataField="GenderName" Visible="true" HeaderText="Gender" HeaderStyle-CssClass="text-start" ItemStyle-CssClass="fw-light text-center" />
+                        <asp:BoundField DataField="GenderName" Visible="false" HeaderText="Gender" HeaderStyle-CssClass="text-start" ItemStyle-CssClass="fw-light text-center" />
                         <asp:BoundField DataField="WardName" Visible="false" HeaderText="Ward" HeaderStyle-CssClass="text-start" ItemStyle-CssClass="fw-light text-center" />
                         <asp:BoundField DataField="SectorName" Visible="false" HeaderText="Sector" HeaderStyle-CssClass="text-start" ItemStyle-CssClass="fw-light text-center" />
 
@@ -160,20 +160,20 @@
                             <ItemStyle CssClass="text-center align-middle" />
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="Customer Status" ShowHeader="true" Visible="false">
+                        <asp:TemplateField HeaderText="Attendance Status" ShowHeader="true" Visible="true">
                             <ItemTemplate>
                                 <asp:Literal
-                                    ID="Literal_CustomerStatus"
+                                    ID="Literal_CustomerAttendance"
                                     runat="server"
-                                    Text='<%# Eval("Customer_Done") %>'
+                                    Text='<%# Eval("IsPresent_") %>'
                                     EnableViewState="false"
                                     Mode="PassThrough" />
                             </ItemTemplate>
                             <HeaderStyle CssClass="align-middle"></HeaderStyle>
-                            <ItemStyle CssClass="text-center align-middle" />
+                            <ItemStyle CssClass="text-center align-middle bg-light" />
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="View" ShowHeader="true" Visible="true" HeaderStyle-Width="50px">
+                        <asp:TemplateField HeaderText="Update" ShowHeader="true" Visible="true" HeaderStyle-Width="50px">
                             <ItemTemplate>
                                 <asp:LinkButton
                                     ID="Link_Btn_Edit"
@@ -184,14 +184,14 @@
                                     <asp:Image
                                         ID="IMG_Edit"
                                         runat="server"
-                                        ImageUrl="~/assets/icons/general-icons/ballot-2.png"
+                                        ImageUrl="~/assets/icons/general-icons/atendance.png"
                                         AlternateText="Edit"
-                                        ToolTip="View Booth Details"
+                                        ToolTip="Update customer attendance"
                                         Style="width: 25px; height: 25px;" />
                                 </asp:LinkButton>
                             </ItemTemplate>
                             <HeaderStyle Width="50px"></HeaderStyle>
-                            <ItemStyle CssClass="align-middle" />
+                            <ItemStyle CssClass="align-middle bg-light" />
                         </asp:TemplateField>
 
                     </Columns>
