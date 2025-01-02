@@ -73,6 +73,8 @@ namespace MILLSTACK
             // Booth Details Modal
             routes.MapPageRoute("Booth_Details_Modal_Route", "BoothDetails", "~/Transaction_Pages/Modal/Booth_Master_Modal.aspx");
 
+            // Customer Attendance Grid
+            routes.MapPageRoute("Customer_Attendance_Route", "CustomerAttendance", "~/Transaction_Pages/Customer_Attendance.aspx");
 
 
 
@@ -81,7 +83,8 @@ namespace MILLSTACK
 
 
 
-            // Fallback route for unmapped URLs
+
+            // Fallback route for unmapped URLs (404 page not found)
             routes.MapPageRoute(
                 "404_Page_Not_Found_Route", // Route name
                 "{*url}",           // Catch-all route

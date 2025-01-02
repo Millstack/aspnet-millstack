@@ -512,14 +512,18 @@ Create Table Tbl_M_Customer (
 	Customer_Done BIT DEFAULT 0,
 	Customer_AR DECIMAL(18,2) NULL, -- Amount Received
 
+	IsPresent BIT DEFAULT 0 NULL, -- Is Customer Present
+
 	IsApproved BIT NULL,
 	IsApprovedBy BIGINT NULL,
 	IsVerified BIT NULL,
 	IsVerifiedBy BIGINT NULL,
 
-	SavedBy BIGINT NOT NULL,
 	SavedOn DATETIME DEFAULT GETDATE() NOT NULL,
-	IsDeleted BIT NULL,
+	SavedBy BIGINT NOT NULL,
+	IsDeleted BIT DEFAULT NULL,
+	DeletedOn DATETIME NULL,
+	DeletedBy BIGINT NULL,
 
 	CONSTRAINT FK_Tbl_M_Customer_CustomerType FOREIGN KEY (CustomerType_ID) REFERENCES Tbl_M_CustomerType(CustomerType_ID),
 	CONSTRAINT FK_Tbl_M_Customer_Gender FOREIGN KEY (Gender_ID) REFERENCES M_Gender (Gender_ID)
