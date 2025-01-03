@@ -179,11 +179,14 @@ public partial class Transaction_Pages_Customer_Attendance : System.Web.UI.Page
             ViewState["Customer_ID"] = Customer_ID;
 
             string encrypted_ID = EncryptionHelper.Encrypt_UrlSafe(Customer_ID);
-            Response.Redirect(GetRouteUrl("XXXXXX_Route", new { Customer_ID = HttpUtility.UrlEncode(encrypted_ID) }), false);
-            Context.ApplicationInstance.CompleteRequest();
+
+            string script = $"openModal('Transaction_Pages/Modal/Customer_Attendance_Modal.aspx?ID={HttpUtility.UrlEncode(encrypted_ID)}', '70%', '80%');";
+            ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "OpenModalScript", script, true);
+
+            //Response.Redirect(GetRouteUrl("Customer_Attendance_Modal_Route", new { Customer_ID = HttpUtility.UrlEncode(encrypted_ID) }), false);
+            //Context.ApplicationInstance.CompleteRequest();
         }
         catch (Exception ex)
-
         {
             SweetAlert.GetSweet(this.Page, "error", $"", $"{ex.Message}");
         }

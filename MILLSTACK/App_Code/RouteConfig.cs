@@ -76,6 +76,9 @@ namespace MILLSTACK
             // Customer Attendance Grid
             routes.MapPageRoute("Customer_Attendance_Route", "CustomerAttendance", "~/Transaction_Pages/Customer_Attendance.aspx");
 
+            // Customer Attendance Modal
+            routes.MapPageRoute("Customer_Attendance_Modal_Route", "Customer_Attendance_Modal", "~/Transaction_Pages/Modal/Customer_Attendance_Modal.aspx");
+
 
 
 
