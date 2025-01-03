@@ -32,20 +32,31 @@ public partial class Transaction_Pages_Modal_Customer_Attendance_Modal : System.
             {
                 //Bind_Dropdown();
 
-                if (Request.QueryString.Count != 0)
+                if (Page.RouteData.Values["Customer_ID"] is string encrypted_ID && !string.IsNullOrWhiteSpace(encrypted_ID))
                 {
-                    string encrypted_ID = Request.QueryString["ID"];
-
-                    if (!string.IsNullOrWhiteSpace(encrypted_ID))
+                    ViewState["OPERATION"] = "UPDATE";
+                    string Decrypted_ID = EncryptionHelper.Decrypt_UrlSafe(this.Page, HttpUtility.UrlDecode(encrypted_ID));
+                    if (Int64.TryParse(Decrypted_ID, out Int64 Customer_ID))
                     {
-                        string Decrypted_ID = EncryptionHelper.Decrypt_UrlSafe(this.Page, HttpUtility.UrlDecode(encrypted_ID));
-                        if (Int64.TryParse(Decrypted_ID, out Int64 Customer_ID))
-                        {
-                            AutoFill_UserRecord(Customer_ID);
-                            ViewState["Customer_ID"] = Customer_ID;
-                        }
+                        AutoFill_UserRecord(Customer_ID);
+                        ViewState["Customer_ID"] = Customer_ID;
                     }
                 }
+
+                //if (Request.QueryString.Count != 0)
+                //{
+                //    string encrypted_ID = Request.QueryString["ID"];
+
+                //    if (!string.IsNullOrWhiteSpace(encrypted_ID))
+                //    {
+                //        string Decrypted_ID = EncryptionHelper.Decrypt_UrlSafe(this.Page, HttpUtility.UrlDecode(encrypted_ID));
+                //        if (Int64.TryParse(Decrypted_ID, out Int64 Customer_ID))
+                //        {
+                //            AutoFill_UserRecord(Customer_ID);
+                //            ViewState["Customer_ID"] = Customer_ID;
+                //        }
+                //    }
+                //}
             }
         }
         catch (Exception ex)
@@ -142,12 +153,12 @@ public partial class Transaction_Pages_Modal_Customer_Attendance_Modal : System.
         if (ViewState["OPERATION"].ToString() == "INSERT")
         {
             iconType = $@"success";
-            mssg = $@"Attendance status update susccesfully for customer : <b>{Customer_Name}</b>";
+            mssg = $@"Attendance status update successfully for customer : <b>{Customer_Name}</b>";
         }
         else
         {
             iconType = $@"info";
-            mssg = $@"Attendance status update susccesfully for customer : <b>{Customer_Name}</b>";
+            mssg = $@"Attendance status update successfully for customer : <b>{Customer_Name}</b>";
         }
 
         //SweetAlert.GetSweet(this.Page, iconType, $"", mssg, GetRouteUrl("Customer_Attendance_Route", null));
