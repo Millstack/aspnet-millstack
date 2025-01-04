@@ -1,217 +1,255 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Admin/AdminMaster.master" AutoEventWireup="true" CodeFile="Customer_Attendance.aspx.cs" Inherits="Transaction_Pages_Customer_Attendance" %>
 
 <%@ Register Namespace="AjaxControlToolkit" Assembly="AjaxControlToolkit" TagPrefix="ajax" %>
-<%@ Register Namespace="Telerik.Web.UI" Assembly="Telerik.Web.UI" TagPrefix="telerik" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="main" runat="Server">
 
+
+    <style>
+        /* From Uiverse.io by mobinkakei */
+        .switch-holder {
+            display: flex;
+            padding: 2px 10px;
+            border-radius: 6px;
+            /*box-shadow: -8px -8px 15px rgba(255, 255, 255, .7), 10px 10px 10px rgba(0, 0, 0, .2), inset 8px 8px 15px rgba(255, 255, 255, .7), inset 10px 10px 10px rgba(0, 0, 0, .2);*/
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .switch-label {
+            padding: 0 20px 0 10px
+        }
+
+            .switch-label i {
+                margin-right: 5px;
+            }
+
+        .switch-toggle {
+            height: 40px;
+        }
+
+            .switch-toggle input[type="checkbox"] {
+                position: absolute;
+                opacity: 0;
+                z-index: -2;
+            }
+
+                .switch-toggle input[type="checkbox"] + label {
+                    position: relative;
+                    display: inline-block;
+                    width: 100px;
+                    height: 40px;
+                    border-radius: 20px;
+                    margin: 0;
+                    cursor: pointer;
+                    box-shadow: inset -8px -8px 15px rgba(255, 255, 255, .6), inset 10px 10px 10px rgba(0, 0, 0, .25);
+                }
+
+                    .switch-toggle input[type="checkbox"] + label::before {
+                        position: absolute;
+                        content: 'Absent';
+                        color: #fff;
+                        font-size: 13px;
+                        text-align: center;
+                        line-height: 25px;
+                        top: 8px;
+                        left: 8px;
+                        width: 45px;
+                        height: 25px;
+                        border-radius: 20px;
+                        /*background-color: #eeeeee;*/
+                        background-color: #e76363;
+                        box-shadow: -3px -3px 5px rgba(255, 255, 255, .5), 3px 3px 5px rgba(0, 0, 0, .25);
+                        transition: .3s ease-in-out;
+                    }
+
+                .switch-toggle input[type="checkbox"]:checked + label::before {
+                    left: 50%;
+                    content: 'Present';
+                    color: #fff;
+                    background-color: #00b33c;
+                    box-shadow: -3px -3px 5px rgba(255, 255, 255, .5), 3px 3px 5px #00b33c;
+                }
+
+        /* Ensure that the ASP.NET CheckBox is styled correctly */
+        .custom-checkbox {
+            position: absolute;
+            opacity: 0;
+            z-index: -2;
+        }
+    </style>
+
     <!-- Heading -->
-    <div class="row d-flex justify-content-between col-md-11 mx-auto fw-normal fs-3 fw-bold ps-0 pb-2 text-dark-emphasis mt-1 mb-1">
-        <div class="col-md-6">
-            <asp:Literal ID="Page_Heading" Text="Customer Attendance" runat="server"></asp:Literal>
-        </div>
-        <div id="Div_New_Btn" runat="server" visible="false" class="col-md-6 text-end">
-            <asp:Button
-                ID="Btn_New_Record"
-                runat="server"
-                Text="New Customer +"
-                OnClick="Btn_New_Record_Click"
-                CssClass="btn btn-dark col-md-3 border border-dark-subtle shadow rounded-0" />
-        </div>
+    <div class="col-md-11 mx-auto fw-normal fs-3 fw-bold ps-0 pb-2 text-dark-emphasis mt-1 mb-1 text-center">
+        <asp:Literal ID="Page_Heading" Text="Booth Details" runat="server"></asp:Literal>
     </div>
 
-    <!-- Control Starts -->
-    <div id="Div_Control" runat="server" class="card col-md-11 mx-auto mt-1 py-2 shadow rounded-3 text-dark-emphasis">
-        <div class="card-body">
+    <!-- Attendance Details Starts -->
+    <div id="Div_UI" runat="server" class="card col-sm-10 mx-auto py-0 px-0 shadow rounded-3">
+        <div class="card-body row">
 
-            <!-- Control Section Starts -->
-            <div class="row mb-2">
-
-                <!-- DropDown: List Number -->
-                <div class="col-md-4 mb-3 align-self-end">
-                    <div class="mb-1 fw-semibold fs-6">
-                        <asp:Literal ID="Lit_UserName" runat="server" Text="List Number"></asp:Literal>
-                    </div>
-                    <asp:DropDownList ID="DD_List_No" runat="server" Width="100%" CssClass="form-control chosen-dropdown">
-                    </asp:DropDownList>
+            <!-- TetxtBox: Customer Name -->
+            <div class="col-md-6 mb-3 align-self-end">
+                <div class="mb-1 fw-normal fs-6 text-dark-emphasis">
+                    <asp:Literal ID="TxtID1" runat="server" Text="">Customer Name
+                    </asp:Literal>
+                    <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" CssClass="invalid-feedback" SetFocusOnError="True" Display="Dynamic" ToolTip="Required"
+                        ControlToValidate="Txt_Customer_Name" InitialValue="" ValidationGroup="finalSubmit" ErrorMessage="required field" EnableClientScript="true">
+                    </asp:RequiredFieldValidator>
                 </div>
-
-                <!-- DropDown: Serial Number -->
-                <div class="col-md-4 mb-3 align-self-end">
-                    <div class="mb-1 fw-semibold fs-6">
-                        <asp:Literal ID="Literal1" runat="server" Text="Serial Number"></asp:Literal>
-                    </div>
-                    <asp:DropDownList ID="DD_Serial_No" runat="server" Width="100%" CssClass="form-control chosen-dropdown">
-                    </asp:DropDownList>
-                </div>
-
-                <!-- DropDown: Customer Name -->
-                <div class="col-md-4 mb-3 align-self-end">
-                    <div class="mb-1 fw-semibold fs-6">
-                        <asp:Literal ID="Literal2" runat="server" Text="Customer Name"></asp:Literal>
-                    </div>
-                    <asp:DropDownList ID="DD_Customer_Name" runat="server" Width="100%" CssClass="form-control chosen-dropdown">
-                    </asp:DropDownList>
-                </div>
-
-                <!-- DropDown: WRN Number -->
-                <div class="col-md-4 mb-3 align-self-end">
-                    <div class="mb-1 fw-semibold fs-6">
-                        <asp:Literal ID="Literal3" runat="server" Text="WRN Number"></asp:Literal>
-                    </div>
-                    <asp:DropDownList ID="DD_WRN_No" runat="server" Width="100%" CssClass="form-control chosen-dropdown">
-                    </asp:DropDownList>
-                </div>
-
-                <!-- DropDown: Voting Booth -->
-                <div class="col-md-4 mb-3 align-self-end">
-                    <div class="mb-1 fw-semibold fs-6">
-                        <asp:Literal ID="Literal4" runat="server" Text="Voting Booth"></asp:Literal>
-                    </div>
-                    <asp:DropDownList ID="DD_Voting_Booth" runat="server" Width="100%" CssClass="form-control chosen-dropdown">
-                    </asp:DropDownList>
-                </div>
-
-                <!-- DropDown: Voting Room -->
-                <div class="col-md-4 mb-3 align-self-end">
-                    <div class="mb-1 fw-semibold fs-6">
-                        <asp:Literal ID="Literal5" runat="server" Text="Voting Room"></asp:Literal>
-                    </div>
-                    <asp:DropDownList ID="DD_Voting_Room" runat="server" Width="100%" CssClass="form-control chosen-dropdown">
-                    </asp:DropDownList>
-                </div>
-
-            </div>
-            <!-- Control Section Ends -->
-
-            <!-- Submit Button UI Starts -->
-            <div class="d-flex justify-content-end align-self-end">
-                <asp:Button
-                    ID="Btn_Reset"
+                <asp:TextBox runat="server" ID="Txt_Customer_Name" type="text" Enabled="false" min="0" MaxLength="500"
+                    CssClass="form-control border border-secondary-subtle bg-light rounded-1 fs-6 fw-light py-1">
+                </asp:TextBox>
+                <ajax:FilteredTextBoxExtender
+                    ID="FilteredTextBoxExtender1"
                     runat="server"
-                    Text="Reset"
-                    OnClick="Btn_Reset_Click"
-                    CssClass="btn btn-dark col-md-1 text-white shadow rounded-0" />
-                <asp:Button
-                    ID="Btn_Search"
-                    runat="server" Text="Search"
-                    OnClick="Btn_Search_Click"
-                    CssClass="btn btn-dark col-md-1 text-white shadow rounded-0 ms-3" />
+                    TargetControlID="Txt_Customer_Name"
+                    FilterType="UppercaseLetters, LowercaseLetters, Numbers, Custom"
+                    ValidChars=" " />
             </div>
-            <!-- Submit Button UI Ends -->
+
+            <!-- TetxtBox: WRN Number -->
+            <div class="col-md-6 mb-3 align-self-end">
+                <div class="mb-1 fw-normal fs-6 text-dark-emphasis">
+                    <asp:Literal ID="Literal4" runat="server">WRN Number
+                    </asp:Literal>
+                    <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" CssClass="invalid-feedback" SetFocusOnError="True" Display="Dynamic" ToolTip="Required"
+                        ControlToValidate="Txt_WRN_No" InitialValue="" ValidationGroup="finalSubmit" ErrorMessage="required field" EnableClientScript="true">
+                    </asp:RequiredFieldValidator>
+                </div>
+                <asp:TextBox runat="server" ID="Txt_WRN_No" TextMode="Number" Enabled="false" min="0" MaxLength="500"
+                    CssClass="form-control border border-secondary-subtle bg-light rounded-1 fs-6 fw-light py-1">
+                </asp:TextBox>
+                <ajax:FilteredTextBoxExtender
+                    ID="FilteredTextBoxExtender5"
+                    runat="server"
+                    TargetControlID="Txt_WRN_No"
+                    FilterType="Numbers"
+                    ValidChars=" " />
+            </div>
+
+            <!-- TetxtBox: List Number -->
+            <div class="col-md-6 mb-3 align-self-end">
+                <div class="mb-1 fw-normal fs-6 text-dark-emphasis">
+                    <asp:Literal ID="Literal2" runat="server">List Number
+                    </asp:Literal>
+                    <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" CssClass="invalid-feedback" SetFocusOnError="True" Display="Dynamic" ToolTip="Required"
+                        ControlToValidate="Txt_List_No" InitialValue="" ValidationGroup="finalSubmit" ErrorMessage="required field" EnableClientScript="true">
+                    </asp:RequiredFieldValidator>
+                </div>
+                <asp:TextBox runat="server" ID="Txt_List_No" TextMode="Number" Enabled="false" min="0" MaxLength="500"
+                    CssClass="form-control border border-secondary-subtle bg-light rounded-1 fs-6 fw-light py-1">
+                </asp:TextBox>
+                <ajax:FilteredTextBoxExtender
+                    ID="FilteredTextBoxExtender3"
+                    runat="server"
+                    TargetControlID="Txt_List_No"
+                    FilterType="Numbers"
+                    ValidChars=" " />
+            </div>
+
+            <!-- TetxtBox: Serial Number -->
+            <div class="col-md-6 mb-3 align-self-end">
+                <div class="mb-1 fw-normal fs-6 text-dark-emphasis">
+                    <asp:Literal ID="Literal3" runat="server">Serial Number
+                    </asp:Literal>
+                    <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" CssClass="invalid-feedback" SetFocusOnError="True" Display="Dynamic" ToolTip="Required"
+                        ControlToValidate="Txt_Serial_No" InitialValue="" ValidationGroup="finalSubmit" ErrorMessage="required field" EnableClientScript="true">
+                    </asp:RequiredFieldValidator>
+                </div>
+                <asp:TextBox runat="server" ID="Txt_Serial_No" TextMode="Number" Enabled="false" min="0" MaxLength="500"
+                    CssClass="form-control border border-secondary-subtle bg-light rounded-1 fs-6 fw-light py-1">
+                </asp:TextBox>
+                <ajax:FilteredTextBoxExtender
+                    ID="FilteredTextBoxExtender4"
+                    runat="server"
+                    TargetControlID="Txt_Serial_No"
+                    FilterType="Numbers"
+                    ValidChars=" " />
+            </div>
+
+            <!-- TetxtBox: Voting Booth -->
+            <div class="col-md-6 mb-3 align-self-end">
+                <div class="mb-1 fw-normal fs-6 text-dark-emphasis">
+                    <asp:Literal ID="Literal7" runat="server" Text="">Voting Booth
+                    </asp:Literal>
+                    <asp:RequiredFieldValidator ID="RequiredFieldValidator9" runat="server" CssClass="invalid-feedback" SetFocusOnError="True" Display="Dynamic" ToolTip="Required"
+                        ControlToValidate="Txt_Voting_Booth" InitialValue="" ValidationGroup="finalSubmit" ErrorMessage="required field" EnableClientScript="true">
+                    </asp:RequiredFieldValidator>
+                </div>
+                <asp:TextBox runat="server" ID="Txt_Voting_Booth" TextMode="Number" Enabled="true" min="0" MaxLength="500"
+                    CssClass="form-control border border-secondary-subtle bg-light text-secondary rounded-1 fs-6 fw-bold py-1 shadow-sm">
+                </asp:TextBox>
+                <ajax:FilteredTextBoxExtender
+                    ID="FilteredTextBoxExtender7"
+                    runat="server"
+                    TargetControlID="Txt_Voting_Booth"
+                    FilterType="Numbers"
+                    ValidChars="" />
+            </div>
+
+            <!-- TetxtBox: Voting Room -->
+            <div class="col-md-6 mb-3 align-self-end">
+                <div class="mb-1 fw-normal fs-6 text-dark-emphasis">
+                    <asp:Literal ID="Literal6" runat="server" Text="">Voting Room
+                    </asp:Literal>
+                    <asp:RequiredFieldValidator ID="RequiredFieldValidator8" runat="server" CssClass="invalid-feedback" SetFocusOnError="True" Display="Dynamic" ToolTip="Required"
+                        ControlToValidate="Txt_Voting_Room" InitialValue="" ValidationGroup="finalSubmit" ErrorMessage="required field" EnableClientScript="true">
+                    </asp:RequiredFieldValidator>
+                </div>
+                <asp:TextBox runat="server" ID="Txt_Voting_Room" TextMode="Number" Enabled="true" min="0" MaxLength="500"
+                    CssClass="form-control border border-secondary-subtle bg-light text-secondary rounded-1 fs-6 fw-bold py-1 shadow-sm">
+                </asp:TextBox>
+                <ajax:FilteredTextBoxExtender
+                    ID="FilteredTextBoxExtender6"
+                    runat="server"
+                    TargetControlID="Txt_Voting_Room"
+                    FilterType="Numbers"
+                    ValidChars="" />
+            </div>
+
+            <!-- TetxtBox: Data Entry Mode -->
+            <!-- From Uiverse.io by mobinkakei -->
+            <div class="col-md-6 mb-3 align-self-end">
+                <div class="switch-holder border border-dark-subtle">
+                    <div class="switch-label text-dark-emphasis">
+                        <i class="fa fa-bluetooth-b"></i><span>Customer Attendance Status</span>
+                    </div>
+                    <div class="switch-toggle">
+                        <%--<input type="checkbox" id="bluetooth">--%>
+                        <input type="checkbox" id="bluetooth" runat="server" clientidmode="Static" />
+                        <label for="bluetooth"></label>
+                    </div>
+                </div>
+            </div>
 
         </div>
     </div>
-    <!-- Control UI Ends -->
+    <!-- Attendance Details Ends -->
 
 
-    <!-- Grid UI Starts -->
-    <div id="Div_Grid" runat="server" class="card col-md-11 mx-auto my-5 py-2 shadow rounded-3">
-        <div class="card-body">
-
-            <!-- Heading - BG -->
-            <div class="fs-5 fw-medium text-white border border-dark-subtle bg-primary shadow rounded-2 text-left py-2 px-3 mb-3" style="background-color: #0f3f6f !important;">
-                <asp:Literal ID="Main_Heading" Text="Customer Attendance Records" runat="server"></asp:Literal>
-            </div>
-
-            <div class="p-3 border border-dark-subtle shadow rounded-2 bg-light">
-                <asp:GridView ID="Grid_Search" runat="server" ShowHeaderWhenEmpty="false" AutoGenerateColumns="false" Width="100%" SelectedRowStyle-BackColor="#F3F3F3"
-                    DataKeyNames="Customer_ID" OnSelectedIndexChanged="Grid_Search_SelectedIndexChanged" OnRowDeleting="Grid_Search_RowDeleting"
-                    AllowPaging="false" OnPageIndexChanging="Grid_Search_PageIndexChanging" PageSize="10"
-                    CssClass="datatables table table-bordered table-hover border border-1 border-dark-subtle shadow text-center grid-custom">
-                    <HeaderStyle CssClass="" />
-                    <Columns>
-
-                        <asp:TemplateField ControlStyle-CssClass="col-md-1" HeaderText="Sr.No">
-                            <ItemTemplate>
-                                <asp:HiddenField ID="id" runat="server" Value="id" />
-                                <span><%#Container.DataItemIndex + 1%></span>
-                            </ItemTemplate>
-                            <ItemStyle CssClass="align-middle" Width="30px" />
-                        </asp:TemplateField>
-
-                        <asp:BoundField DataField="Customer_ID" Visible="false" HeaderText="Customer ID" HeaderStyle-CssClass="text-start" ItemStyle-CssClass="fw-light text-center" />
-                        <asp:BoundField DataField="List_No" Visible="true" HeaderText="List No" HeaderStyle-CssClass="text-start" ItemStyle-CssClass="fw-light text-center" />
-                        <asp:BoundField DataField="Serial_No" Visible="true" HeaderText="Serial No" HeaderStyle-CssClass="text-start" ItemStyle-CssClass="fw-light text-center" />
-                        <asp:BoundField DataField="WRN_No" Visible="true" HeaderText="WRN No" HeaderStyle-CssClass="text-start" ItemStyle-CssClass="fw-light text-center" />
-                        <asp:BoundField DataField="Customer_Name" Visible="true" HeaderText="Customer Name" HeaderStyle-CssClass="text-start" ItemStyle-CssClass="fw-light text-center" />
-                        <asp:BoundField DataField="Customer_MobileNo" Visible="true" HeaderText="Mobile No" HeaderStyle-CssClass="text-start" ItemStyle-CssClass="fw-light text-center" />
-                        <asp:BoundField DataField="GenderName" Visible="false" HeaderText="Gender" HeaderStyle-CssClass="text-start" ItemStyle-CssClass="fw-light text-center" />
-                        <asp:BoundField DataField="WardName" Visible="false" HeaderText="Ward" HeaderStyle-CssClass="text-start" ItemStyle-CssClass="fw-light text-center" />
-                        <asp:BoundField DataField="SectorName" Visible="false" HeaderText="Sector" HeaderStyle-CssClass="text-start" ItemStyle-CssClass="fw-light text-center" />
-
-                        <asp:BoundField DataField="Voting_Booth" Visible="true" HeaderText="Voting Booth" HeaderStyle-CssClass="text-start"
-                            ItemStyle-CssClass="fw-bold text-body-secondary text-bg-light text-center" />
-                        <asp:BoundField DataField="Voting_Room" Visible="true" HeaderText="Voting Room" HeaderStyle-CssClass="text-start"
-                            ItemStyle-CssClass="fw-bold text-body-secondary text-bg-light text-center" />
-
-                        <asp:TemplateField HeaderText="Customer Type" ShowHeader="true" Visible="false">
-                            <ItemTemplate>
-                                <asp:Literal
-                                    ID="Literal_CustomerType"
-                                    runat="server"
-                                    Text='<%# Eval("CustomerType_ID") %>'
-                                    EnableViewState="false"
-                                    Mode="PassThrough" />
-                            </ItemTemplate>
-                            <HeaderStyle CssClass="align-middle"></HeaderStyle>
-                            <ItemStyle CssClass="text-center align-middle" />
-                        </asp:TemplateField>
-
-                        <asp:TemplateField HeaderText="Attendance Status" ShowHeader="true" Visible="true">
-                            <ItemTemplate>
-                                <asp:Literal
-                                    ID="Literal_CustomerAttendance"
-                                    runat="server"
-                                    Text='<%# Eval("IsPresent_") %>'
-                                    EnableViewState="false"
-                                    Mode="PassThrough" />
-                            </ItemTemplate>
-                            <HeaderStyle CssClass="align-middle"></HeaderStyle>
-                            <ItemStyle CssClass="text-center align-middle bg-light" />
-                        </asp:TemplateField>
-
-                        <asp:TemplateField HeaderText="Update" ShowHeader="true" Visible="true" HeaderStyle-Width="50px">
-                            <ItemTemplate>
-                                <asp:LinkButton
-                                    ID="Link_Btn_Edit"
-                                    runat="server"
-                                    CausesValidation="False"
-                                    CommandName="Select"
-                                    ForeColor="#0f3f6f">
-                                    <asp:Image
-                                        ID="IMG_Edit"
-                                        runat="server"
-                                        ImageUrl="~/assets/icons/general-icons/atendance.png"
-                                        AlternateText="Edit"
-                                        ToolTip="Update customer attendance"
-                                        Style="width: 25px; height: 25px;" />
-                                </asp:LinkButton>
-                            </ItemTemplate>
-                            <HeaderStyle Width="50px"></HeaderStyle>
-                            <ItemStyle CssClass="align-middle bg-light" />
-                        </asp:TemplateField>
-
-                    </Columns>
-                    <EmptyDataTemplate>
-                        <tr>
-                            <td colspan="4" class="text-center">
-                                <div class="alert alert-info" role="alert">
-                                    No Data Available To Display.
-                                </div>
-                            </td>
-                        </tr>
-                    </EmptyDataTemplate>
-                    <FooterStyle CssClass="" />
-                    <PagerStyle CssClass="grid-pager" />
-                </asp:GridView>
-            </div>
-
-        </div>
+    <!-- Submit Button UI Starts -->
+    <div class="col-md-11 mx-auto row mt-5 mb-2 align-self-end justify-content-center">
+        <asp:Button
+            ID="Btn_Back"
+            runat="server"
+            Visible="true"
+            Text="Back"
+            OnClick="Btn_Back_Click"
+            CssClass="btn col-md-1 text-white shadow rounded-0"
+            Style="background: #0f3f6f; color: #fff" />
+        <asp:Button
+            ID="Btn_Submit"
+            runat="server"
+            Text="Update"
+            OnClick="Btn_Submit_Click"
+            ValidationGroup="finalSubmit"
+            CssClass="btn col-md-1 text-white shadow rounded-0 ms-2"
+            Style="background: #0f3f6f; color: #fff" />
     </div>
-    <!-- Grid UI Ends -->
+    <!-- Submit Button UI Ends -->
 
 
 </asp:Content>

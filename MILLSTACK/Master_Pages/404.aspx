@@ -120,12 +120,12 @@
                 404
             </h1>
 
-            <asp:Button 
-                id="Btn_Home"
+            <asp:Button
+                ID="Btn_Home"
                 runat="server"
                 CssClass="btn"
                 Text="Go back to home"
-                OnClick="Btn_Home_Click"/>
+                OnClick="Btn_Home_Click" />
         </section>
 
     </form>
